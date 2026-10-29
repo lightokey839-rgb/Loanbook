@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --configLoader native",
+    "dev": "vite --configLoader runner --host localhost --port 5173",
     "deploy:self": "bun run ./scripts/self-deploy.ts",
     "compass:deploy": "bun run ./scripts/compass-deploy.ts",
     "fetch:abi": "bun run ./scripts/fetch-abi.ts",
@@ -17,7 +17,7 @@
     "test": "vitest run --configLoader native",
     "test:db": "node scripts/test-db.mjs",
     "test:contracts": "node node_modules/@foundry-rs/forge/bin.mjs test",
-    "preview": "vite preview --configLoader native --host 127.0.0.1"
+    "preview": "vite preview --configLoader runner --host localhost --port 5173"
   },
   "dependencies": {
     "@circle-fin/adapter-viem-v2": "^1.19.2",

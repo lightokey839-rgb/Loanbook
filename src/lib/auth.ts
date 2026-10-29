@@ -19,7 +19,13 @@ export function verifiedWallet(user: Pick<User, 'identities'>): string | null {
 export function buildSignInMessage(address: string, chainId: number, origin: string, now = new Date()) {
   if (![5042, 5042002].includes(chainId)) throw new AuthError('Switch to an Arc network before signing in.')
   const url = new URL(origin)
-  if (url.protocol !== 'https:' && !(url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname))) {
+  // Supabase Auth's SIWE parser accepts `localhost` but rejects IP-literal
+  // domains such as 127.0.0.1. Keep the signed domain identical to the page
+  // origin and direct local users to the registered localhost origin.
+  if (url.protocol === 'http:' && url.hostname !== 'localhost') {
+    throw new AuthError('Use the registered local URL http://localhost:5173 for wallet sign-in.')
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') {
     throw new AuthError('Wallet sign-in requires HTTPS.')
   }
   const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('')

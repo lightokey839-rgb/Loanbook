@@ -37,6 +37,10 @@ describe('SIWE authentication',()=>{
   expect(()=>buildSignInMessage(alice.address,1,'https://loanbook.example')).toThrow()
   expect(()=>buildSignInMessage(alice.address,5042,'http://example.com')).toThrow()
  })
+ it('rejects IP-literal local origins that Supabase SIWE does not accept',()=>{
+  expect(()=>buildSignInMessage(alice.address,5042002,'http://127.0.0.1:5174')).toThrow('localhost')
+  expect(()=>buildSignInMessage(alice.address,5042002,'http://localhost:5173')).not.toThrow()
+ })
  it('authenticates a real cryptographic signature through native Supabase API',async()=>{
   const {client,auth,walletClient}=setup()
   const result=await authenticateWallet(client,alice.address,walletClient,'https://loanbook.example')
