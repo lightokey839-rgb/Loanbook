@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { arcTestnet } from 'viem/chains'
+import { activeChain as arcTestnet } from '../network'
 import { Search } from 'lucide-react'
 import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseLoan } from '../loanbook-contract'
 import { LoanCard } from './LoanCard'
@@ -48,8 +48,7 @@ export function LookupPanel({ defaultLoanId }: Props) {
     cancelPending ? 'signing' : cancelConfirming ? 'confirming' : cancelSuccess ? 'success' : 'idle'
 
   function handleLookup() {
-    const n = parseInt(inputId)
-    if (!isNaN(n) && n > 0) setActiveLoanId(BigInt(n))
+    if (/^[1-9]\d*$/.test(inputId.trim())) setActiveLoanId(BigInt(inputId.trim()))
   }
 
   function handleRefresh() {

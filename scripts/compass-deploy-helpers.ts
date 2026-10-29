@@ -1,396 +1,69 @@
-import crypto from 'crypto';
-
-import { type Abi, type Hex, encodeDeployData, getCreate2Address } from 'viem';
-
-export type DeployMode = 'fork' | 'live' | 'fork-then-live' | 'verify';
-export type SignerKind = 'dcw' | 'private-key';
-
-export interface CompiledArtifact {
-  abi: unknown[];
-  bytecode: Hex;
-}
-
-export function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-export function coerceString(value: unknown): string | undefined {
-  return typeof value === 'string' && value.trim().length > 0 ? value : undefined;
-}
-
-export function stringifyForLog(value: unknown): string {
-  if (value instanceof Error) {
-    return value.message;
-  }
-
-  if (typeof value === 'string') {
-    return value;
-  }
-
-  if (value === null || value === undefined) {
-    return '';
-  }
-
-  try {
-    return JSON.stringify(value) ?? '';
-  } catch {
-    return '[unserializable]';
-  }
-}
-
-const SAFE_LOG_IDENTIFIER = /^(?:0x[0-9a-fA-F]{40}|[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})$/;
-
-export function sanitizeForLog(value: unknown): string {
-  return stringifyForLog(value)
-    .replace(/([?&]_rpc_token=)[^&"'\s]+/gi, '$1[redacted]')
-    .replace(/\b[A-Za-z0-9+/=_-]{32,}\b/g, (m) => (SAFE_LOG_IDENTIFIER.test(m) ? m : '[redacted]'))
-    .replace(/(api[_-]?key|secret|token|entity[_-]?secret)\s*[:=]\s*\S+/gi, '$1=[redacted]')
-    .slice(0, 2_000);
-}
-
-export function redactRpcUrl(value: string): string {
-  return value.replace(/([?&]_rpc_token=)[^&"'\s]+/gi, '$1[redacted]');
-}
-
-export function resolveRpcUrl(explicit: string | undefined, compassChain: string): string {
-  if (explicit) {
-    return explicit;
-  }
-
-  const base = coerceString(process.env.RPC_PROXY_BASE_URL);
-  const token = coerceString(process.env.RPC_PROXY_TOKEN);
-  const chains = (process.env.RPC_PROXY_CHAINS ?? '').split(',').map((chain) => chain.trim());
-
-  if (base && token && chains.includes(compassChain)) {
-    return `${base.replace(/\/+$/, '')}/api/rpc/${compassChain}?_rpc_token=${token}`;
-  }
-
-  throw new Error(
-    `--rpc is required: no RPC_PROXY_* variables in .env cover --compass-chain "${compassChain}", ` +
-      'so the keyed proxy URL cannot be built. Pass --rpc <url> explicitly.',
-  );
-}
-
-export function validateContractName(name: string): string {
-  if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) {
-    throw new Error('Contract name must be a valid Solidity identifier (letters, digits, underscores).');
-  }
-
-  return name;
-}
-
-export function validateAddress(value: string, flag: string): string {
-  if (!/^0x[0-9a-fA-F]{40}$/.test(value)) {
-    throw new Error(`${flag} must be a 0x-prefixed 20-byte address.`);
-  }
-
-  return value;
-}
-
-function assertNumbersSurviveJsonParse(value: unknown, path: string): void {
-  if (Array.isArray(value)) {
-    value.forEach((entry, index) => assertNumbersSurviveJsonParse(entry, `${path}[${index}]`));
-    return;
-  }
-
-  if (isRecord(value)) {
-    for (const [key, entry] of Object.entries(value)) {
-      assertNumbersSurviveJsonParse(entry, `${path}.${key}`);
-    }
-
-    return;
-  }
-
-  if (typeof value === 'number' && !Number.isSafeInteger(value)) {
-    throw new Error(
-      `Constructor arg ${path} (${value}) is not an exact integer. JSON numbers above ` +
-        `Number.MAX_SAFE_INTEGER are rounded on parse â€” 1000000000000000000000000 becomes ` +
-        `999999999999999983222784, and nothing downstream can tell â€” and Solidity has no fractional types. ` +
-        `Pass large integers as a decimal string instead, e.g. "1000000000000000000000000", which encodes exactly.`,
-    );
-  }
-}
-
-export function parseConstructorArgs(raw: string | undefined): unknown[] {
-  if (!raw) {
-    return [];
-  }
-
-  let parsed: unknown;
-
-  try {
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Constructor args must be a JSON array: ${message}`);
-  }
-
-  if (!Array.isArray(parsed)) {
-    throw new Error('Constructor args must be a JSON array.');
-  }
-
-  assertNumbersSurviveJsonParse(parsed, 'args');
-
-  return parsed;
-}
-
-export function parseMode(value: string): DeployMode {
-  if (value === 'fork' || value === 'live' || value === 'fork-then-live' || value === 'verify') {
-    return value;
-  }
-
-  throw new Error(`Invalid --mode "${value}". Expected fork | live | fork-then-live | verify.`);
-}
-
-export function parseSignerKind(value: string): SignerKind {
-  if (value === 'dcw' || value === 'private-key') {
-    return value;
-  }
-
-  throw new Error(`Invalid --signer "${value}". Expected dcw | private-key.`);
-}
-
-export function parseGasToken(value: string): 'usdc' | 'native' {
-  if (value === 'usdc' || value === 'native') {
-    return value;
-  }
-
-  throw new Error(`Invalid --gas-token "${value}". Expected usdc | native.`);
-}
-
-export function randomDeployerKey(): Hex {
-  return `0x${crypto.randomBytes(32).toString('hex')}`;
-}
-
-export function deriveSalt(name: string, deployer: string): Hex {
-  const hash = crypto.createHash('sha256').update(`origin:${deployer.toLowerCase()}:${name}`).digest('hex');
-  return `0x${hash}`;
-}
-
-interface AbiConstructorInput {
-  name?: string;
-  type: string;
-}
-
-function abiConstructorInputs(abi: unknown[]): AbiConstructorInput[] | undefined {
-  const ctor = abi.find((entry) => isRecord(entry) && entry.type === 'constructor');
-
-  if (!isRecord(ctor)) {
-    return undefined;
-  }
-
-  return Array.isArray(ctor.inputs) ? (ctor.inputs as AbiConstructorInput[]) : [];
-}
-
-function formatConstructorSignature(inputs: AbiConstructorInput[]): string {
-  return `constructor(${inputs.map((i) => `${i.type}${i.name ? ` ${i.name}` : ''}`).join(', ')})`;
-}
-
-export const DEPLOYER_PLACEHOLDER = '$DEPLOYER';
-
-export function assertConstructorArgs(
-  artifact: CompiledArtifact,
-  constructorArgs: unknown[],
-  contractName: string,
-): void {
-  const inputs = abiConstructorInputs(artifact.abi);
-
-  if (inputs === undefined) {
-    if (constructorArgs.length > 0) {
-      throw new Error(
-        `${contractName} has no constructor in its ABI, but ${constructorArgs.length} constructor arg(s) were provided.`,
-      );
-    }
-
-    return;
-  }
-
-  if (inputs.length === constructorArgs.length) {
-    return;
-  }
-
-  const ownerHint = inputs.some((i) => i.type === 'address' && /owner|admin|authority/i.test(i.name ?? ''))
-    ? ` The address parameter is likely the owner â€” pass the deployer wallet address, or ${DEPLOYER_PLACEHOLDER} to have it substituted automatically.`
-    : '';
-
-  throw new Error(
-    `${contractName} expects ${inputs.length} constructor arg(s) but got ${constructorArgs.length}. ` +
-      `viem does not validate this, so an omitted arg would revert on-chain after gas is spent. ` +
-      `Required: ${formatConstructorSignature(inputs)}. Pass them as a JSON array, ` +
-      `e.g. bun run compass:deploy ${contractName} '[...]'.${ownerHint}`,
-  );
-}
-
-export function containsDeployerPlaceholder(value: unknown): boolean {
-  if (value === DEPLOYER_PLACEHOLDER) {
-    return true;
-  }
-
-  if (Array.isArray(value)) {
-    return value.some(containsDeployerPlaceholder);
-  }
-
-  if (isRecord(value)) {
-    return Object.values(value).some(containsDeployerPlaceholder);
-  }
-
-  return false;
-}
-
-export function substituteDeployerPlaceholder(constructorArgs: unknown[], deployerAddress: string): unknown[] {
-  return constructorArgs.map((arg) => (arg === DEPLOYER_PLACEHOLDER ? deployerAddress : arg));
-}
-
-export function buildInitcode(artifact: CompiledArtifact, constructorArgs: unknown[]): Hex {
-  const abi = artifact.abi as Abi;
-
-  return constructorArgs.length > 0
-    ? encodeDeployData({ abi, bytecode: artifact.bytecode, args: constructorArgs })
-    : encodeDeployData({ abi, bytecode: artifact.bytecode });
-}
-
-export function predictCreate2Address(factory: Hex, salt: Hex, initcode: Hex): Hex {
-  return getCreate2Address({ from: factory, salt, bytecode: initcode });
-}
-
-export function isTransientRpcError(message: string): boolean {
-  if (/revert|already deployed|insufficient funds|invalid opcode|out of gas/i.test(message)) {
-    return false;
-  }
-
-  return /request limit reached|rate.?limit|\b429\b|timeout|ETIMEDOUT|ECONNRESET|ECONNREFUSED|ENOTFOUND|fetch failed|socket hang up|\b50[23]\b|EVM adapter error|RPC[ _]?(Request failed|Error|ERROR)|network/i.test(
-    message,
-  );
-}
-
-export interface VerifyReceipt {
-  contractName: string;
-  chain: string;
-  blockchain: string;
-  fingerprint: string;
-  verifiedAt: string;
-}
-
-export const VERIFY_RECEIPT_MAX_AGE_MS = 2 * 60 * 60_000;
-
-export function verifyReceiptPath(contractsRootDir: string, contractName: string): string {
-  return `${contractsRootDir}/.compass-verify/${contractName}.json`;
-}
-
-export function computeVerifyFingerprint(artifact: CompiledArtifact, declaredConstructorArgs: unknown[]): string {
-  const payload = `${artifact.bytecode}|${JSON.stringify(declaredConstructorArgs)}`;
-  return `0x${crypto.createHash('sha256').update(payload).digest('hex')}`;
-}
-
-export function buildVerifyReceipt(input: {
-  contractName: string;
-  chain: string;
-  blockchain: string;
-  fingerprint: string;
-  verifiedAt: string;
-}): VerifyReceipt {
-  return {
-    contractName: input.contractName,
-    chain: input.chain,
-    blockchain: input.blockchain,
-    fingerprint: input.fingerprint,
-    verifiedAt: input.verifiedAt,
-  };
-}
-
-export function parseVerifyReceipt(raw: string): VerifyReceipt | undefined {
-  let parsed: unknown;
-
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    return undefined;
-  }
-
-  if (!isRecord(parsed)) {
-    return undefined;
-  }
-
-  const { contractName, chain, blockchain, fingerprint, verifiedAt } = parsed;
-
-  if (
-    typeof contractName !== 'string' ||
-    typeof chain !== 'string' ||
-    typeof blockchain !== 'string' ||
-    typeof fingerprint !== 'string' ||
-    typeof verifiedAt !== 'string'
-  ) {
-    return undefined;
-  }
-
-  return { contractName, chain, blockchain, fingerprint, verifiedAt };
-}
-
-export function assertVerifyReceiptCovers(
-  receipt: VerifyReceipt | undefined,
-  expected: { contractName: string; chain: string; blockchain: string; fingerprint: string },
-  nowMs: number = Date.now(),
-): void {
-  const rerun =
-    `Run the fork-verify gate first:\n` +
-    `  bun run compass:deploy ${expected.contractName} [ctorArgsJson] --mode verify <chain flags>\n` +
-    `then re-run this live deploy. To deploy without verifying, pass --skip-verify "<reason>".`;
-
-  if (!receipt) {
-    throw new Error(`Refusing --mode live: no fork-verify receipt found for ${expected.contractName}.\n${rerun}`);
-  }
-
-  if (receipt.contractName !== expected.contractName) {
-    throw new Error(
-      `Refusing --mode live: the fork-verify receipt is for ${receipt.contractName}, not ${expected.contractName}.\n${rerun}`,
-    );
-  }
-
-  if (receipt.chain !== expected.chain) {
-    throw new Error(
-      `Refusing --mode live: ${expected.contractName} was fork-verified on ${receipt.chain}, not ${expected.chain}.\n${rerun}`,
-    );
-  }
-
-  if (receipt.blockchain !== expected.blockchain) {
-    throw new Error(
-      `Refusing --mode live: ${expected.contractName} was fork-verified with --blockchain ${receipt.blockchain}, ` +
-        `not ${expected.blockchain}. The gas is spent on the --blockchain chain while every read goes to ` +
-        `--compass-chain, so a mismatched pair broadcasts to one chain and confirms against another.\n${rerun}`,
-    );
-  }
-
-  if (receipt.fingerprint.toLowerCase() !== expected.fingerprint.toLowerCase()) {
-    throw new Error(
-      `Refusing --mode live: ${expected.contractName}'s compiled bytecode or constructor args changed since it was ` +
-        `fork-verified â€” the fork run no longer describes what you are about to deploy.\n${rerun}`,
-    );
-  }
-
-  const verifiedAtMs = Date.parse(receipt.verifiedAt);
-
-  if (!Number.isFinite(verifiedAtMs) || nowMs - verifiedAtMs > VERIFY_RECEIPT_MAX_AGE_MS) {
-    throw new Error(
-      `Refusing --mode live: ${expected.contractName}'s fork-verify receipt is stale (verifiedAt ` +
-        `${receipt.verifiedAt}). Foundry bytecode is deterministic, so a receipt from an earlier â€” possibly ` +
-        `abandoned â€” session would otherwise satisfy this gate forever; it is only accepted for ` +
-        `${VERIFY_RECEIPT_MAX_AGE_MS / 60_000} minutes.\n${rerun}`,
-    );
-  }
-}
-
-export function getForkRpcUrl(run: Record<string, unknown>, chain: string): string {
-  const forks = run.forks;
-
-  if (!(forks instanceof Map)) {
-    throw new Error('Dry-run result has no forks map â€” cannot locate the fork RPC URL.');
-  }
-
-  const fork = forks.get(chain) as { rpcUrl?: unknown } | undefined;
-
-  if (!fork || typeof fork.rpcUrl !== 'string') {
-    throw new Error(`No fork instance found for chain ${chain} after dry-run.`);
-  }
-
-  return fork.rpcUrl;
-}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Õ¥µÁ½ÉĞÉåÁÑ¼™É½´€ÉåÁÑ¼œì()¥µÁ½ÉĞìÑåÁ”‰¤°ÑåÁ”!•à°•¹½‘••Á±½å…Ñ„°•ÑÉ•…Ñ”É‘‘É•ÍÌô™É½´€Ù¥•´œì()•áÁ½ÉĞÑåÁ”•Á±½å5½‘”€ô€™½É¬œğ€±¥Ù”œğ€™½É¬µÑ¡•¸µ±¥Ù”œğ€Ù•É¥™äœì)•áÁ½ÉĞÑåÁ”M¥¹•É-¥¹€ô€‘Üœğ€ÁÉ¥Ù…Ñ”µ­•äœì()•áÁ½ÉĞ¥¹Ñ•É™…”½µÁ¥±•‘ÉÑ¥™…Ğì(€…‰¤èÕ¹­¹½İ¹mtì(€‰åÑ•½‘”è!•àì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸¥ÍI•½É¡Ù…±Õ”èÕ¹­¹½İ¸¤èÙ…±Õ”¥ÌI•½ÉñÍÑÉ¥¹œ°Õ¹­¹½İ¸øì(€É•ÑÕÉ¸ÑåÁ•½˜Ù…±Õ”€ôôô€½‰©•Ğœ€˜˜Ù…±Õ”€„ôô¹Õ±°€˜˜€…ÉÉ…ä¹¥ÍÉÉ…ä¡Ù…±Õ”¤ì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸½•É•MÑÉ¥¹œ¡Ù…±Õ”èÕ¹­¹½İ¸¤èÍÑÉ¥¹œğÕ¹‘•™¥¹•ì(€É•ÑÕÉ¸ÑåÁ•½˜Ù…±Õ”€ôôô€ÍÑÉ¥¹œœ€˜˜Ù…±Õ”¹ÑÉ¥´ ¤¹±•¹Ñ €ø€À€üÙ…±Õ”€èÕ¹‘•™¥¹•ì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸ÍÑÉ¥¹¥™å½É1½œ¡Ù…±Õ”èÕ¹­¹½İ¸¤èÍÑÉ¥¹œì(€¥˜€¡Ù…±Õ”¥¹ÍÑ…¹•½˜ÉÉ½È¤ì(€€€É•ÑÕÉ¸Ù…±Õ”¹µ•ÍÍ…”ì(€ô((€¥˜€¡ÑåÁ•½˜Ù…±Õ”€ôôô€ÍÑÉ¥¹œœ¤ì(€€€É•ÑÕÉ¸Ù…±Õ”ì(€ô((€¥˜€¡Ù…±Õ”€ôôô¹Õ±°ñğÙ…±Õ”€ôôôÕ¹‘•™¥¹•¤ì(€€€É•ÑÕÉ¸€œœì(€ô((€ÑÉäì(€€€É•ÑÕÉ¸)M=8¹ÍÑÉ¥¹¥™ä¡Ù…±Õ”¤€üü€œœì(€ô…Ñ ì(€€€É•ÑÕÉ¸€mÕ¹Í•É¥…±¥é…‰±•tœì(€ô)ô()½¹ÍĞM}1=}%9Q%%H€ô€½x üèÁálÀ´å„µ™µuìĞÁõñlÀ´å„µ™µuìáô üèµlÀ´å„µ™µuìÑô¥ìÍôµlÀ´å„µ™µuìÄÉô¤¼ì()•áÁ½ÉĞ™Õ¹Ñ¥½¸Í…¹¥Ñ¥é•½É1½œ¡Ù…±Õ”èÕ¹­¹½İ¸¤èÍÑÉ¥¹œì(€É•ÑÕÉ¸ÍÑÉ¥¹¥™å½É1½œ¡Ù…±Õ”¤(€€€€¹É•Á±…” ¼¡lü™u}ÉÁ}Ñ½­•¸ô¥mx˜ˆqÍt¬½¤°€œÅmÉ•‘…Ñ•‘tœ¤(€€€€¹É•Á±…” ½q‰mµi„µèÀ´ä¬¼õ|µuìÌÈ±õqˆ½œ°€¡´¤€ôø€¡M}1=}%9Q%%H¹Ñ•ÍĞ¡´¤€ü´€è€mÉ•‘…Ñ•‘tœ¤¤(€€€€¹É•Á±…” ¼¡…Á¥m|µtı­•åñÍ•É•ÑñÑ½­•¹ñ•¹Ñ¥Ñåm|µtıÍ•É•Ğ¥qÌ©lèõuqÌ©qL¬½¤°€œÄõmÉ•‘…Ñ•‘tœ¤(€€€€¹Í±¥” À°€É|ÀÀÀ¤ì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸É•‘…ÑIÁUÉ°¡Ù…±Õ”èÍÑÉ¥¹œ¤èÍÑÉ¥¹œì(€É•ÑÕÉ¸Ù…±Õ”¹É•Á±…” ¼¡lü™u}ÉÁ}Ñ½­•¸ô¥mx˜ˆqÍt¬½¤°€œÅmÉ•‘…Ñ•‘tœ¤ì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸É•Í½±Ù•IÁUÉ°¡•áÁ±¥¥ĞèÍÑÉ¥¹œğÕ¹‘•™¥¹•°½µÁ…ÍÍ¡…¥¸èÍÑÉ¥¹œ¤èÍÑÉ¥¹œì(€¥˜€¡•áÁ±¥¥Ğ¤ì(€€€É•ÑÕÉ¸•áÁ±¥¥Ğì(€ô((€½¹ÍĞ‰…Í”€ô½•É•MÑÉ¥¹œ¡ÁÉ½•ÍÌ¹•¹Ø¹IA}AI=ae}	M}UI0¤ì(€½¹ÍĞÑ½­•¸€ô½•É•MÑÉ¥¹œ¡ÁÉ½•ÍÌ¹•¹Ø¹IA}AI=ae}Q=-8¤ì(€½¹ÍĞ¡…¥¹Ì€ô€¡ÁÉ½•ÍÌ¹•¹Ø¹IA}AI=ae}!%9L€üü€œœ¤¹ÍÁ±¥Ğ œ°œ¤¹µ…À ¡¡…¥¸¤€ôø¡…¥¸¹ÑÉ¥´ ¤¤ì((€¥˜€¡‰…Í”€˜˜Ñ½­•¸€˜˜¡…¥¹Ì¹¥¹±Õ‘•Ì¡½µÁ…ÍÍ¡…¥¸¤¤ì(€€€É•ÑÕÉ¸€‘í‰…Í”¹É•Á±…” ½p¼¬¼°€œœ¥ô½…Á¤½ÉÁŒ¼‘í½µÁ…ÍÍ¡…¥¹ôı}ÉÁ}Ñ½­•¸ô‘íÑ½­•¹õ€ì(€ô((€Ñ¡É½Ü¹•ÜÉÉ½È (€€€€´µÉÁŒ¥ÌÉ•ÅÕ¥É•è¹¼IA}AI=ae|¨Ù…É¥…‰±•Ì¥¸€¹•¹Ø½Ù•È€´µ½µÁ…ÍÌµ¡…¥¸€ˆ‘í½µÁ…ÍÍ¡…¥¹ôˆ°€€¬(€€€€€€Í¼Ñ¡”­•å•ÁÉ½áäUI0…¹¹½Ğ‰”‰Õ¥±Ğ¸A…ÍÌ€´µÉÁŒ€ñÕÉ°ø•áÁ±¥¥Ñ±ä¸œ°(€€¤ì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸Ù…±¥‘…Ñ•½¹ÑÉ…Ñ9…µ”¡¹…µ”èÍÑÉ¥¹œ¤èÍÑÉ¥¹œì(€¥˜€ „½ymµi„µé}umµi„µèÀ´å}t¨¼¹Ñ•ÍĞ¡¹…µ”¤¤ì(€€€Ñ¡É½Ü¹•ÜÉÉ½È ½¹ÑÉ…Ğ¹…µ”µÕÍĞ‰”„Ù…±¥M½±¥‘¥Ñä¥‘•¹Ñ¥™¥•È€¡±•ÑÑ•ÉÌ°‘¥¥ÑÌ°Õ¹‘•ÉÍ½É•Ì¤¸œ¤ì(€ô((€É•ÑÕÉ¸¹…µ”ì)ô()•áÁ½ÉĞ™Õ¹Ñ¥½¸Ù…±¥‘…Ñ•‘‘É•ÍÌ¡Ù…±Õ”èÍÑÉ¥¹œ°™±…œèÍÑÉ¥¹œ¤èÍÑÉ¥¹œì(€¥˜€ „½xÁálÀ´å„µ™µuìĞÁô¼¹Ñ•ÍĞ¡Ù…±Õ”¤¤ì(€€€Ñ¡É½Ü¹•ÜÉÉ½È¡€‘í™±…ôµÕÍĞ‰”„€ÁàµÁÉ•™¥á•€ÈÀµ‰åÑ”…‘‘É•ÍÌ¹€¤ì(€ô((€É•ÑÕÉ¸Ù…±Õ”ì)ô()™Õ¹Ñ¥½¸…ÍÍ•ÉÑ9Õµ‰•ÉÍMÕÉÙ¥Ù•)Í½¹A…ÉÍ”¡Ù…±Õ”èÕ¹­¹½İ¸°Á…Ñ èÍÑÉ¥¹œ¤èÙ½¥ì(€¥˜€¡ÉÉ…ä¹¥ÍÉÉ…ä¡Ù…±Õ”¤¤ì(€€€Ù…±Õ”¹™½É…  ¡•¹ÑÉä°¥¹‘•à¤€ôø…ÍÍ•ÉÑ9Õµ‰•ÉÍMÕÉÙ¥Ù•)Í½¹A…ÉÍ”¡•¹ÑÉä°€‘íÁ…Ñ¡õl‘í¥¹‘•áõu€¤¤ì(€€€É•ÑÕÉ¸ì(€ô((€¥˜€¡¥ÍI•½É¡Ù…±Õ”¤¤ì(€€€™½È€¡½¹ÍĞm­•ä°•¹ÑÉåt½˜=‹]4ÖÚ$z{-®éÜj×Ë›[™İˆ
+HÂˆ›İÈ™]È\œ›ÜŠˆ	ØÛÛ˜Xİ˜[Y_H\È›ÈÛÛœİXİÜˆ[ˆ]ÈP’K]	ØÛÛœİXİÜ\™ÜË›[™İHÛÛœİXİÜˆ\™ÊÊHÙ\™H›İšYY˜ˆ
+NÂˆB‚ˆ™]\›ÂˆB‚ˆYˆ
+[œ]Ë›[™İOOHÛÛœİXİÜ\™ÜË›[™İ
+HÂˆ™]\›ÂˆB‚ˆÛÛœİİÛ™\’[H[œ]ËœÛÛYJ
+JHOˆK\HOOH	ØY™\ÜÉÈ	‰ˆÛİÛ™\ŸYZ[Ÿ]]Üš]KÚK\İ
+K›˜[YHÏÈ	ÉÊJBˆÈHY™\ÜÈ\˜[Y]\ˆ\ÈZÙ[HHİÛ™\ˆ8 %\ÜÈH\ŞY\ˆØ[]Y™\ÜËÜˆ	ÑTÖQT—ÔPÑRÓTŸHÈ]™H]İXœİ]]Y]]ÛX]XØ[K˜ˆˆ	ÉÎÂ‚ˆ›İÈ™]È\œ›ÜŠˆ	ØÛÛ˜Xİ˜[Y_H^XİÈ	Ú[œ]Ë›[™İHÛÛœİXİÜˆ\™ÊÊH]Ûİ	ØÛÛœİXİÜ\™ÜË›[™İKˆ
+ÂˆšY[HÙ\È›İ˜[Y]H\ËÛÈ[ˆÛZ]Y\™ÈÛİ[™]™\Û‹XÚZ[ˆY\ˆØ\È\ÈÜ[ˆ
+Âˆ™\]Z\™Yˆ	Ù›Ü›X]ÛÛœİXİÜ”ÚYÛ˜]\™J[œ]Ê_Kˆ\ÜÈ[H\ÈH”ÓÓˆ\œ˜^K
+ÂˆK™Ëˆ[ˆ[ˆÛÛ\\ÜÎ™\ŞH	ØÛÛ˜Xİ˜[Y_H	ÖË‹‹—IË‰ÛİÛ™\’[Xˆ
+NÂŸB‚™^Ü[˜İ[ÛˆÛÛZ[œÑ\ŞY\”XÙZÛ\Š˜[YNˆ[šÛ›İÛŠNˆ›ÛÛX[ˆÂˆYˆ
+˜[YHOOHTÖQT—ÔPÑRÓTŠHÂˆ™]\›ˆYNÂˆB‚ˆYˆ
+\œ˜^Kš\Ğ\œ˜^J˜[YJJHÂˆ™]\›ˆ˜[YKœÛÛYJÛÛZ[œÑ\ŞY\”XÙZÛ\ŠNÂˆB‚ˆYˆ
+\Ô™XÛÜ™
+˜[YJJHÂˆ™]\›ˆØš™Xİ˜[Y\Ê˜[YJKœÛÛYJÛÛZ[œÑ\ŞY\”XÙZÛ\ŠNÂˆB‚ˆ™]\›ˆ˜[ÙNÂŸB‚™^Ü[˜İ[ÛˆİXœİ]]Q\ŞY\”XÙZÛ\ŠÛÛœİXİÜ\™ÜÎˆ[šÛ›İÛ–×K\ŞY\Y™\ÜÎˆİš[™ÊNˆ[šÛ›İÛ–×HÂˆ™]\›ˆÛÛœİXİÜ\™ÜË›X\
+
+\™ÊHOˆ
+\™ÈOOHTÖQT—ÔPÑRÓTˆÈ\ŞY\Y™\ÜÈˆ\™ÊJNÂŸB‚™^Ü[˜İ[ÛˆZ[[š]ÛÙJ\Y˜XİˆÛÛ\[Y\Y˜XİÛÛœİXİÜ\™ÜÎˆ[šÛ›İÛ–×JNˆ^ÂˆÛÛœİXšHH\Y˜Xİ˜XšH\ÈXšNÂ‚ˆ™]\›ˆÛÛœİXİÜ\™ÜË›[™İˆˆÈ[˜ÛÙQ\ŞQ]JÈXšK]XÛÙNˆ\Y˜Xİ˜]XÛÙK\™ÜÎˆÛÛœİXİÜ\™ÜÈJBˆˆ[˜ÛÙQ\ŞQ]JÈXšK]XÛÙNˆ\Y˜Xİ˜]XÛÙHJNÂŸB‚™^Ü[˜İ[Ûˆ™YXİÜ™X]LY™\ÜÊ˜XİÜNˆ^Ø[ˆ^[š]ÛÙNˆ^
+Nˆ^Âˆ™]\›ˆÙ]Ü™X]LY™\ÜÊÈœ›ÛNˆ˜XİÜKØ[]XÛÙNˆ[š]ÛÙHJNÂŸB‚™^Ü[˜İ[Ûˆ\Õ˜[œÚY[œÑ\œ›ÜŠY\ÜØYÙNˆİš[™ÊNˆ›ÛÛX[ˆÂˆYˆ
+Ü™]™\[™XYH\ŞYY[œİY™šXÚY[[™ß[˜[YÜÛÙ_İ]ÙˆØ\ËÚK\İ
+Y\ÜØYÙJJHÂˆ™]\›ˆ˜[ÙNÂˆB‚ˆ™]\›ˆÜ™\]Y\İ[Z]™XXÚY˜]KÛ[Z]WŸ[Y[İ]USQQÕUPÓÓ“”‘TÑUPÓÓ“”‘Q•TÑQS“Õ“ÕS‘™]Ú˜Z[YÛØÚÙ][™È\LÌŒ×WŸU“HY\\ˆ\œ›ÜŸ”ÖÈ×OÊ™\]Y\İ˜Z[Y\œ›ÜŸT”“ÔŠ_™]ÛÜšËÚK\İ
+ˆY\ÜØYÙKˆ
+NÂŸB‚™^Ü[\™˜XÙH™\šYT™XÙZ\ÂˆÛÛ˜Xİ˜[YNˆİš[™ÎÂˆÚZ[ˆİš[™ÎÂˆ›ØÚØÚZ[ˆİš[™ÎÂˆš[™Ù\œš[ˆİš[™ÎÂˆ™\šYšYY]ˆİš[™ÎÂŸB‚™^ÜÛÛœİ‘T’Q–WÔ‘PÑRTÓPVĞQÑWÓTÈHˆ
+ˆŒ
+ˆŒÌÂ‚™^Ü[˜İ[Ûˆ™\šYT™XÙZ\]
+ÛÛ˜XİÔ›Ûİ\ˆİš[™ËÛÛ˜Xİ˜[YNˆİš[™ÊNˆİš[™ÈÂˆ™]\›ˆ	ØÛÛ˜XİÔ›Ûİ\ŸKË˜ÛÛ\\ÜË]™\šYKÉØÛÛ˜Xİ˜[Y_KšœÛÛ˜ÂŸB‚™^Ü[˜İ[ÛˆÛÛ\]U™\šYQš[™Ù\œš[
+\Y˜XİˆÛÛ\[Y\Y˜XİXÛ\™YÛÛœİXİÜ\™ÜÎˆ[šÛ›İÛ–×JNˆİš[™ÈÂˆÛÛœİ^[ØYH	Ø\Y˜Xİ˜]XÛÙ__	Ò”ÓÓ‹œİš[™ÚYJXÛ\™YÛÛœİXİÜ\™ÜÊ_XÂˆ™]\›ˆ	ØÜ\Ë˜Ü™X]R\Ú
+	ÜÚLM‰ÊK\]J^[ØY
+K™YÙ\İ
+	Ú^	Ê_XÂŸB‚™^Ü[˜İ[ÛˆZ[™\šYT™XÙZ\
+[œ]ˆÂˆÛÛ˜Xİ˜[YNˆİš[™ÎÂˆÚZ[ˆİš[™ÎÂˆ›ØÚØÚZ[ˆİš[™ÎÂˆš[™Ù\œš[ˆİš[™ÎÂˆ™\šYšYY]ˆİš[™ÎÂŸJNˆ™\šYT™XÙZ\Âˆ™]\›ˆÂˆÛÛ˜Xİ˜[YNˆ[œ]˜ÛÛ˜Xİ˜[YKˆÚZ[ˆ[œ]˜ÚZ[‹ˆ›ØÚØÚZ[ˆ[œ]˜›ØÚØÚZ[‹ˆš[™Ù\œš[ˆ[œ]™š[™Ù\œš[ˆ™\šYšYY]ˆ[œ]™\šYšYY]ˆNÂŸB‚™^Ü[˜İ[Ûˆ\œÙU™\šYT™XÙZ\
+˜]Îˆİš[™ÊNˆ™\šYT™XÙZ\[™Yš[™YÂˆ]\œÙYˆ[šÛ›İÛÂ‚ˆHÂˆ\œÙYH”ÓÓ‹œ\œÙJ˜]ÊNÂˆHØ]ÚÂˆ™]\›ˆ[™Yš[™YÂˆB‚ˆYˆ
+Z\Ô™XÛÜ™
+\œÙY
+JHÂˆ™]\›ˆ[™Yš[™YÂˆB‚ˆÛÛœİÈÛÛ˜Xİ˜[YKÚZ[‹›ØÚØÚZ[‹š[™Ù\œš[™\šYšYY]HH\œÙYÂ‚ˆYˆ
+ˆ\[ÙˆÛÛ˜Xİ˜[YHOOH	Üİš[™ÉÈˆ\[ÙˆÚZ[ˆOOH	Üİš[™ÉÈˆ\[Ùˆ›ØÚØÚZ[ˆOOH	Üİš[™ÉÈˆ\[Ùˆš[™Ù\œš[OOH	Üİš[™ÉÈˆ\[Ùˆ™\šYšYY]OOH	Üİš[™ÉÂˆ
+HÂˆ™]\›ˆ[™Yš[™YÂˆB‚ˆ™]\›ˆÈÛÛ˜Xİ˜[YKÚZ[‹›ØÚØÚZ[‹š[™Ù\œš[™\šYšYY]NÂŸB‚™^Ü[˜İ[Ûˆ\ÜÙ\™\šYT™XÙZ\Ûİ™\œÊˆ™XÙZ\ˆ™\šYT™XÙZ\[™Yš[™Yˆ^XİYˆÈÛÛ˜Xİ˜[YNˆİš[™ÎÈÚZ[ˆİš[™ÎÈ›ØÚØÚZ[ˆİš[™ÎÈš[™Ù\œš[ˆİš[™ÈKˆ›İÓ\Îˆ[X™\ˆH]K››İÊ
+KŠNˆ›ÚYÂˆÛÛœİ™\[ˆBˆ[ˆH›ÜšË]™\šYHØ]Hš\œİ—˜
+Âˆ[ˆ[ˆÛÛ\\ÜÎ™\ŞH	Ù^XİY˜ÛÛ˜Xİ˜[Y_HØİÜ\™ÜÒœÛÛ—HK[[ÙH™\šYHÚZ[ˆ›YÜÏ—˜
+Âˆ[ˆ™K\[ˆ\È]™H\ŞKˆÈ\ŞHÚ]İ]™\šYZ[™Ë\ÜÈK\ÚÚ\]™\šYH™X\ÛÛˆ‹˜Â‚ˆYˆ
+\™XÙZ\
+HÂˆ›İÈ™]È\œ›ÜŠ™Y\Ú[™ÈK[[ÙH]™Nˆ›È›ÜšË]™\šYH™XÙZ\›İ[™›Üˆ	Ù^XİY˜ÛÛ˜Xİ˜[Y_K—‰Ü™\[ŸX
+NÂˆB‚ˆYˆ
+™XÙZ\˜ÛÛ˜Xİ˜[YHOOH^XİY˜ÛÛ˜Xİ˜[YJHÂˆ›İÈ™]È\œ›ÜŠˆ™Y\Ú[™ÈK[[ÙH]™NˆH›ÜšË]™\šYH™XÙZ\\È›Üˆ	Ü™XÙZ\˜ÛÛ˜Xİ˜[Y_K›İ	Ù^XİY˜ÛÛ˜Xİ˜[Y_K—‰Ü™\[ŸXˆ
+NÂˆB‚ˆYˆ
+™XÙZ\˜ÚZ[ˆOOH^XİY˜ÚZ[ŠHÂˆ›İÈ™]È\œ›ÜŠˆ™Y\Ú[™ÈK[[ÙH]™Nˆ	Ù^XİY˜ÛÛ˜Xİ˜[Y_HØ\È›ÜšË]™\šYšYYÛˆ	Ü™XÙZ\˜ÚZ[ŸK›İ	Ù^XİY˜ÚZ[ŸK—‰Ü™\[ŸXˆ
+NÂˆB‚ˆYˆ
+™XÙZ\˜›ØÚØÚZ[ˆOOH^XİY˜›ØÚØÚZ[ŠHÂˆ›İÈ™]È\œ›ÜŠˆ™Y\Ú[™ÈK[[ÙH]™Nˆ	Ù^XİY˜ÛÛ˜Xİ˜[Y_HØ\È›ÜšË]™\šYšYYÚ]KX›ØÚØÚZ[ˆ	Ü™XÙZ\˜›ØÚØÚZ[ŸK
+Âˆ›İ	Ù^XİY˜›ØÚØÚZ[ŸKˆHØ\È\ÈÜ[ÛˆHKX›ØÚØÚZ[ˆÚZ[ˆÚ[H]™\H™XYÛÙ\ÈÈ
+ÂˆKXÛÛ\\ÜËXÚZ[‹ÛÈHZ\ÛX]ÚYZ\ˆœ›ØYØ\İÈÈÛ™HÚZ[ˆ[™ÛÛ™š\›\ÈYØZ[œİ[›İ\‹—‰Ü™\[ŸXˆ
+NÂˆB‚ˆYˆ
+™XÙZ\™š[™Ù\œš[ÓİÙ\Ø\ÙJ
+HOOH^XİY™š[™Ù\œš[ÓİÙ\Ø\ÙJ
+JHÂˆ›İÈ™]È\œ›ÜŠˆ™Y\Ú[™ÈK[[ÙH]™Nˆ	Ù^XİY˜ÛÛ˜Xİ˜[Y_IÜÈÛÛ\[Y]XÛÙHÜˆÛÛœİXİÜˆ\™ÜÈÚ[™ÙYÚ[˜ÙH]Ø\È
+Âˆ›ÜšË]™\šYšYY8 %H›ÜšÈ[ˆ›ÈÛ™Ù\ˆ\ØÜšX™\ÈÚ][İH\™HX›İ]È\ŞK—‰Ü™\[ŸXˆ
+NÂˆB‚ˆÛÛœİ™\šYšYY]\ÈH]Kœ\œÙJ™XÙZ\™\šYšYY]
+NÂ‚ˆYˆ
+S[X™\‹š\Ñš[š]J™\šYšYY]\ÊH›İÓ\ÈH™\šYšYY]\Èˆ‘T’Q–WÔ‘PÑRTÓPVĞQÑWÓTÊHÂˆ›İÈ™]È\œ›ÜŠˆ™Y\Ú[™ÈK[[ÙH]™Nˆ	Ù^XİY˜ÛÛ˜Xİ˜[Y_IÜÈ›ÜšË]™\šYH™XÙZ\\Èİ[H
+™\šYšYY]
+Âˆ	Ü™XÙZ\™\šYšYY]JKˆ›İ[™H]XÛÙH\È]\›Z[š\İXËÛÈH™XÙZ\œ›ÛH[ˆX\›Y\ˆ8 %ÜÜÚX›H
+ÂˆX˜[™Û™Y8 %Ù\ÜÚ[ÛˆÛİ[İ\Ú\ÙHØ]\ÙH\ÈØ]H›Ü™]™\È]\ÈÛ›HXØÙ\Y›Üˆ
+Âˆ	Õ‘T’Q–WÔ‘PÑRTÓPVĞQÑWÓTÈÈŒÌHZ[]\Ë—‰Ü™\[ŸXˆ
+NÂˆBŸB‚™^Ü[˜İ[ÛˆÙ]›ÜšÔœÕ\›
+[ˆ™XÛÜ™İš[™Ë[šÛ›İÛ‹ÚZ[ˆİš[™ÊNˆİš[™ÈÂˆÛÛœİ›ÜšÜÈH[‹™›ÜšÜÎÂ‚ˆYˆ
+J›ÜšÜÈ[œİ[˜Ù[ÙˆX\
+JHÂˆ›İÈ™]È\œ›ÜŠ	ÑK\[ˆ™\İ[\È›È›ÜšÜÈX\8 %Ø[››İØØ]HH›ÜšÈ”ÈT“‰ÊNÂˆB‚ˆÛÛœİ›ÜšÈH›ÜšÜË™Ù]
+ÚZ[ŠH\ÈÈœÕ\›Îˆ[šÛ›İÛˆH[™Yš[™YÂ‚ˆYˆ
+Y›ÜšÈ\[Ùˆ›ÜšËœœÕ\›OOH	Üİš[™ÉÊHÂˆ›İÈ™]È\œ›ÜŠ›È›ÜšÈ[œİ[˜ÙH›İ[™›ÜˆÚZ[ˆ	ØÚZ[ŸHY\ˆK\[‹˜
+NÂˆB‚ˆ™]\›ˆ›ÜšËœœÕ\›ÂŸB

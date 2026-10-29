@@ -1,255 +1,58 @@
-/**
- * MyLoansPage â€” tabbed loan management with timeline progress.
- * Only shows real onchain data; no fabricated state.
- */
-import { useState } from 'react'
-import { useAccount, useReadContract, useReadContracts } from 'wagmi'
-import { arcTestnet } from 'viem/chains'
-import {
-  BookOpen, ArrowDownLeft, ArrowUpRight,
-  XCircle, AlertTriangle, Search,
-  RefreshCw,
-} from 'lucide-react'
-import { ConnectKitButton } from 'connectkit'
-import {
-  LOANBOOK_ADDRESS, LOANBOOK_ABI, parseLoan, formatUsdc,
-  shortAddr, formatTs, LoanState,
-} from '../loanbook-contract'
-import { buildAddressExplorerUrl } from '../onchain-facts'
-import { LookupPanel } from './LookupPanel'
-import type { Page } from './AppShell'
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Ô¼¨¨(€¨5å1½…¹ÍA…”ƒŠPÑ…‰‰•±½…¸µ…¹…•µ•¹Ğİ¥Ñ Ñ¥µ•±¥¹”ÁÉ½É•ÍÌ¸(€¨=¹±äÍ¡½İÌÉ•…°½¹¡…¥¸‘…Ñ„ì¹¼™…‰É¥…Ñ•ÍÑ…Ñ”¸(€¨¼)¥µÁ½ÉĞìÕÍ•MÑ…Ñ”ô™É½´€É•…Ğœ)¥µÁ½ÉĞìÕÍ•½Õ¹Ğ°ÕÍ•I•…‘½¹ÑÉ…Ğ°ÕÍ•I•…‘½¹ÑÉ…ÑÌô™É½´€İ…µ¤œ)¥µÁ½ÉĞì…Ñ¥Ù•¡…¥¸…Ì…ÉQ•ÍÑ¹•Ğô™É½´€œ¸¸½¹•Ñİ½É¬œ)¥µÁ½ÉĞì(€	½½­=Á•¸°ÉÉ½İ½İ¹1•™Ğ°ÉÉ½İUÁI¥¡Ğ°(€a¥É±”°±•ÉÑQÉ¥…¹±”°M•…É °(€I•™É•Í¡Ü°)ô™É½´€±Õ¥‘”µÉ•…Ğœ)¥µÁ½ÉĞì½¹¹•Ñ-¥Ñ	ÕÑÑ½¸ô™É½´€½¹¹•Ñ­¥Ğœ)¥µÁ½ÉĞì(€1=9	==-}IML°1=9	==-}	$°Á…ÉÍ•1½…¸°™½Éµ…ÑUÍ‘Œ°(€Í¡½ÉÑ‘‘È°™½Éµ…ÑQÌ°1½…¹MÑ…Ñ”°)ô™É½´€œ¸¸½±½…¹‰½½¬µ½¹ÑÉ…Ğœ)¥µÁ½ÉĞì‰Õ¥±‘‘‘É•ÍÍáÁ±½É•ÉUÉ°ô™É½´€œ¸¸½½¹¡…¥¸µ™…ÑÌœ)¥µÁ½ÉĞì1½½­ÕÁA…¹•°ô™É½´€œ¸½1½½­ÕÁA…¹•°œ)¥µÁ½ÉĞÑåÁ”ìA…”ô™É½´€œ¸½ÁÁM¡•±°œ()ÑåÁ”Q…ˆ€ô€…±°œğ€‰½ÉÉ½İ•œğ€±•¹Ğœğ€Á•¹‘¥¹œœğ€É•Á…¥œ()¥¹Ñ•É™…”AÉ½ÁÌì(€½¹9…Ù¥…Ñ”è€¡ÀèA…”¤€ôøÙ½¥)ô((¼¨¨Y¥ÍÕ…°Ñ¥µ•±¥¹”™½È„±½…¸Ì±¥™•å±”€¨¼)™Õ¹Ñ¥½¸1½…¹Q¥µ•±¥¹”¡ìÍÑ…Ñ”ôèìÍÑ…Ñ”è¹Õµ‰•Èô¤ì(€½¹ÍĞÍÑ•ÁÌ€ôl(€€€ì±…‰•°è€É•…Ñ•œ°‘½¹”èÑÉÕ”ô°(€€€ì±…‰•°è€Õ¹‘•œ°‘½¹”èÍÑ…Ñ”€øô€¡1½…¹MÑ…Ñ”¹Õ¹‘•…Ì¹Õµ‰•È¤ô°(€€€ì±…‰•°è€I•Á…¥œ°‘½¹”èÍÑ…Ñ”€ôôô€¡1½…¹MÑ…Ñ”¹I•Á…¥…Ì¹Õµ‰•È¤ô°(€t(€¥˜€¡ÍÑ…Ñ”€ôôô€¡1½…¹MÑ…Ñ”¹…¹•±±•…Ì¹Õµ‰•È¤¤ì(€€€É•ÑÕÉ¸€ (€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´Ä¸ÔÑ•áĞµáÌˆÍÑå±”õíì½±½Èè€Ù…È ´µµÕÑ•¤œõôø(€€€€€€€€ña¥É±”Í¥é”õìÄÉôÍÑå±”õíì½±½Èè€Ù…È ´µÉ•¤œõô€¼ø(€€€€€€€…¹•±±•(€€€€€€ğ½‘¥Øø(€€€€¤(€ô(€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´Àˆø(€€€€€íÍÑ•ÁÌ¹µ…À ¡Ì°¤¤€ôø€ (€€€€€€€€ñ‘¥Ø­•äõíÌ¹±…‰•±ô±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•Èˆø(€€€€€€€€€í¤€ø€À€˜˜€ (€€€€€€€€€€€€ñ‘¥Ø(€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰ µÁàÜ´àˆ(€€€€€€€€€€€€€ÍÑå±”õíì‰…­É½Õ¹èÌ¹‘½¹”€ü€Ù…È ´µ…•¹Ğ¤œ€è€Ù…È ´µ‰½É‘•ÈµÍÑÉ½¹œ¤œõô(€€€€€€€€€€€€¼ø(€€€€€€€€€€¥ô(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à™±•àµ½°¥Ñ•µÌµ•¹Ñ•È…À´À¸Ôˆø(€€€€€€€€€€€€ñ‘¥Ø(€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰Ü´Ì¸Ô ´Ì¸ÔÉ½Õ¹‘•µ™Õ±°‰½É‘•È´È™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•Èˆ(€€€€€€€€€€€€€ÍÑå±”õíì(€€€€€€€€€€€€€€€‰½É‘•É½±½ÈèÌ¹‘½¹”€ü€Ù…È ´µ…•¹Ğ¤œ€è€Ù…È ´µ‰½É‘•ÈµÍÑÉ½¹œ¤œ°(€€€€€€€€€€€€€€€‰…­É½Õ¹èÌ¹‘½¹”€ü€Ù…È ´µ…•¹Ğ¤œ€è€ÑÉ…¹ÍÁ…É•¹Ğœ°(€€€€€€€€€€€€€õô(€€€€€€€€€€€€ø(€€€€€€€€€€€€€íÌ¹‘½¹”€˜˜€ñ‘¥Ø±…ÍÍ9…µ”ô‰Ü´Ä ´ÄÉ½Õ¹‘•µ™Õ±°‰œµİ¡¥Ñ”ˆ€¼ùô(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰Ñ•áĞµáÌˆÍÑå±”õíì½±½ÈèÌ¹‘½¹”€ü€Ù…È ´µ¥¹¬´È¤œ€è€Ù…È ´µÍÕ‰Ñ±”¤œ°™½¹ÑM¥é”è€œÄÁÁàœõôø(€€€€€€€€€€€€€íÌ¹±…‰•±ô(€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½‘¥Øø(€€€€€€¤¥ô(€€€€ğ½‘¥Øø(€€¤)ô()¥¹Ñ•É™…”1½…¹¹ÑÉäì(€¥è‰¥¥¹Ğ(€±½…¸èI•ÑÕÉ¹QåÁ”ñÑåÁ•½˜Á…ÉÍ•1½…¸ø(€½Ù•É‘Õ”è‰½½±•…¸)ô()™Õ¹Ñ¥½¸1½…¹¹ÑÉå…É¡ì•¹ÑÉä°…‘‘É•ÍÌ°½¹5…¹…”ôèì(€•¹ÑÉäè1½…¹¹ÑÉä(€…‘‘É•ÍÌèÍÑÉ¥¹œ(€½¹5…¹…”è€¡¥è‰¥¥¹Ğ¤€ôøÙ½¥)ô¤ì(€½¹ÍĞì¥°±½…¸°½Ù•É‘Õ”ô€ô•¹ÑÉä(€½¹ÍĞ¥Í	½ÉÉ½İ•È€ô±½…¸¹‰½ÉÉ½İ•È¹Ñ½1½İ•É…Í” ¤€ôôô…‘‘É•ÍÌ¹Ñ½1½İ•É…Í” ¤(€½¹ÍĞ½Õ¹Ñ•ÉÁ…ÉÑä€ô¥Í	½ÉÉ½İ•È€ü±½…¸¹±•¹‘•È€è±½…¸¹‰½ÉÉ½İ•È((€½¹ÍĞÍÑ…Ñ•±…ÍÌ€ô½Ù•É‘Õ”€˜˜±½…¸¹ÍÑ…Ñ”€ôôô€¡1½…¹MÑ…Ñ”¹Õ¹‘•…Ì¹Õµ‰•È¤(€€€€ü€ÍÑ…ÑÕÌµ½Ù•É‘Õ”œ(€€€€èlÍÑ…ÑÕÌµ½Á•¸œ°€ÍÑ…ÑÕÌµ™Õ¹‘•œ°€ÍÑ…ÑÕÌµÉ•Á…¥œ°€ÍÑ…ÑÕÌµ…¹•±³]4ÖÚ$z{-®éÜj×ˆİ™\™YHÈ	İ˜\ŠK\™Y
+IÈˆ	Ú[š\š]	È_O‚ˆÛİ™\™YHÈ[\šX[™ÛHÚ^™O^ÌL_HÛ\ÜÓ˜[YOHš[›[™H\‹LHˆÏˆˆ[BˆYHÙ›Ü›X]ÊØ[‹™YQ]J_BˆÜÜ[‚ˆ
+_BˆÙ]‚ˆÙ]‚‚ˆËÊˆ[Y[[™H
+‹ßBˆ]ˆÛ\ÜÓ˜[YOH›]LÈ‚ˆØ[•[Y[[™Hİ]O^ÛØ[‹œİ]_HÏ‚ˆÙ]‚ˆÙ]‚‚ˆËÊˆXİ[Ûˆ]Ûˆ
+‹ßBˆØØ[Xİ	‰ˆ
+ˆ]Û‚ˆÛÛXÚÏ^Ê
+HOˆÛ“X[˜YÙJY
+_BˆÛ\ÜÓ˜[YOHœÚš[šËLLÈKLKH›İ[™Y[È^^È›Û\Ù[ZX›Û˜[œÚ][Û‹X[‹\š[X\H‚ˆ‚ˆX[˜YÙBˆØ]Û‚ˆ
+_BˆÙ]‚ˆÙ]‚ˆ
+BŸB‚™^Ü[˜İ[Ûˆ^SØ[œÔYÙJÈÛ“˜]šYØ]NˆÛÛ“˜]šYØ]HNˆ›ÜÊHÂˆÛÛœİÈY™\ÜË\ĞÛÛ›™XİYHH\ÙPXØÛİ[
 
-type Tab = 'all' | 'borrowed' | 'lent' | 'pending' | 'repaid'
+BˆÛÛœİÜØØ[“[Z]Ù]ØØ[“[Z]HH\ÙTİ]JÌ
+BˆÛÛœİØXİ]™UX‹Ù]Xİ]™UX—HH\ÙTİ]OXŠ	Ø[	ÊBˆÛÛœİÛX[˜YÙSØ[’YÙ]X[˜YÙSØ[’YHH\ÙTİ]OšYÚ[[Š[
+BˆÛÛœİÜ™Yœ™\ÚÙ^KÙ]™Yœ™\ÚÙ^WHH\ÙTİ]J
+B‚ˆÛÛœİÈ]NˆØ[Ûİ[™Y™]Úˆ™Y™]ÚÛİ[HH\ÙT™XYÛÛ˜Xİ
+ÂˆY™\ÜÎˆĞS“ÓÒ×ĞQ‘TÔËˆXšNˆĞS“ÓÒ×ĞP’Kˆ[˜İ[Û“˜[YNˆ	ÛØ[Ûİ[	ËˆÚZ[’Yˆ\˜Õ\İ™]šYˆ]Y\NˆÈ™Y™]Ú[\˜[ˆLŒKˆJB‚ˆÛÛœİ™XÙ[YÎˆšYÚ[×HHØ[Ûİ[ˆÈ\œ˜^K™œ›ÛJÈ[™İˆX]›Z[Š[X™\ŠØ[Ûİ[
+KØØ[“[Z]
+HK
+ËJHOˆØ[Ûİ[HšYÒ[
+JJBˆˆ×B‚ˆÛÛœİÈ]NˆØ[œÔ˜]Ë™Y™]Úˆ™Y™]ÚØ[œÈHH\ÙT™XYÛÛ˜XİÊÂˆÛÛ˜XİÎˆ™XÙ[YË›X\
+YOˆ
+ÂˆY™\ÜÎˆĞS“ÓÒ×ĞQ‘TÔËˆXšNˆĞS“ÓÒ×ĞP’Kˆ[˜İ[Û“˜[YNˆ	ÙÙ]Ø[‰È\ÈÛÛœİˆ\™ÜÎˆÚYH\ÈØšYÚ[KˆÚZ[’Yˆ\˜Õ\İ™]šYˆJJKˆ]Y\NˆÈ[˜X›Yˆ™XÙ[YË›[™İˆ	‰ˆ\ĞÛÛ›™XİY	‰ˆHXY™\ÜÈKˆJB‚ˆÛÛœİÈ]Nˆİ™\™YT˜]ÈHH\ÙT™XYÛÛ˜XİÊÂˆÛÛ˜XİÎˆ™XÙ[YË›X\
+YOˆ
+ÂˆY™\ÜÎˆĞS“ÓÒ×ĞQ‘TÔËˆXšNˆĞS“ÓÒ×ĞP’Kˆ[˜İ[Û“˜[YNˆ	Ú\Óİ™\™YIÈ\ÈÛÛœİˆ\™ÜÎˆÚYH\ÈØšYÚ[KˆÚZ[’Yˆ\˜Õ\İ™]šYˆJJKˆ]Y\NˆÈ[˜X›Yˆ™XÙ[YË›[™İˆ	‰ˆ\ĞÛÛ›™XİY	‰ˆHXY™\ÜÈKˆJB‚ˆ[˜İ[Ûˆ[™T™Yœ™\Ú
 
-interface Props {
-  onNavigate: (p: Page) => void
-}
+HÂˆÙ]™Yœ™\ÚÙ^JÈOˆÈ
+ÈJBˆ™Y™]ÚÛİ[
 
-/** Visual timeline for a loan's lifecycle */
-function LoanTimeline({ state }: { state: number }) {
-  const steps = [
-    { label: 'Created', done: true },
-    { label: 'Funded', done: state >= (LoanState.Funded as number) },
-    { label: 'Repaid', done: state === (LoanState.Repaid as number) },
-  ]
-  if (state === (LoanState.Cancelled as number)) {
-    return (
-      <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--muted)' }}>
-        <XCircle size={12} style={{ color: 'var(--red)' }} />
-        Cancelled
-      </div>
-    )
-  }
-  return (
-    <div className="flex items-center gap-0">
-      {steps.map((s, i) => (
-        <div key={s.label} className="flex items-center">
-          {i > 0 && (
-            <div
-              className="h-px w-8"
-              style={{ background: s.done ? 'var(--accent)' : 'var(--border-strong)' }}
-            />
-          )}
-          <div className="flex flex-col items-center gap-0.5">
-            <div
-              className="w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center"
-              style={{
-                borderColor: s.done ? 'var(--accent)' : 'var(--border-strong)',
-                background: s.done ? 'var(--accent)' : 'transparent',
-              }}
-            >
-              {s.done && <div className="w-1 h-1 rounded-full bg-white" />}
-            </div>
-            <span className="text-xs" style={{ color: s.done ? 'var(--ink-2)' : 'var(--subtle)', fontSize: '10px' }}>
-              {s.label}
-            </span>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+K˜Ø]Ú
 
-interface LoanEntry {
-  id: bigint
-  loan: ReturnType<typeof parseLoan>
-  overdue: boolean
-}
 
-function LoanEntryCard({ entry, address, onManage }: {
-  entry: LoanEntry
-  address: string
-  onManage: (id: bigint) => void
-}) {
-  const { id, loan, overdue } = entry
-  const isBorrower = loan.borrower.toLowerCase() === address.toLowerCase()
-  const counterparty = isBorrower ? loan.lender : loan.borrower
+HOˆßJBˆ™Y™]ÚØ[œÊ
+K˜Ø]Ú
 
-  const stateClass = overdue && loan.state === (LoanState.Funded as number)
-    ? 'status-overdue'
-    : ['status-open', 'status-funded', 'status-repaid', 'status-cancelled'][loan.state] ?? ''
-  const stateLabel = overdue && loan.state === (LoanState.Funded as number)
-    ? 'Overdue'
-    : ['Open', 'Funded', 'Repaid', 'Cancelled'][loan.state] ?? 'Unknown'
 
-  const canAct = (isBorrower && loan.state === (LoanState.Funded as number)) ||
-    (!isBorrower && loan.state === (LoanState.Open as number)) ||
-    (isBorrower && loan.state === (LoanState.Open as number))
+HOˆßJBˆB‚ˆÛÛœİ[^SØ[œÎˆØ[‘[V×HH
+Ø[œÔ˜]ÈÏÈ×JBˆ›X\
 
-  return (
-    <div className="card p-4 fade-up hover:border-white/10 transition-colors">
-      <div className="flex items-start gap-3">
-        {/* Role icon */}
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: isBorrower ? 'var(--amber-dim)' : 'var(--cyan-dim)' }}
-        >
-          {isBorrower
-            ? <ArrowDownLeft size={16} style={{ color: 'var(--amber)' }} />
-            : <ArrowUpRight size={16} style={{ color: 'var(--cyan)' }} />
-          }
-        </div>
-
-        {/* Main info */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk' }}>
-              Loan #{id.toString()}
-            </span>
-            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${stateClass}`}>
-              {stateLabel}
-            </span>
-            <span
-              className="text-xs px-1.5 py-0.5 rounded-md font-medium"
-              style={{
-                background: isBorrower ? 'var(--amber-dim)' : 'var(--cyan-dim)',
-                color: isBorrower ? 'var(--amber)' : 'var(--cyan)',
-              }}
-            >
-              {isBorrower ? 'Borrower' : 'Lender'}
-            </span>
-          </div>
-
-          <div className="mt-2 flex items-center gap-4 flex-wrap">
-            <div
-              className="text-xl font-bold tabular-nums"
-              style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.02em' }}
-            >
-              {formatUsdc(loan.amount)}{' '}
-              <span className="text-sm font-semibold" style={{ color: 'var(--accent-light)' }}>USDC</span>
-            </div>
-          </div>
-
-          <div className="mt-2 text-xs space-y-1">
-            <div className="flex items-center gap-1.5" style={{ color: 'var(--muted)' }}>
-              {isBorrower ? 'Lender' : 'Borrower'}:{' '}
-              <a
-                href={buildAddressExplorerUrl(arcTestnet.id, counterparty)}
-                target="_blank" rel="noopener noreferrer"
-                className="mono hover:underline"
-                style={{ color: 'var(--ink-2)' }}
-              >
-                {shortAddr(counterparty)}
-              </a>
-            </div>
-            <div className="flex items-center gap-3 flex-wrap" style={{ color: 'var(--muted)' }}>
-              <span>Created {formatTs(loan.createdAt)}</span>
-              {loan.state >= (LoanState.Funded as number) && loan.dueDate > 0n && (
-                <span style={{ color: overdue ? 'var(--red)' : 'inherit' }}>
-                  {overdue ? <AlertTriangle size={11} className="inline mr-0.5" /> : null}
-                  Due {formatTs(loan.dueDate)}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Timeline */}
-          <div className="mt-3">
-            <LoanTimeline state={loan.state} />
-          </div>
-        </div>
-
-        {/* Action button */}
-        {canAct && (
-          <button
-            onClick={() => onManage(id)}
-            className="shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all btn-primary"
-          >
-            Manage
-          </button>
-        )}
-      </div>
-    </div>
-  )
-}
-
-export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
-  const { address, isConnected } = useAccount()
-  const [activeTab, setActiveTab] = useState<Tab>('all')
-  const [manageLoanId, setManageLoanId] = useState<bigint | null>(null)
-  const [refreshKey, setRefreshKey] = useState(0)
-
-  const { data: loanCount, refetch: refetchCount } = useReadContract({
-    address: LOANBOOK_ADDRESS,
-    abi: LOANBOOK_ABI,
-    functionName: 'loanCount',
-    chainId: arcTestnet.id,
-    query: { refetchInterval: 12000 },
-  })
-
-  const recentIds: bigint[] = loanCount
-    ? Array.from({ length: Math.min(Number(loanCount), 30) }, (_, i) => loanCount - BigInt(i))
-    : []
-
-  const { data: loansRaw, refetch: refetchLoans } = useReadContracts({
-    contracts: recentIds.map(id => ({
-      address: LOANBOOK_ADDRESS as `0x${string}`,
-      abi: LOANBOOK_ABI,
-      functionName: 'getLoan' as const,
-      args: [id] as [bigint],
-      chainId: arcTestnet.id,
-    })),
-    query: { enabled: recentIds.length > 0 && isConnected && !!address },
-  })
-
-  const { data: overdueRaw } = useReadContracts({
-    contracts: recentIds.map(id => ({
-      address: LOANBOOK_ADDRESS as `0x${string}`,
-      abi: LOANBOOK_ABI,
-      functionName: 'isOverdue' as const,
-      args: [id] as [bigint],
-      chainId: arcTestnet.id,
-    })),
-    query: { enabled: recentIds.length > 0 && isConnected && !!address },
-  })
-
-  function handleRefresh() {
-    setRefreshKey(k => k + 1)
-    refetchCount().catch(() => {})
-    refetchLoans().catch(() => {})
-  }
-
-  const allMyLoans: LoanEntry[] = (loansRaw ?? [])
-    .map((r, i) => {
-      if (r.status !== 'success' || !r.result) return null
-      const loan = parseLoan(r.result)
-      const id = recentIds[i]
-      if (!address) return null
-      const isMine =
-        loan.borrower.toLowerCase() === address.toLowerCase() ||
-        loan.lender.toLowerCase() === address.toLowerCase()
-      if (!isMine) return null
-      const overdue = overdueRaw?.[i]?.status === 'success'
-        ? Boolean(overdueRaw[i].result)
-        : false
-      return { id, loan, overdue }
-    })
-    .filter((x): x is LoanEntry => x !== null)
-
-  function filtered(tab: Tab): LoanEntry[] {
-    if (!address) return []
-    switch (tab) {
-      case 'borrowed': return allMyLoans.filter(x => x.loan.borrower.toLowerCase() === address.toLowerCase())
+‹JHOˆÂˆYˆ
+‹œİ]\ÈOOH	ÜİXØÙ\ÜÉÈ\‹œ™\İ[
+H™]\›ˆ[ˆÛÛœİØ[ˆH\œÙSØ[Š‹œ™\İ[
+BˆÛÛœİYH™XÙ[YÖÚWBˆYˆ
+XY™\ÜÊH™]\›ˆ[ˆÛÛœİ\ÓZ[™HBˆØ[‹˜›Üœ›İÙ\‹ÓİÙ\Ø\ÙJ
+HOOHY™\ÜËÓİÙ\Ø\ÙJ
+HˆØ[‹›[™\‹ÓİÙ\Ø\ÙJ
+HOOHY™\ÜËÓİÙ\Ø\ÙJ
+BˆYˆ
+Z\ÓZ[™JH™]\›ˆ[ˆÛÛœİİ™\™YHHİ™\™YT˜]ÏË–ÚWOËœİ]\ÈOOH	ÜİXØÙ\ÜÉÂˆÈ›ÛÛX[Šİ™\™YT˜]ÖÚWKœ™\İ[
+Bˆˆ˜[ÙBˆ™]\›ˆÈYØ[‹İ™\™YHBˆJBˆ™š[\Š
+
+Nˆ\ÈØ[‘[HOˆOOH[
+B‚ˆ[˜İ[Ûˆš[\™Y
+XˆXŠNˆØ[‘[V×HÂˆYˆ
+XY™\ÜÊH™]\›ˆ×BˆİÚ]Ú
+XŠHÂˆØ\ÙH	Ø›Üœ›İÙY	Îˆ™]\›ˆ[^Vj¹âkºwµçhºÚn¶Šâ‚)Ú–Ú$zw(º{v×Ş“¢Ö¥¢ëiºÙbë5Loans.filter(x => x.loan.borrower.toLowerCase() === address.toLowerCase())
       case 'lent':     return allMyLoans.filter(x => x.loan.lender.toLowerCase() === address.toLowerCase())
       case 'pending':  return allMyLoans.filter(x => x.loan.state === (LoanState.Open as number))
       case 'repaid':   return allMyLoans.filter(x => x.loan.state === (LoanState.Repaid as number))
@@ -301,6 +104,7 @@ export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
         </button>
       </div>
 
+      {loanCount && BigInt(scanLimit) < loanCount ? <button className="btn-secondary" onClick={() => setScanLimit(v => v + 30)}>Load older loans (scanned {scanLimit} most recent)</button> : null}
       {/* Tabs */}
       <div
         className="flex rounded-xl p-1 gap-0.5 overflow-x-auto"
@@ -310,100 +114,4 @@ export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap"
-            style={{
-              background: activeTab === t.id ? 'rgba(59,130,246,0.15)' : 'transparent',
-              color: activeTab === t.id ? 'var(--accent-light)' : 'var(--muted)',
-            }}
-          >
-            {t.label}
-            {(t.count ?? 0) > 0 && (
-              <span
-                className="text-xs px-1.5 py-0.5 rounded-full"
-                style={{
-                  background: activeTab === t.id ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.07)',
-                  color: activeTab === t.id ? 'var(--accent-light)' : 'var(--muted)',
-                }}
-              >
-                {t.count}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Loan list */}
-      {displayList.length === 0 ? (
-        <div className="card p-10 text-center space-y-3">
-          <BookOpen size={28} style={{ color: 'var(--muted)' }} className="mx-auto" />
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>
-            {activeTab === 'all'
-              ? 'No loans found in your recent onchain history.'
-              : `No ${activeTab} loans found.`}
-          </p>
-          {activeTab === 'all' && (
-            <p className="text-xs text-pretty max-w-xs mx-auto" style={{ color: 'var(--subtle)' }}>
-              Use Communities to post a request or use Direct Loan to create one with a known lender address.
-            </p>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {displayList.map(entry => (
-            <LoanEntryCard
-              key={entry.id.toString()}
-              entry={entry}
-              address={address!}
-              onManage={id => setManageLoanId(id)}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Manage loan modal panel */}
-      {manageLoanId !== null && (
-        <div
-          className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4"
-          style={{ background: 'rgba(8,13,27,0.85)', backdropFilter: 'blur(8px)' }}
-          onClick={e => { if (e.target === e.currentTarget) setManageLoanId(null) }}
-        >
-          <div
-            className="card w-full max-w-lg max-h-[85dvh] overflow-y-auto"
-            style={{ background: 'var(--bg-card)' }}
-          >
-            <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border)' }}>
-              <h3 className="font-semibold text-sm" style={{ fontFamily: 'Space Grotesk' }}>
-                Manage Loan #{manageLoanId.toString()}
-              </h3>
-              <button
-                onClick={() => setManageLoanId(null)}
-                className="p-1.5 rounded-lg btn-ghost text-xs"
-              >
-                Close
-              </button>
-            </div>
-            <div className="p-4">
-              <LookupPanel defaultLoanId={manageLoanId} />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Advanced / Direct section */}
-      <div className="card p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Search size={14} style={{ color: 'var(--muted)' }} />
-          <h3 className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk' }}>
-            Look up any loan by ID
-          </h3>
-        </div>
-        <LookupPanel />
-      </div>
-
-      {/* Disclaimer */}
-      <p className="text-xs text-center" style={{ color: 'var(--subtle)' }}>
-        Loan records are public onchain. Repayment is not guaranteed. Only lend to people you trust.
-      </p>
-    </div>
-  )
-}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medi×Ş­¢G§²ÚîÆ­yÕ¡Ğ¤œ€è€Ù…È ´µµÕÑ•¤œ°(€€€€€€€€€€€€€€€õô(€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€íĞ¹½Õ¹Ñô(€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€¥ô(€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€¤¥ô(€€€€€€ğ½‘¥Øø((€€€€€ì¼¨1½…¸±¥ÍĞ€¨½ô(€€€€€í‘¥ÍÁ±…å1¥ÍĞ¹±•¹Ñ €ôôô€À€ü€ (€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…ÉÀ´ÄÀÑ•áĞµ•¹Ñ•ÈÍÁ…”µä´Ìˆø(€€€€€€€€€€ñ	½½­=Á•¸Í¥é”õìÈáôÍÑå±”õíì½±½Èè€Ù…È ´µµÕÑ•¤œõô±…ÍÍ9…µ”ô‰µàµ…ÕÑ¼ˆ€¼ø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´ˆÍÑå±”õíì½±½Èè€Ù…È ´µµÕÑ•¤œõôø(€€€€€€€€€€€í…Ñ¥Ù•Q…ˆ€ôôô€…±°œ(€€€€€€€€€€€€€€ü€9¼±½…¹Ì™½Õ¹¥¸å½ÕÈÉ••¹Ğ½¹¡…¥¸¡¥ÍÑ½Éä¸œ(€€€€€€€€€€€€€€è9¼€‘í…Ñ¥Ù•Q…‰ô±½…¹Ì™½Õ¹¹ô(€€€€€€€€€€ğ½Àø(€€€€€€€€€í…Ñ¥Ù•Q…ˆ€ôôô€…±°œ€˜˜€ (€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµáÌÑ•áĞµÁÉ•ÑÑäµ…àµÜµáÌµàµ…ÕÑ¼ˆÍÑå±”õíì½±½Èè€Ù…È ´µÍÕ‰Ñ±”¤œõôø(€€€€€€€€€€€€€UÍ”½µµÕ¹¥Ñ¥•ÌÑ¼Á½ÍĞ„É•ÅÕ•ÍĞ½ÈÕÍ”¥É•Ğ1½…¸Ñ¼É•…Ñ”½¹”İ¥Ñ „­¹½İ¸±•¹‘•È…‘‘É•ÍÌ¸(€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€¥ô(€€€€€€€€ğ½‘¥Øø(€€€€€€¤€è€ (€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ÍÁ…”µä´Ìˆø(€€€€€€€€€í‘¥ÍÁ±…å1¥ÍĞ¹µ…À¡•¹ÑÉä€ôø€ (€€€€€€€€€€€€ñ1½…¹¹ÑÉå…É(€€€€€€€€€€€€€­•äõí•¹ÑÉä¹¥¹Ñ½MÑÉ¥¹œ ¥ô(€€€€€€€€€€€€€•¹ÑÉäõí•¹ÑÉåô(€€€€€€€€€€€€€…‘‘É•ÍÌõí…‘‘É•ÍÌ…ô(€€€€€€€€€€€€€½¹5…¹…”õí¥€ôøÍ•Ñ5…¹…•1½…¹%¡¥¥ô(€€€€€€€€€€€€¼ø(€€€€€€€€€€¤¥ô(€€€€€€€€ğ½‘¥Øø(€€€€€€¥ô((€€€€€ì¼¨5…¹…”±½…¸µ½‘…°Á…¹•°€¨½ô(€€€€€íµ…¹…•1½…¹%€„ôô¹Õ±°€˜˜€ (€€€€€€€€ñ‘¥Ø(€€€€€€€€€±…ÍÍ9…µ”ô‰™¥á•¥¹Í•Ğ´Àè´ÔÀ™±•à¥Ñ•µÌµ•¹µé¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÀ´Ğˆ(€€€€€€€€€ÍÑå±”õíì‰…­É½Õ¹è€É‰„ à°ÄÌ°ÈÜ°À¸àÔ¤œ°‰…­‘É½Á¥±Ñ•Èè€‰±ÕÈ áÁà¤œõô(€€€€€€€€€½¹±¥¬õí”€ôøì¥˜€¡”¹Ñ…É•Ğ€ôôô”¹ÕÉÉ•¹ÑQ…É•Ğ¤Í•Ñ5…¹…•1½…¹%¡¹Õ±°¤õô(€€€€€€€€ø(€€€€€€€€€€ñ‘¥Ø(€€€€€€€€€€€±…ÍÍ9…µ”ô‰…ÉÜµ™Õ±°µ…àµÜµ±œµ…àµ µlàÕ‘Ù¡t½Ù•É™±½Üµäµ…ÕÑ¼ˆ(€€€€€€€€€€€ÍÑå±”õíì‰…­É½Õ¹è€Ù…È ´µ‰œµ…É¤œõô(€€€€€€€€€€ø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ‰•Ñİ••¸À´Ğ‰½É‘•ÈµˆˆÍÑå±”õíì‰½É‘•É½±½Èè€Ù…È ´µ‰½É‘•È¤œõôø(€€€€€€€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰™½¹ĞµÍ•µ¥‰½±Ñ•áĞµÍ´ˆÍÑå±”õíì™½¹Ñ…µ¥±äè€MÁ…”É½Ñ•Í¬œõôø(€€€€€€€€€€€€€€€5…¹…”1½…¸€íµ…¹…•1½…¹%¹Ñ½MÑÉ¥¹œ ¥ô(€€€€€€€€€€€€€€ğ½ Ìø(€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôøÍ•Ñ5…¹…•1½…¹%¡¹Õ±°¥ô(€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰À´Ä¸ÔÉ½Õ¹‘•µ±œ‰Ñ¸µ¡½ÍĞÑ•áĞµáÌˆ(€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€±½Í”(€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰À´Ğˆø(€€€€€€€€€€€€€€ñ1½½­ÕÁA…¹•°‘•™…Õ±Ñ1½…¹%õíµ…¹…•1½…¹%‘ô€¼ø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½‘¥Øø(€€€€€€¥ô((€€€€€ì¼¨‘Ù…¹•€¼¥É•ĞÍ•Ñ¥½¸€¨½ô(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…ÉÀ´Ğˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´Èµˆ´Ìˆø(€€€€€€€€€€ñM•…É Í¥é”õìÄÑôÍÑå±”õíì½±½Èè€Ù…È ´µµÕÑ•¤œõô€¼ø(€€€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´™½¹ĞµÍ•µ¥‰½±ˆÍÑå±”õíì™½¹Ñ…µ¥±äè€MÁ…”É½Ñ•Í¬œõôø(€€€€€€€€€€€1½½¬ÕÀ…¹ä±½…¸‰ä%(€€€€€€€€€€ğ½ Ìø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ1½½­ÕÁA…¹•°€¼ø(€€€€€€ğ½‘¥Øø((€€€€€ì¼¨¥Í±…¥µ•È€¨½ô(€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµáÌÑ•áĞµ•¹Ñ•ÈˆÍÑå±”õíì½±½Èè€Ù…È ´µÍÕ‰Ñ±”¤œõôø(€€€€€€€1½…¸É•½É‘Ì…É”ÁÕ‰±¥Œ½¹¡…¥¸¸I•Á…åµ•¹Ğ¥Ì¹½ĞÕ…É…¹Ñ••¸=¹±ä±•¹Ñ¼Á•½Á±”å½ÔÑÉÕÍĞ¸(€€€€€€ğ½Àø(€€€€ğ½‘¥Øø(€€¤)ô

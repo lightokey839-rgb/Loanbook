@@ -1,253 +1,25 @@
-/**
- * OverviewPage â€” dashboard home with stats, quick actions, and empty states.
- * Uses only real onchain data. Never fabricates balances or transactions.
- */
-import { useAccount, useReadContract, useReadContracts } from 'wagmi'
-import { erc20Abi } from 'viem'
-import { arcTestnet } from 'viem/chains'
-import {
-  ArrowUpRight, ArrowDownLeft, Banknote, Clock, Users,
-  BookOpen, TrendingUp, AlertTriangle, CheckCircle2,
-  ExternalLink, Plus,
-} from 'lucide-react'
-import { ConnectKitButton } from 'connectkit'
-import { LOANBOOK_ADDRESS, LOANBOOK_ABI, shortAddr, formatUsdc, parseLoan } from '../loanbook-contract'
-import { LoanState } from '../loanbook-contract'
-import { getUsdc, buildAddressExplorerUrl } from '../onchain-facts'
-import type { Page } from './AppShell'
-
-const USDC = getUsdc(arcTestnet.id)!
-
-interface Props {
-  onNavigate: (p: Page) => void
-  onRequestLoan: () => void
-}
-
-function StatCard({ label, value, sub, icon, accent = false }: {
-  label: string
-  value: string
-  sub?: string
-  icon: React.ReactNode
-  accent?: boolean
-}) {
-  return (
-    <div
-      className="card p-5 space-y-3 fade-up"
-      style={{ background: accent ? 'rgba(59,130,246,0.07)' : 'var(--bg-card)', borderColor: accent ? 'rgba(59,130,246,0.2)' : 'var(--border)' }}
-    >
-      <div className="flex items-start justify-between">
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: accent ? 'var(--accent-dim)' : 'rgba(255,255,255,0.05)' }}
-        >
-          <span style={{ color: accent ? 'var(--accent-light)' : 'var(--muted)' }}>{icon}</span>
-        </div>
-      </div>
-      <div>
-        <div
-          className="text-2xl font-bold tabular-nums"
-          style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.025em', color: accent ? 'var(--accent-light)' : 'var(--ink)' }}
-        >
-          {value}
-        </div>
-        <div className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>{label}</div>
-        {sub && <div className="text-xs mt-1" style={{ color: 'var(--subtle)' }}>{sub}</div>}
-      </div>
-    </div>
-  )
-}
-
-function QuickAction({ label, desc, icon, onClick, primary = false }: {
-  label: string
-  desc: string
-  icon: React.ReactNode
-  onClick: () => void
-  primary?: boolean
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="card p-4 text-left w-full transition-all hover:scale-[1.01] active:scale-[0.99] fade-up"
-      style={{
-        background: primary ? 'linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(34,211,238,0.08) 100%)' : 'var(--bg-card)',
-        borderColor: primary ? 'rgba(59,130,246,0.25)' : 'var(--border)',
-      }}
-    >
-      <div className="flex items-center gap-3">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: primary ? 'var(--accent-dim)' : 'rgba(255,255,255,0.05)' }}
-        >
-          <span style={{ color: primary ? 'var(--accent-light)' : 'var(--muted)' }}>{icon}</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-semibold" style={{ color: primary ? 'var(--accent-light)' : 'var(--ink)' }}>
-            {label}
-          </div>
-          <div className="text-xs mt-0.5 text-balance" style={{ color: 'var(--muted)' }}>{desc}</div>
-        </div>
-        <ArrowUpRight size={14} style={{ color: 'var(--subtle)', flexShrink: 0 }} />
-      </div>
-    </button>
-  )
-}
-
-function HowItWorksStep({ n, text }: { n: number; text: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <div
-        className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5"
-        style={{ background: 'var(--accent-dim)', color: 'var(--accent-light)', fontFamily: 'Space Grotesk' }}
-      >
-        {n}
-      </div>
-      <p className="text-sm text-pretty" style={{ color: 'var(--ink-2)' }}>{text}</p>
-    </div>
-  )
-}
-
-export function OverviewPage({ onNavigate, onRequestLoan }: Props) {
-  const { address, isConnected } = useAccount()
-
-  // USDC ERC-20 balance
-  const { data: erc20Balance } = useReadContract({
-    address: USDC.address as `0x${string}`,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [address ?? '0x0000000000000000000000000000000000000000'],
-    chainId: arcTestnet.id,
-    query: { enabled: isConnected && !!address, refetchInterval: 8000 },
-  })
-
-  // Total loan count
-  const { data: loanCount } = useReadContract({
-    address: LOANBOOK_ADDRESS,
-    abi: LOANBOOK_ABI,
-    functionName: 'loanCount',
-    chainId: arcTestnet.id,
-    query: { refetchInterval: 12000 },
-  })
-
-  // Load the last few loans to count user's active/pending ones
-  // We read up to 10 most recent loans for the connected address
-  const recentIds: bigint[] = loanCount
-    ? Array.from({ length: Math.min(Number(loanCount), 10) }, (_, i) => loanCount - BigInt(i))
-    : []
-
-  const { data: recentLoansRaw } = useReadContracts({
-    contracts: recentIds.map(id => ({
-      address: LOANBOOK_ADDRESS as `0x${string}`,
-      abi: LOANBOOK_ABI,
-      functionName: 'getLoan' as const,
-      args: [id] as [bigint],
-      chainId: arcTestnet.id,
-    })),
-    query: { enabled: recentIds.length > 0 && isConnected && !!address },
-  })
-
-  // Parse results
-  const myLoans = (recentLoansRaw ?? [])
-    .map((r, i) => {
-      if (r.status !== 'success' || !r.result) return null
-      const loan = parseLoan(r.result)
-      const id = recentIds[i]
-      const isMine = address &&
-        (loan.borrower.toLowerCase() === address.toLowerCase() ||
-          loan.lender.toLowerCase() === address.toLowerCase())
-      return isMine ? { id, loan } : null
-    })
-    .filter((x): x is { id: bigint; loan: ReturnType<typeof parseLoan> } => x !== null)
-
-  const activeBorrowed = myLoans.filter(
-    x => x.loan.borrower.toLowerCase() === address?.toLowerCase() && x.loan.state === (LoanState.Funded as number)
-  ).length
-
-  const activeLent = myLoans.filter(
-    x => x.loan.lender.toLowerCase() === address?.toLowerCase() && x.loan.state === (LoanState.Funded as number)
-  ).length
-
-  const openRequests = myLoans.filter(x => x.loan.state === (LoanState.Open as number)).length
-
-  const usdcDisplay = erc20Balance !== undefined
-    ? (Number(erc20Balance) / 1_000_000).toFixed(2)
-    : 'â€”'
-
-  if (!isConnected) {
-    return <LandingView onRequestLoan={onRequestLoan} />
-  }
-
-  return (
-    <div className="space-y-6 max-w-4xl mx-auto pb-20 md:pb-6">
-      {/* Hero greeting */}
-      <div className="fade-up">
-        <h2
-          className="text-2xl md:text-3xl font-bold text-balance"
-          style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.025em' }}
-        >
-          Your circle.{' '}
-          <span style={{ color: 'var(--accent-light)' }}>Your loans.</span>{' '}
-          Your terms.
-        </h2>
-        <p className="text-sm mt-2 text-pretty" style={{ color: 'var(--muted)' }}>
-          Borrow and lend USDC with people you trust, powered by Arc.
-          {' '}
-          <span style={{ color: 'var(--subtle)' }}>
-            Blockchain records are public. Repayment is not guaranteed.
-          </span>
-        </p>
-      </div>
-
-      {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard
-          label="USDC Balance"
-          value={usdcDisplay}
-          sub="ERC-20, 6 decimals"
-          icon={<Banknote size={18} />}
-          accent
-        />
-        <StatCard
-          label="Active Loans"
-          value={String(activeBorrowed + activeLent)}
-          sub={activeBorrowed > 0 ? `${activeBorrowed} borrowed` : undefined}
-          icon={<BookOpen size={18} />}
-        />
-        <StatCard
-          label="Open Requests"
-          value={String(openRequests)}
-          sub="Waiting for lender"
-          icon={<Clock size={18} />}
-        />
-        <StatCard
-          label="Total Onchain"
-          value={loanCount !== undefined ? loanCount.toString() : 'â€”'}
-          sub="LoanBook agreements"
-          icon={<TrendingUp size={18} />}
-        />
-      </div>
-
-      {/* Quick actions */}
-      <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--subtle)' }}>
-          Quick Actions
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <QuickAction
-            label="Request a Loan"
-            desc="Post to your circle. No gas needed."
-            icon={<Plus size={18} />}
-            onClick={onRequestLoan}
-            primary
-          />
-          <QuickAction
-            label="Communities"
-            desc="Join or create a lending circle."
-            icon={<Users size={18} />}
-            onClick={() => onNavigate('communities')}
-          />
-          <QuickAction
-            label="My Loans"
-            desc="Fund, repay, and track loans."
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Ô¼¨¨(€¨=Ù•ÉÙ¥•İA…”ƒŠP‘…Í¡‰½…É¡½µ”İ¥Ñ ÍÑ…ÑÌ°ÅÕ¥¬…Ñ¥½¹Ì°…¹•µÁÑäÍÑ…Ñ•Ì¸(€¨UÍ•Ì½¹±äÉ•…°½¹¡…¥¸‘…Ñ„¸9•Ù•È™…‰É¥…Ñ•Ì‰…±…¹•Ì½ÈÑÉ…¹Í…Ñ¥½¹Ì¸(€¨¼)¥µÁ½ÉĞìÕÍ•½Õ¹Ğ°ÕÍ•I•…‘½¹ÑÉ…Ğ°ÕÍ•I•…‘½¹ÑÉ…ÑÌô™É½´€İ…µ¤œ)¥µÁ½ÉĞì•ÉŒÈÁ‰¤ô™É½´€Ù¥•´œ)¥µÁ½ÉĞì…Ñ¥Ù•¡…¥¸…Ì…ÉQ•ÍÑ¹•Ğô™É½´€œ¸¸½¹•Ñİ½É¬œ)¥µÁ½ÉĞì(€ÉÉ½İUÁI¥¡Ğ°ÉÉ½İ½İ¹1•™Ğ°	…¹­¹½Ñ”°±½¬°UÍ•ÉÌ°(€	½½­=Á•¸°QÉ•¹‘¥¹UÀ°±•ÉÑQÉ¥…¹±”°¡•­¥É±”È°(€áÑ•É¹…±1¥¹¬°A±ÕÌ°)ô™É½´€±Õ¥‘”µÉ•…Ğœ)¥µÁ½ÉĞì½¹¹•Ñ-¥Ñ	ÕÑÑ½¸ô™É½´€½¹¹•Ñ­¥Ğœ)¥µÁ½ÉĞì1=9	==-}IML°1=9	==-}	$°Í¡½ÉÑ‘‘È°™½Éµ…ÑUÍ‘Œ°Á…ÉÍ•1½…¸ô™É½´€œ¸¸½±½…¹‰½½¬µ½¹ÑÉ…Ğœ)¥µÁ½ÉĞì1½…¹MÑ…Ñ”ô™É½´€œ¸¸½±½…¹‰½½¬µ½¹ÑÉ…Ğœ)¥µÁ½ÉĞì•ÑUÍ‘Œ°‰Õ¥±‘‘‘É•ÍÍáÁ±½É•ÉUÉ°ô™É½´€œ¸¸½½¹¡…¥¸µ™…ÑÌœ)¥µÁ½ÉĞÑåÁ”ìA…”ô™É½´€œ¸½ÁÁM¡•±°œ()½¹ÍĞUM€ô•ÑUÍ‘Œ¡…ÉQ•ÍÑ¹•Ğ¹¥¤„()¥¹Ñ•É™…”AÉ½ÁÌì(€½¹9…Ù¥…Ñ”è€¡ÀèA…”¤€ôøÙ½¥(€½¹I•ÅÕ•ÍÑ1½…¸è€ ¤€ôøÙ½¥)ô()™Õ¹Ñ¥½¸MÑ…Ñ…É¡ì±…‰•°°Ù…±Õ”°ÍÕˆ°¥½¸°…•¹Ğ€ô™…±Í”ôèì(€±…‰•°èÍÑÉ¥¹œ(€Ù…±Õ”èÍÑÉ¥¹œ(€ÍÕˆüèÍÑÉ¥¹œ(€¥½¸èI•…Ğ¹I•…Ñ9½‘”(€…•¹Ğüè‰½½±•…¸)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø(€€€€€±…ÍÍ9…µ”ô‰…ÉÀ´ÔÍÁ…”µä´Ì™…‘”µÕÀˆ(€€€€€ÍÑå±”õíì‰…­É½Õ¹è…•¹Ğ€ü€É‰„ Ôä°ÄÌÀ°ÈĞØ°À¸ÀÜ¤œ€è€Ù…È ´µ‰œµ…É¤œ°‰½É‘•É½±½Èè…•¹Ğ€ü€É‰„ Ôä°ÄÌÀ°ÈĞØ°À¸È¤œ€è€Ù…È ´µ‰½É‘•È¤œõô(€€€€ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµÍÑ…ÉĞ©ÕÍÑ¥™äµ‰•Ñİ••¸ˆø(€€€€€€€€ñ‘¥Ø(€€€€€€€€€±…ÍÍ9…µ”ô‰Ü´ä ´äÉ½Õ¹‘•µá°™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÍ¡É¥¹¬´Àˆ(€€€€€€€€€ÍÑå±”õíì‰…­É½Õ¹è…•¹Ğ€ü€Ù…È ´µ…•¹Ğµ‘¥´¤œ€è€É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸ÀÔ¤œõô(€€€€€€€€ø(€€€€€€€€€€ñÍÁ…¸ÍÑå±”õíì½±½Èè…•¹Ğ€ü€Ù…È ´µ…•¹Ğµ±¥¡Ğ¤œ€è€Ù…È ´µµÕÑ•¤œõôùí¥½¹ôğ½ÍÁ…¸ø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½‘¥Øø(€€€€€€ñ‘¥Øø(€€€€€€€€ñ‘¥Ø(€€€€€€€€€±…ÍÍ9…µ”ô‰Ñ•áĞ´Éá°™½¹Ğµ‰½±Ñ…‰Õ±…Èµ¹ÕµÌˆ(€€€€€€€€€ÍÑå±”õíì™½¹Ñ…µ¥±äè€MÁ…”É½Ñ•Í¬œ°±•ÑÑ•ÉMÁ…¥¹œè€œ´À¸ÀÈÕ•´œ°½±½Èè…•¹Ğ€ü€Ù…È ´µ…•¹Ğµ±¥¡Ğ¤œ€è€Ù…È ´µ¥¹¬¤œõô(€€€€€€€€ø(€€€€€€€€€íÙ…±Õ•ô(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´µĞ´À¸ÔˆÍÑå±”õíì½±½Èè€Ù…È ´µµÕÑ•¤œõôùí±…‰•±ôğ½‘¥Øø(€€€€€€€íÍÕˆ€˜˜€ñ‘¥Ø±…ÍÍ9…µ”ô‰Ñ•áĞµáÌµĞ´ÄˆÍÑå±”õíì½±½Èè€Ù…È ´µÍÕ‰Ñ±”¤œõôùíÍÕ‰ôğ½‘¥Øùô(€€€€€€ğ½‘¥Øø(€€€€ğ½‘¥Øø(€€¤)ô()™Õ¹Ñ¥½¸EÕ¥­Ñ¥½¸¡ì±…‰•°°‘•ÍŒ°¥½¸°½¹±¥¬°ÁÉ¥µ…Éä€ô™…±Í”ôèì(€±…‰•°èÍÑÉ¥¹œ(€‘•ÍŒèÍÑÉ¥¹œ(€¥½¸èI•…Ğ¹I•…Ñ9½‘”(€½¹±¥¬è€ ¤€ôøÙ½¥(€ÁÉ¥µ…Éäüè‰½½±•…¸)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ‰ÕÑÑ½¸(€€€€€½¹±¥¬õí½¹±¥­ô(€€€€€±…ÍÍ9…µ”ô‰…ÉÀ´ĞÑ•áĞµ±•™ĞÜµ™Õ±°ÑÉ…¹Í¥Ñ¥½¸µ…±°¡½Ù•ÈéÍ…±”µlÄ¸ÀÅt…Ñ¥Ù”éÍ…±”µlÀ¸äåt™…‘”µÕÀˆ(€€€€€ÍÑå±”õíì(€€€€€€€‰…­É½Õ¹èÁÉ¥µ…Éä€ü€±¥¹•…ÈµÉ…‘¥•¹Ğ ÄÌÕ‘•œ°É‰„ Ôä°ÄÌÀ°ÈĞØ°À¸ÄÔ¤€À”°É‰„ ÌĞ°ÈÄÄ°ÈÌà°À¸Àà¤€ÄÀÀ”¤œ€è€Ù…È ´µ‰œµ…É¤œ°(€€€€€€€‰½É‘•É½±½ÈèÁÉ¥µ…Éä€ü€É‰„ Ôä°ÄÌÀ°ÈĞØ°À¸ÈÔ¤œ€è€Ù…È ´µ‰½É‘•È¤œ°(€€€€€õô(€€€€ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´Ìˆø(€€€€€€€€ñ‘¥Ø(€€€€€€€€€±…ÍÍ9…µ”ô‰Ü´ÄÀ ´ÄÀÉ½Õ¹‘•µá°™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÍ¡É¥¹¬´Àˆ(€€€€€€€€€ÍÑå±”õíì‰…­É½Õ¹èÁÉ¥µ…Éä€ü€Ù…È ´µ…•¹Ğµ‘¥´¤œ€è€É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸ÀÔ¤œõô(€€€€€€€€ø(€€€€€€€€€€ñÍÁ…¸ÍÑå±”õíì½±½ÈèÁÉ¥µ…Éä€ü€Ù…È ´µ…•¹Ğµ±¥¡Ğ¤œƒ]4ÖÚ$z{-®éÜj×›Ø[‹›[™\‹ÓİÙ\Ø\ÙJ
+HOOHY™\ÜÏËÓİÙ\Ø\ÙJ
+H	‰ˆ›Ø[‹œİ]HOOH
+Ø[”İ]K‘[™Y\È[X™\ŠBˆ
+K›[™İ‚ˆÛÛœİÜ[”™\]Y\İÈH^SØ[œË™š[\ŠOˆ›Ø[‹œİ]HOOH
+Ø[”İ]K“Ü[ˆ\È[X™\ŠJK›[™İ‚ˆÛÛœİ\ÙÑ\Ü^HH\˜ÌŒ˜[[˜ÙHOOH[™Yš[™YˆÈ
+[X™\Š\˜ÌŒ˜[[˜ÙJHÈWÌÌ
+KÑš^Y
+ŠBˆˆ	ø %	Â‚ˆYˆ
+Z\ĞÛÛ›™XİY
+HÂˆ™]\›ˆ[™[™ÕšY]ÈÛ”™\]Y\İØ[^ÛÛ”™\]Y\İØ[ŸHÏ‚ˆB‚ˆ™]\›ˆ
+ˆ]ˆÛ\ÜÓ˜[YOHœÜXÙK^KMˆX^]ËM^X]]È‹LŒYœ‹Mˆ‚ˆÛ\ÜÓ˜[YOH^^Èˆİ[O^ŞÈÛÛÜˆ	İ˜\ŠK[]]Y
+IÈ_O‘\Ú›Ø\™İ[[X\HÛİ™\œÈHL[Üİ™XÙ[ÛÛ˜XİØ[œËˆ^HØ[œÈØ[ˆØYÛ\ˆYÜ™Y[Y[ËÜ‚ˆËÊˆ\›ÈÜ™Y][™È
+‹ßBˆ]ˆÛ\ÜÓ˜[YOH™˜YK]\‚ˆ‚ˆÛ\ÜÓ˜[YOH^LY^LŞ›ÛX›Û^X˜[[˜ÙH‚ˆİ[O^ŞÈ›Û˜[Z[Nˆ	ÔÜXÙHÜ›İ\ÚÉË]\”ÜXÚ[™Îˆ	ËLŒY[IÈ_Bˆ‚ˆ[İ\ˆÚ\˜ÛKÉÈ	ßBˆÜ[ˆİ[O^ŞÈÛÛÜˆ	İ˜\ŠKXXØÙ[[YÚ
+IÈ_O–[İ\ˆØ[œËÜÜ[ÉÈ	ßBˆ[İ\ˆ\›\Ë‚ˆÚ‚ˆÛ\ÜÓ˜[YOH^\ÛH]Lˆ^\™]Hˆİ[O^ŞÈÛÛÜˆ	İ˜\ŠK[]]Y
+IÈ_O‚ˆ›Üœ›İÈ[™[™TÑÈÚ][ÜH[İH\İİÙ\™YH\˜Ë‚ˆÉÈ	ßBˆÜ[ˆİ[O^ŞÈÛÛÜˆ	İ˜\ŠK\İXJIÈ_O‚ˆ›ØÚØÚZ[ˆ™XÛÜ™È\™HX›XËˆ™\^[Y[\È›İİX\˜[YY‚ˆÜÜ[‚ˆÜ‚ˆÙ]‚‚ˆËÊˆİ]È›İÈ
+‹ßBˆ]ˆÛ\ÜÓ˜[YOH™ÜšYÜšYXÛÛËLˆÎ™ÜšYXÛÛËMØ\LÈ‚ˆİ]Ø\™ˆX™[H•TÑÈ˜[[˜ÙH‚ˆ˜[YO^İ\ÙÑ\Ü^_BˆİXH‘TËLŒˆXÚ[X[È‚ˆXÛÛ^Ï˜[šÛ›İHÚ^™O^ÌNHÏŸBˆXØÙ[ˆÏ‚ˆİ]Ø\™ˆX™[HXİ]™HØ[œÈ‚ˆ˜[YO^Ôİš[™ÊXİ]™P›Üœ›İÙY
+ÈXİ]™S[
+_BˆİX^ØXİ]™P›Üœ›İÙYˆÈ	ØXİ]™P›Üœ›İÙYH›Üœ›İÙYˆ[™Yš[™YBˆXÛÛ^Ï›ÛÚÓÜ[ˆÚ^™O^ÌNHÏŸBˆÏ‚ˆİ]Ø\™ˆX™[H“Ü[ˆ™\]Y\İÈ‚ˆ˜[YO^Ôİš[™ÊÜ[”™\]Y\İÊ_BˆİXH•ØZ][™È›Üˆ[™\ˆ‚ˆXÛÛ^ÏÛØÚÈÚ^™O^ÌNHÏŸBˆÏ‚ˆİ]Ø\™ˆX™[H•İ[Û˜ÚZ[ˆ‚ˆ˜[YO^ÛØ[Ûİ[OOH[™Yš[™YÈØ[Ûİ[Ôİš[™Ê
+Hˆ	ø %	ßBˆİXH“Ø[›ÛÚÈYÜ™Y[Y[È‚ˆXÛÛ^Ï™[™[™Õ\Ú^™O^ÌNHÏŸBˆÏ‚ˆÙ]‚‚ˆËÊˆ]ZXÚÈXİ[ÛœÈ
+‹ßBˆ]‚ˆÈÛ\ÜÓ˜[YOH^^È›Û\Ù[ZX›Û\\˜Ø\ÙH˜XÚÚ[™Ë]ÚY\İX‹LÈˆİ[O^ŞÈÛÛÜˆ	İ˜\ŠK\İXJIÈ_O‚ˆ]ZXÚÈXİ[ÛœÂˆÚÏ‚ˆ]ˆÛ\ÜÓ˜[YOH™ÜšYÜšYXÛÛËLHÛN™ÜšYXÛÛËLÈØ\LÈ‚ˆ]ZXÚĞXİ[Û‚ˆX™[H”™\]Y\İHØ[ˆ‚ˆ\ØÏH”ÜİÈ[İ\ˆÚ\˜ÛKˆ›ÈØ\È™YYYˆ‚ˆXÛÛ^Ï\ÈÚ^™O^ÌNHÏŸBˆÛÛXÚÏ^ÛÛ”™\]Y\İØ[ŸBˆš[X\BˆÏ‚ˆ]ZXÚĞXİ[Û‚ˆX™[HÛÛ[][š]Y\È‚ˆ\ØÏH’›Ú[ˆÜˆÜ™X]HH[™[™ÈÚ\˜ÛKˆ‚ˆXÛÛ^Ï\Ù\œÈÚ^™O^ÌNHÏŸBˆÛÛXÚÏ^Ê
+HOˆÛ“˜]šYØ]J	ØÛÛ[][š]Y\ÉÊ_BˆÏ‚ˆ]ZXÚĞXİ[Û‚ˆX™[H“^HØ[œÈ‚ˆj¹âkºwµçhºÚn¶Šâ‚)Ú–Ú$zw(º{vß®¢Ö¥¢ëiºÙbë5     desc="Fund, repay, and track loans."
             icon={<BookOpen size={18} />}
             onClick={() => onNavigate('my-loans')}
           />
@@ -313,96 +85,5 @@ export function OverviewPage({ onNavigate, onRequestLoan }: Props) {
 
       {/* Disclaimer */}
       <div
-        className="rounded-xl px-4 py-3 flex items-start gap-3 text-xs text-pretty"
-        style={{ background: 'var(--amber-dim)', border: '1px solid rgba(245,158,11,0.18)' }}
-      >
-        <AlertTriangle size={14} className="shrink-0 mt-0.5" style={{ color: 'var(--amber)' }} />
-        <div style={{ color: 'rgba(245,158,11,0.9)' }}>
-          <strong>Unsecured loans.</strong> LoanBook records agreements onchain and facilitates USDC transfers.
-          It cannot enforce repayment or recover funds from defaulting borrowers.
-          Only lend to people you trust.
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/** Landing view shown when wallet is not connected */
-function LandingView({ onRequestLoan }: { onRequestLoan: () => void }) {
-  void onRequestLoan
-  return (
-    <div className="max-w-2xl mx-auto pt-6 pb-20 md:pb-6 space-y-8">
-      {/* Hero */}
-      <div className="text-center space-y-4 fade-up pt-4">
-        <div
-          className="w-20 h-20 rounded-3xl mx-auto flex items-center justify-center text-3xl font-bold"
-          style={{
-            background: 'linear-gradient(135deg, #3B82F6 0%, #22D3EE 100%)',
-            fontFamily: 'Space Grotesk',
-            color: '#fff',
-            boxShadow: '0 8px 32px rgba(59,130,246,0.45)',
-          }}
-        >
-          L
-        </div>
-        <div>
-          <h1
-            className="text-3xl md:text-4xl font-bold text-balance"
-            style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.03em' }}
-          >
-            Borrow from your circle.
-            <br />
-            <span style={{ color: 'var(--accent-light)' }}>Repay on Arc.</span>
-          </h1>
-          <p className="text-base mt-3 text-pretty max-w-md mx-auto" style={{ color: 'var(--muted)' }}>
-            Private lending communities, transparent USDC agreements, and verifiable repayments.
-          </p>
-        </div>
-        <div className="flex justify-center">
-          <ConnectKitButton />
-        </div>
-        <p className="text-xs" style={{ color: 'var(--subtle)' }}>
-          Get test USDC from the <strong className="text-white">Get test USDC</strong> button in the sidebar.
-        </p>
-      </div>
-
-      {/* How it works */}
-      <div className="card p-6 space-y-4 fade-up">
-        <h3 className="text-base font-semibold flex items-center gap-2" style={{ fontFamily: 'Space Grotesk' }}>
-          <CheckCircle2 size={16} style={{ color: 'var(--green)' }} />
-          How it works
-        </h3>
-        <div className="space-y-4">
-          <HowItWorksStep n={1} text="Connect your wallet and join a private lending circle." />
-          <HowItWorksStep n={2} text="Post a loan request â€” zero gas, no lender address needed." />
-          <HowItWorksStep n={3} text="Circle members click 'I'm Interested' to offer their USDC." />
-          <HowItWorksStep n={4} text="Choose a lender and create the onchain agreement." />
-          <HowItWorksStep n={5} text="Lender approves USDC and funds â€” transfers directly to you." />
-          <HowItWorksStep n={6} text="You repay on time â€” USDC goes straight back to the lender." />
-        </div>
-        <div
-          className="rounded-xl px-4 py-3 text-xs flex items-start gap-2 text-pretty"
-          style={{ background: 'var(--amber-dim)', border: '1px solid rgba(245,158,11,0.15)', color: 'rgba(245,158,11,0.85)' }}
-        >
-          <AlertTriangle size={13} className="shrink-0 mt-0.5" />
-          Loans are unsecured. Only lend to people you trust. Onchain records are public.
-        </div>
-      </div>
-
-      {/* Contract link */}
-      <div className="text-center space-y-1 text-xs fade-up" style={{ color: 'var(--subtle)' }}>
-        <p>
-          Contract:{' '}
-          <a
-            href={buildAddressExplorerUrl(arcTestnet.id, LOANBOOK_ADDRESS)}
-            target="_blank" rel="noopener noreferrer"
-            className="mono hover:text-white transition-colors"
-          >
-            {shortAddr(LOANBOOK_ADDRESS)} <ExternalLink size={9} className="inline" />
-          </a>
-          {' Â· '}Chain ID: <span className="mono">5042002</span>
-        </p>
-      </div>
-    </div>
-  )
-}
+        className="rounded-xl px-4 py-3 flex items-start gap-3 teß®-¢G§²ÚîÆ­yİ¹Ñ…µ¥±äè€MÁ…”É½Ñ•Í¬œ°(€€€€€€€€€€€½±½Èè€œ™™˜œ°(€€€€€€€€€€€‰½áM¡…‘½Üè€œÀ€áÁà€ÌÉÁàÉ‰„ Ôä°ÄÌÀ°ÈĞØ°À¸ĞÔ¤œ°(€€€€€€€€€õô(€€€€€€€€ø(€€€€€€€€€0(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Øø(€€€€€€€€€€ñ Ä(€€€€€€€€€€€±…ÍÍ9…µ”ô‰Ñ•áĞ´Íá°µéÑ•áĞ´Ñá°™½¹Ğµ‰½±Ñ•áĞµ‰…±…¹”ˆ(€€€€€€€€€€€ÍÑå±”õíì™½¹Ñ…µ¥±äè€MÁ…”É½Ñ•Í¬œ°±•ÑÑ•ÉMÁ…¥¹œè€œ´À¸ÀÍ•´œõô(€€€€€€€€€€ø(€€€€€€€€€€€	½ÉÉ½Ü™É½´å½ÕÈ¥É±”¸(€€€€€€€€€€€€ñ‰È€¼ø(€€€€€€€€€€€€ñÍÁ…¸ÍÑå±”õíì½±½Èè€Ù…È ´µ…•¹Ğµ±¥¡Ğ¤œõôùI•Á…ä½¸ÉŒ¸ğ½ÍÁ…¸ø(€€€€€€€€€€ğ½ Äø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµ‰…Í”µĞ´ÌÑ•áĞµÁÉ•ÑÑäµ…àµÜµµµàµ…ÕÑ¼ˆÍÑå±”õíì½±½Èè€Ù…È ´µµÕÑ•¤œõôø(€€€€€€€€€€€AÉ¥Ù…Ñ”±•¹‘¥¹œ½µµÕ¹¥Ñ¥•Ì°ÑÉ…¹ÍÁ…É•¹ĞUM…É••µ•¹ÑÌ°…¹Ù•É¥™¥…‰±”É•Á…åµ•¹ÑÌ¸(€€€€€€€€€€ğ½Àø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à©ÕÍÑ¥™äµ•¹Ñ•Èˆø(€€€€€€€€€€ñ½¹¹•Ñ-¥Ñ	ÕÑÑ½¸€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµáÌˆÍÑå±”õíì½±½Èè€Ù…È ´µÍÕ‰Ñ±”¤œõôø(€€€€€€€€€•ĞÑ•ÍĞUM™É½´Ñ¡”€ñÍÑÉ½¹œ±…ÍÍ9…µ”ô‰Ñ•áĞµİ¡¥Ñ”ˆù•ĞÑ•ÍĞUMğ½ÍÑÉ½¹œø‰ÕÑÑ½¸¥¸Ñ¡”Í¥‘•‰…È¸(€€€€€€€€ğ½Àø(€€€€€€ğ½‘¥Øø((€€€€€ì¼¨!½Ü¥Ğİ½É­Ì€¨½ô(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…ÉÀ´ØÍÁ…”µä´Ğ™…‘”µÕÀˆø(€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰Ñ•áĞµ‰…Í”™½¹ĞµÍ•µ¥‰½±™±•à¥Ñ•µÌµ•¹Ñ•È…À´ÈˆÍÑå±”õíì™½¹Ñ…µ¥±äè€MÁ…”É½Ñ•Í¬œõôø(€€€€€€€€€€ñ¡•­¥É±”ÈÍ¥é”õìÄÙôÍÑå±”õíì½±½Èè€Ù…È ´µÉ••¸¤œõô€¼ø(€€€€€€€€€!½Ü¥Ğİ½É­Ì(€€€€€€€€ğ½ Ìø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ÍÁ…”µä´Ğˆø(€€€€€€€€€€ñ!½İ%Ñ]½É­ÍMÑ•À¸õìÅôÑ•áĞô‰½¹¹•Ğå½ÕÈİ…±±•Ğ…¹©½¥¸„ÁÉ¥Ù…Ñ”±•¹‘¥¹œ¥É±”¸ˆ€¼ø(€€€€€€€€€€ñ!½İ%Ñ]½É­ÍMÑ•À¸õìÉôÑ•áĞô‰A½ÍĞ„±½…¸É•ÅÕ•ÍĞƒŠPé•É¼…Ì°¹¼±•¹‘•È…‘‘É•ÍÌ¹••‘•¸ˆ€¼ø(€€€€€€€€€€ñ!½İ%Ñ]½É­ÍMÑ•À¸õìÍôÑ•áĞô‰¥É±”µ•µ‰•ÉÌ±¥¬€$´%¹Ñ•É•ÍÑ•œÑ¼½™™•ÈÑ¡•¥ÈUM¸ˆ€¼ø(€€€€€€€€€€ñ!½İ%Ñ]½É­ÍMÑ•À¸õìÑôÑ•áĞô‰¡½½Í”„±•¹‘•È…¹É•…Ñ”Ñ¡”½¹¡…¥¸…É••µ•¹Ğ¸ˆ€¼ø(€€€€€€€€€€ñ!½İ%Ñ]½É­ÍMÑ•À¸õìÕôÑ•áĞô‰1•¹‘•È…ÁÁÉ½Ù•ÌUM…¹™Õ¹‘ÌƒŠPÑÉ…¹Í™•ÉÌ‘¥É•Ñ±äÑ¼å½Ô¸ˆ€¼ø(€€€€€€€€€€ñ!½İ%Ñ]½É­ÍMÑ•À¸õìÙôÑ•áĞô‰e½ÔÉ•Á…ä½¸Ñ¥µ”ƒŠPUM½•ÌÍÑÉ…¥¡Ğ‰…¬Ñ¼Ñ¡”±•¹‘•È¸ˆ€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Ø(€€€€€€€€€±…ÍÍ9…µ”ô‰É½Õ¹‘•µá°Áà´ĞÁä´ÌÑ•áĞµáÌ™±•à¥Ñ•µÌµÍÑ…ÉĞ…À´ÈÑ•áĞµÁÉ•ÑÑäˆ(€€€€€€€€€ÍÑå±”õíì‰…­É½Õ¹è€Ù…È ´µ…µ‰•Èµ‘¥´¤œ°‰½É‘•Èè€œÅÁàÍ½±¥É‰„ ÈĞÔ°ÄÔà°ÄÄ°À¸ÄÔ¤œ°½±½Èè€É‰„ ÈĞÔ°ÄÔà°ÄÄ°À¸àÔ¤œõô(€€€€€€€€ø(€€€€€€€€€€ñ±•ÉÑQÉ¥…¹±”Í¥é”õìÄÍô±…ÍÍ9…µ”ô‰Í¡É¥¹¬´ÀµĞ´À¸Ôˆ€¼ø(€€€€€€€€€1½…¹Ì…É”Õ¹Í•ÕÉ•¸=¹±ä±•¹Ñ¼Á•½Á±”å½ÔÑÉÕÍĞ¸=¹¡…¥¸É•½É‘Ì…É”ÁÕ‰±¥Œ¸(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½‘¥Øø((€€€€€ì¼¨½¹ÑÉ…Ğ±¥¹¬€¨½ô(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰Ñ•áĞµ•¹Ñ•ÈÍÁ…”µä´ÄÑ•áĞµáÌ™…‘”µÕÀˆÍÑå±”õíì½±½Èè€Ù…È ´µÍÕ‰Ñ±”¤œõôø(€€€€€€€€ñÀø(€€€€€€€€€½¹ÑÉ…Ğéìœ€ô(€€€€€€€€€€ñ„(€€€€€€€€€€€¡É•˜õí‰Õ¥±‘‘‘É•ÍÍáÁ±½É•ÉUÉ°¡…ÉQ•ÍÑ¹•Ğ¹¥°1=9	==-}IML¥ô(€€€€€€€€€€€Ñ…É•Ğô‰}‰±…¹¬ˆÉ•°ô‰¹½½Á•¹•È¹½É•™•ÉÉ•Èˆ(€€€€€€€€€€€±…ÍÍ9…µ”ô‰µ½¹¼¡½Ù•ÈéÑ•áĞµİ¡¥Ñ”ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌˆ(€€€€€€€€€€ø(€€€€€€€€€€€íÍ¡½ÉÑ‘‘È¡1=9	==-}IML¥ô€ñáÑ•É¹…±1¥¹¬Í¥é”õìåô±…ÍÍ9…µ”ô‰¥¹±¥¹”ˆ€¼ø(€€€€€€€€€€ğ½„ø(€€€€€€€€€ìœƒ
+Ü€õ¡…¥¸%è€ñÍÁ…¸±…ÍÍ9…µ”ô‰µ½¹¼ˆùí…ÉQ•ÍÑ¹•Ğ¹¥‘ôğ½ÍÁ…¸ø(€€€€€€€€ğ½Àø(€€€€€€ğ½‘¥Øø(€€€€ğ½‘¥Øø(€€¤)ô

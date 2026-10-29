@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "viem": "npm:viem@2.57.5"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}

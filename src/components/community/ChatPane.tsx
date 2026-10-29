@@ -1,177 +1,72 @@
-/**
- * ChatPane — persistent realtime group chat.
- * Messages stored in Supabase, streamed via Supabase Realtime.
- */
 import { useState, useEffect, useRef } from 'react'
-import { Send, Loader2 } from 'lucide-react'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Message } from '../../lib/supabase'
-
-function shortAddr(a: string) { return `${a.slice(0, 6)}…${a.slice(-4)}` }
-function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
-
-interface Props {
-  groupId: string
-  wallet: string
-  client: SupabaseClient
-}
-
-export function ChatPane({ groupId, wallet, client }: Props) {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [sending, setSending] = useState(false)
-  const [error, setError] = useState('')
-  const bottomRef = useRef<HTMLDivElement>(null)
-
-  // Load initial messages
-  const [refreshCount] = useState(0)
-
-  useEffect(() => {
-    let cancelled = false
-    setLoading(true)
-    client
-      .from('messages')
-      .select('*')
-      .eq('group_id', groupId)
-      .order('created_at', { ascending: true })
-      .limit(200)
-      .then(({ data, error: err }) => {
-        if (cancelled) return
-        if (err) setError(err.message)
-        else setMessages((data as Message[]) ?? [])
-        setLoading(false)
-      })
-    return () => { cancelled = true }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client, groupId, refreshCount])
-
-  // Realtime subscription
-  useEffect(() => {
-    const channel = client
-      .channel(`chat:${groupId}`)
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-        filter: `group_id=eq.${groupId}`,
-      }, payload => {
-        setMessages(prev => [...prev, payload.new as Message])
-      })
-      .subscribe()
-    return () => { void client.removeChannel(channel) }
-  }, [client, groupId])
-
-  // Scroll to bottom on new messages
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
-
-  async function handleSend() {
-    const body = input.trim()
-    if (!body) return
-    setSending(true)
-    setError('')
-    setInput('')
-
-    const { error: err } = await client
-      .from('messages')
-      .insert({ group_id: groupId, sender: wallet, body })
-
-    if (err) {
-      setError(err.message)
-      setInput(body) // restore input on failure
+import type { Message, LoanRequest } from '../../lib/supabase'
+import { RequestCard } from './RequestCard'
+interface Props { groupId: string; wallet: string; client: SupabaseClient; requests?: LoanRequest[]; onLoanCreated: (id:bigint)=>void }
+export function ChatPane({ groupId, wallet, client, requests = [], onLoanCreated }: Props) {
+  const [messages,setMessages]=useState<Message[]>([])
+  const [input,setInput]=useState('')
+  const [loading,setLoading]=useState(true)
+  const [sending,setSending]=useState(false)
+  const [error,setError]=useState('')
+  const [liveStatus,setLiveStatus]=useState('Connecting…')
+  const [limit,setLimit]=useState(100)
+  const [tick,setTick]=useState(0)
+  const bottom=useRef<HTMLDivElement>(null)
+  const sendLock=useRef(false)
+  useEffect(()=>{
+    let active=true
+    const load=async()=>{
+      const {data,error:err}=await client.from('messages').select('*').eq('group_id',groupId).order('created_at',{ascending:false}).limit(limit)
+      if(!active)return
+      if(err)setError(err.message)
+      else {setMessages(((data??[]) as Message[]).reverse());setError('')}
+      setLoading(false)
     }
-    setSending(false)
+    // Subscribe before snapshot; reload on SUBSCRIBED closes the subscription/snapshot gap.
+    const channel=client.channel('chat:'+groupId).on('postgres_changes',
+      {event:'INSERT',schema:'public',table:'messages',filter:'group_id=eq.'+groupId},
+      ()=>{void load()}).subscribe(status=>{
+        if(!active)return
+        setLiveStatus(String(status)==='SUBSCRIBED'?'Live':String(status)==='CHANNEL_ERROR'||String(status)==='TIMED_OUT'?'Reconnecting · polling enabled':'Connecting…')
+        if(String(status)==='SUBSCRIBED')void load()
+      })
+    void load()
+    const timer=setInterval(()=>{void load()},10000)
+    return()=>{active=false;clearInterval(timer);void client.removeChannel(channel)}
+  },[client,groupId,limit,tick])
+  useEffect(()=>{bottom.current?.scrollIntoView({behavior:'smooth',block:'nearest'})},[messages.length,requests.length])
+  async function send(){
+    const body=input.trim()
+    if(!body||sendLock.current)return
+    sendLock.current=true;setSending(true);setError('')
+    try {
+      const {data,error:err}=await client.rpc('send_message',{p_group_id:groupId,p_body:body}) as {data: Message | null; error: {message:string} | null}
+      if(err)throw new Error(err.message)
+      setInput('')
+      if(data)setMessages(prev=>prev.some(m=>m.id===data.id)?prev:[...prev,data])
+      setTick(t=>t+1)
+    }catch(e){setError(e instanceof Error?e.message:'Message failed. Try again.')}
+    finally{sendLock.current=false;setSending(false)}
   }
-
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      void handleSend()
-    }
-  }
-
-  return (
-    <div className="flex flex-col h-full">
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3">
-        {loading ? (
-          <div className="flex items-center justify-center py-6">
-            <Loader2 size={16} className="animate-spin" style={{ color: 'var(--color-muted)' }} />
-          </div>
-        ) : messages.length === 0 ? (
-          <div className="text-center py-6 text-xs" style={{ color: 'var(--color-muted)' }}>
-            No messages yet. Say hello!
-          </div>
-        ) : (
-          messages.map(m => {
-            const isMe = m.sender === wallet
-            return (
-              <div key={m.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  {!isMe && (
-                    <span className="text-xs mono" style={{ color: 'var(--color-accent-light)' }}>
-                      {shortAddr(m.sender)}
-                    </span>
-                  )}
-                  <span className="text-xs" style={{ color: 'var(--color-muted)' }}>
-                    {formatTime(m.created_at)}
-                  </span>
-                </div>
-                <div
-                  className="max-w-xs px-3 py-2 rounded-2xl text-sm break-words"
-                  style={{
-                    background: isMe ? 'var(--color-accent)' : 'rgba(255,255,255,0.07)',
-                    color: isMe ? '#fff' : 'var(--color-text)',
-                    borderBottomRightRadius: isMe ? '4px' : undefined,
-                    borderBottomLeftRadius: !isMe ? '4px' : undefined,
-                  }}
-                >
-                  {m.body}
-                </div>
-              </div>
-            )
-          })
-        )}
-        <div ref={bottomRef} />
-      </div>
-
-      {/* Error */}
-      {error && (
-        <div className="px-3 py-1 text-xs" style={{ color: 'var(--color-red)' }}>{error}</div>
-      )}
-
-      {/* Input */}
-      <div className="px-3 py-3 border-t flex gap-2" style={{ borderColor: 'var(--color-border)' }}>
-        <input
-          className="flex-1 text-sm rounded-xl px-3 py-2 outline-none"
-          style={{
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid var(--color-border)',
-            color: 'var(--color-text)',
-          }}
-          placeholder="Send a message…"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          maxLength={2000}
-          disabled={sending}
-        />
-        <button
-          onClick={() => { void handleSend() }}
-          disabled={sending || !input.trim()}
-          className="p-2.5 rounded-xl disabled:opacity-40 transition-opacity"
-          style={{ background: 'var(--color-accent)', color: '#fff' }}
-        >
-          {sending
-            ? <Loader2 size={14} className="animate-spin" />
-            : <Send size={14} />
-          }
-        </button>
-      </div>
+  const feed=[...messages.map(m=>({kind:'message' as const,id:m.id,date:m.created_at,value:m})),
+    ...requests.map(r=>({kind:'request' as const,id:r.id,date:r.created_at,value:r}))].sort((a,b)=>a.date.localeCompare(b.date)||a.id.localeCompare(b.id))
+  return <div className="flex flex-col min-h-0 flex-1">
+    <div className="px-4 py-2 text-xs" style={{color:'var(--muted)'}} role="status">{liveStatus} · Private conversation</div>
+    <div className="flex-1 overflow-y-auto p-4 space-y-4" aria-label="Conversation">
+      {messages.length>=limit&&<button className="btn-secondary" onClick={()=>setLimit(v=>v+100)}>Load older messages</button>}
+      {loading?<p>Loading conversation…</p>:feed.length===0?<p className="text-sm" style={{color:'var(--muted)'}}>Welcome to your circle. Say hello or request a loan.</p>:feed.map(item=>item.kind==='request'
+        ?<RequestCard key={item.id} request={item.value} wallet={wallet} client={client} onLoanCreated={onLoanCreated}/>
+        :<div key={item.id} className={'flex flex-col '+(item.value.sender===wallet?'items-end':'items-start')}>
+          <p className="text-xs mb-1" style={{color:'var(--muted)'}} title={item.value.sender}>{item.value.sender===wallet?'You':item.value.sender.slice(0,6)+'…'+item.value.sender.slice(-4)} · <time dateTime={item.date}>{new Date(item.date).toLocaleString()}</time></p>
+          <p className="rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap break-words max-w-[90%]" style={{background:item.value.sender===wallet?'var(--accent)':'var(--bg-card)',overflowWrap:'anywhere'}}>{item.value.body}</p>
+        </div>)}
+      <div ref={bottom}/>
     </div>
-  )
+    {error&&<p role="alert" className="text-xs text-red-300 px-4">{error}</p>}
+    <form className="p-3 border-t flex gap-2" style={{borderColor:'var(--border)'}} onSubmit={e=>{e.preventDefault();void send()}}>
+      <input aria-label="Message" className="input min-w-0 flex-1" placeholder="Message your circle…" maxLength={2000} value={input} disabled={sending} onChange={e=>setInput(e.target.value)}/>
+      <button className="btn-primary" disabled={sending||!input.trim()}>{sending?'Sending…':'Send'}</button>
+    </form>
+  </div>
 }

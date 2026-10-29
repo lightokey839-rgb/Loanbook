@@ -1,0 +1,4 @@
+[functions.verify-loan]
+# The platform rejects unauthenticated calls before the handler; the handler
+# also calls getUser() and performs the private read under the caller's RLS.
+verify_jwt = true
