@@ -54,7 +54,13 @@ export async function authenticateWallet(client: SupabaseClient, connectedAddres
     if (await walletClient.getChainId() !== chainId) throw new AuthError('Network changed. Please sign in again.')
     if (!await verifyMessage({ address: expected, message, signature })) throw new AuthError('Signature does not match the connected wallet.')
     const { data, error } = await client.auth.signInWithWeb3({ chain: 'ethereum', message, signature })
-    if (error || !data.session || !data.user) throw new AuthError(error?.message ?? 'Sign-in verification failed.')
+    if (error || !data.session || !data.user) {
+      const serverMessage = error?.message ?? ''
+      if (/URI which is not allowed|signed for another app/i.test(serverMessage)) {
+        throw new AuthError('Supabase has not allowlisted this app URL. Add http://localhost:5173/** under Authentication → URL Configuration → Redirect URLs, then retry.')
+      }
+      throw new AuthError(serverMessage || 'Sign-in verification failed.')
+    }
     if (!stillCurrent() || verifiedWallet(data.user) !== expected.toLowerCase()) {
       await client.auth.signOut({ scope: 'local' })
       throw new AuthError('Session wallet mismatch. Please sign in again.')
