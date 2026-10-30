@@ -30,11 +30,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Build frontend
-        run: npm run build
+        run: npm run build -- --configLoader runner
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
