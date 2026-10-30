@@ -31,6 +31,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Validate public build configuration
+        shell: bash
+        run: |
+          test -n "$VITE_SUPABASE_URL" || { echo "::error::Missing VITE_SUPABASE_URL Actions secret"; exit 1; }
+          test -n "$VITE_SUPABASE_ANON_KEY" || { echo "::error::Missing VITE_SUPABASE_ANON_KEY Actions secret"; exit 1; }
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Build frontend
