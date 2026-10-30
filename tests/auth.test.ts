@@ -1,6 +1,6 @@
 import { describe,it,expect,vi,beforeEach } from 'vitest'
 import { privateKeyToAccount } from 'viem/accounts'
-import { hexToString, type WalletClient } from 'viem'
+import { type WalletClient } from 'viem'
 import { parseSiweMessage, validateSiweMessage } from 'viem/siwe'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { authenticateWallet,buildSignInMessage,verifiedWallet,restoreSession } from '../src/lib/auth'
@@ -14,12 +14,12 @@ function setup(){
  const auth={signInWithWeb3:vi.fn(async()=>({data:{session:{},user:identity(alice.address)},error:null})),signOut:vi.fn(async()=>({error:null})),
  getSession:vi.fn(async()=>({data:{session:{user:identity(alice.address)}},error:null})),
  getUser:vi.fn(async()=>({data:{user:identity(alice.address)},error:null}))}
- const wallet={getAddresses:vi.fn(async()=>[alice.address]),getChainId:vi.fn(async()=>5042002),
- request:vi.fn(async(args:{method:string;params:[`0x${string}`,string]})=>{
-  expect(args.method).toBe('personal_sign');expect(args.params[1]).toBe(alice.address)
-  const message=hexToString(args.params[0]);expect(validateSiweMessage({message:parseSiweMessage(message),domain:'loanbook.example',address:alice.address})).toBe(true)
-  return alice.signMessage({message})
- })}
+ const wallet={account:{address:alice.address,type:'json-rpc' as const},getAddresses:vi.fn(async()=>[alice.address]),getChainId:vi.fn(async()=>5042002),
+  signMessage:vi.fn(async(args:{account:string;message:string})=>{
+   expect(args.account).toBe(alice.address)
+   expect(validateSiweMessage({message:parseSiweMessage(args.message),domain:'loanbook.example',address:alice.address})).toBe(true)
+   return alice.signMessage({message:args.message})
+  })}
  return {client:{auth} as unknown as SupabaseClient,auth,wallet,walletClient:wallet as unknown as WalletClient}
 }
 describe('SIWE authentication',()=>{
@@ -49,7 +49,7 @@ describe('SIWE authentication',()=>{
  it('rejects account mismatch before signing',async()=>{
   const {client,walletClient,wallet}=setup()
   await expect(authenticateWallet(client,bob.address,walletClient,'https://loanbook.example')).rejects.toThrow('Wallet changed')
-  expect(wallet.request).not.toHaveBeenCalled()
+  expect(wallet.signMessage).not.toHaveBeenCalled()
  })
  it('rejects wallet switching during signing',async()=>{
   const {client,walletClient,wallet,auth}=setup()
@@ -59,11 +59,11 @@ describe('SIWE authentication',()=>{
  })
  it('rejects wrong signatures',async()=>{
   const {client,walletClient,wallet}=setup()
-  wallet.request.mockImplementation(async args=>bob.signMessage({message:hexToString(args.params[0])}))
+  wallet.signMessage.mockImplementation(async args=>bob.signMessage({message:args.message}))
   await expect(authenticateWallet(client,alice.address,walletClient,'https://loanbook.example')).rejects.toThrow('Signature does not match')
  })
  it('handles rejected signatures',async()=>{
-  const {client,walletClient,wallet}=setup();wallet.request.mockRejectedValue({code:4001})
+  const {client,walletClient,wallet}=setup();wallet.signMessage.mockRejectedValue({code:4001})
   await expect(authenticateWallet(client,alice.address,walletClient,'https://loanbook.example')).rejects.toThrow('cancelled')
  })
  it('propagates server rejection of invalid messages',async()=>{
@@ -94,3 +94,4 @@ describe('SIWE authentication',()=>{
   expect(await restoreSession(bob.address)).toBeNull();expect(auth.signOut).toHaveBeenCalled()
  })
 })
+
