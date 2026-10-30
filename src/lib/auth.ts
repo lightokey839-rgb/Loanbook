@@ -1,6 +1,6 @@
 /** Native Supabase Web3 auth. Never trust editable user_metadata. */
 import type { SupabaseClient, User } from '@supabase/supabase-js'
-import { getAddress, stringToHex, verifyMessage, type WalletClient } from 'viem'
+import { getAddress, verifyMessage, type WalletClient } from 'viem'
 import { createSiweMessage } from 'viem/siwe'
 import { getSupabaseClient } from './supabase'
 export interface AuthSession { wallet: string; userId: string; client: SupabaseClient }
@@ -40,16 +40,26 @@ export async function authenticateWallet(client: SupabaseClient, connectedAddres
   const expected = getAddress(connectedAddress)
   const checkAccount = async () => {
     const accounts = await walletClient.getAddresses()
-    if (!stillCurrent() || accounts[0]?.toLowerCase() !== expected.toLowerCase()) {
+    const providerAddress = accounts[0]
+    const clientAddress = walletClient.account?.address
+    if (!providerAddress || !stillCurrent() || providerAddress.toLowerCase() !== expected.toLowerCase()) {
       throw new AuthError('Wallet changed. Sign in again with your connected account.')
     }
+    // A WalletClient can outlive a connector account switch. Refuse to sign
+    // if its bound JSON-RPC account differs from the provider's active account.
+    if (clientAddress && clientAddress.toLowerCase() !== providerAddress.toLowerCase()) {
+      throw new AuthError('Your wallet connection is stale. Disconnect and reconnect the same account, then try again.')
+    }
+    return getAddress(providerAddress)
   }
   try {
-    await checkAccount()
+    const activeAddress = await checkAccount()
     const chainId = await walletClient.getChainId()
-    const message = buildSignInMessage(expected, chainId, origin)
-    // Explicit message avoids SDK paths that omit Nonce. EIP-1193 order: [hex message, address].
-    const signature = await walletClient.request({ method: 'personal_sign', params: [stringToHex(message), expected] })
+    const message = buildSignInMessage(activeAddress, chainId, origin)
+    // Use viem's signer instead of manually constructing personal_sign params.
+    // This binds the request to the WalletClient's active JSON-RPC account and
+    // avoids injected-wallet address-verification mismatches.
+    const signature = await walletClient.signMessage({ account: activeAddress, message })
     await checkAccount()
     if (await walletClient.getChainId() !== chainId) throw new AuthError('Network changed. Please sign in again.')
     if (!await verifyMessage({ address: expected, message, signature })) throw new AuthError('Signature does not match the connected wallet.')
@@ -93,3 +103,4 @@ export async function restoreSession(expectedWallet: string): Promise<AuthSessio
   }
   return { wallet: expectedWallet.toLowerCase(), userId: user.id, client }
 }
+
