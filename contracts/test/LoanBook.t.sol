@@ -1,254 +1,42 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Ô¼¼MA`µ1¥•¹Í”µ%‘•¹Ñ¥™¥•Èè5%P)ÁÉ…µ„Í½±¥‘¥ÑäxÀ¸à¸ÈÀì()¥µÁ½ÉĞíQ•ÍÑô™É½´€‰™½É”µÍÑ½Q•ÍĞ¹Í½°ˆì)¥µÁ½ÉĞí%IÈÁô™É½´€‰½Á•¹é•ÁÁ•±¥¸½½¹ÑÉ…ÑÌ½Ñ½­•¸½IÈÀ½%IÈÀ¹Í½°ˆì)¥µÁ½ÉĞí1½…¹	½½­ô™É½´€ˆ¸¸½1½…¹	½½¬¹Í½°ˆì((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼5¥¹¥µ…°5½­IÈÀƒŠPÍÑ…¹‘…ÉI´ÈÀİ¥Ñ µ¥¹Ğ°…ÁÁÉ½Ù”°ÑÉ…¹Í™•È°ÑÉ…¹Í™•ÉÉ½´(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´)½¹ÑÉ…Ğ5½­IÈÀì(€€€ÍÑÉ¥¹œÁÕ‰±¥Œ¹…µ”ì(€€€ÍÑÉ¥¹œÁÕ‰±¥ŒÍåµ‰½°ì(€€€Õ¥¹Ğà€ÁÕ‰±¥Œ‘•¥µ…±Ìì(€€€Õ¥¹ĞÈÔØÁÕ‰±¥ŒÑ½Ñ…±MÕÁÁ±äì((€€€µ…ÁÁ¥¹œ¡…‘‘É•ÍÌ€ôøÕ¥¹ĞÈÔØ¤ÁÕ‰±¥Œ‰…±…¹•=˜ì(€€€µ…ÁÁ¥¹œ¡…‘‘É•ÍÌ€ôøµ…ÁÁ¥¹œ¡…‘‘É•ÍÌ€ôøÕ¥¹ĞÈÔØ¤¤ÁÕ‰±¥Œ…±±½İ…¹”ì((€€€•Ù•¹ĞQÉ…¹Í™•È¡…‘‘É•ÍÌ¥¹‘•á•™É½´°…‘‘É•ÍÌ¥¹‘•á•Ñ¼°Õ¥¹ĞÈÔØÙ…±Õ”¤ì(€€€•Ù•¹ĞÁÁÉ½Ù…°¡…‘‘É•ÍÌ¥¹‘•á•½İ¹•È°…‘‘É•ÍÌ¥¹‘•á•ÍÁ•¹‘•È°Õ¥¹ĞÈÔØÙ…±Õ”¤ì((€€€½¹ÍÑÉÕÑ½È¡ÍÑÉ¥¹œµ•µ½Éä}¹…µ”°ÍÑÉ¥¹œµ•µ½Éä}Íåµ‰½°°Õ¥¹Ğà}‘•¥µ…±Ì¤ì(€€€€€€€¹…µ”€ô}¹…µ”ì(€€€€€€€Íåµ‰½°€ô}Íåµ‰½°ì(€€€€€€€‘•¥µ…±Ì€ô}‘•¥µ…±Ìì(€€€ô((€€€™Õ¹Ñ¥½¸µ¥¹Ğ¡…‘‘É•ÍÌÑ¼°Õ¥¹ĞÈÔØ…µ½Õ¹Ğ¤•áÑ•É¹…°ì(€€€€€€€Ñ½Ñ…±MÕÁÁ±ä€¬ô…µ½Õ¹Ğì(€€€€€€€‰…±…¹•=™mÑ½t€¬ô…µ½Õ¹Ğì(€€€€€€€•µ¥ĞQÉ…¹Í™•È¡…‘‘É•ÍÌ À¤°Ñ¼°…µ½Õ¹Ğ¤ì(€€€ô((€€€™Õ¹Ñ¥½¸…ÁÁÉ½Ù”¡…‘‘É•ÍÌÍÁ•¹‘•È°Õ¥¹ĞÈÔØ…µ½Õ¹Ğ¤•áÑ•É¹…°É•ÑÕÉ¹Ì€¡‰½½°¤ì(€€€€€€€…±±½İ…¹•mµÍœ¹Í•¹‘•ÉumÍÁ•¹‘•Ét€ô…µ½Õ¹Ğì(€€€€€€€•µ¥ĞÁÁÉ½Ù…°¡µÍœ¹Í•¹‘•È°ÍÁ•¹‘•È°…µ½Õ¹Ğ¤ì(€€€€€€€É•ÑÕÉ¸ÑÉÕ”ì(€€€ô((€€€™Õ¹Ñ¥½¸ÑÉ…¹Í™•È¡…‘‘É•ÍÌÑ¼°Õ¥¹ĞÈÔØ…µ½Õ¹Ğ¤•áÑ•É¹…°É•ÑÕÉ¹Ì€¡‰½½°¤ì(€€€€€€€É•ÅÕ¥É”¡‰…±…¹•=™mµÍœ¹Í•¹‘•Ét€øô…µ½Õ¹Ğ°€‰IÈÀè¥¹ÍÕ™™¥¥•¹Ğ‰…±…¹”ˆ¤ì(€€€€€€€‰…±…¹•=™mµÍœ¹Í•¹‘•Ét€´ô…µ½Õ¹Ğì(€€€€€€€‰…±…¹•=™mÑ½t€¬ô…µ½Õ¹Ğì(€€€€€€€•µ¥ĞQÉ…¹Í™•È¡µÍœ¹Í•¹‘•È°Ñ¼°…µ½Õ¹Ğ¤ì(€€€€€€€É•ÑÕÉ¸ÑÉÕ”ì(€€€ô((€€€™Õ¹Ñ¥½¸ÑÉ…¹Í™•ÉÉ½´¡…‘‘É•ÍÌ™É½´°…‘‘É•ÍÌÑ¼°Õ¥¹ĞÈÔØ…µ½Õ¹Ğ¤•áÑ•É¹…°É•ÑÕÉ¹Ì€¡‰½½°¤ì(€€€€€€€É•ÅÕ¥É”¡‰…±…¹•=™m™É½µt€øô…µ½Õ¹Ğ°€‰IÈÀè¥¹ÍÕ™™¥¥•¹Ğ‰…±…¹”ˆ¤ì(€€€€€€€É•ÅÕ¥É”¡…±±½İ…¹•m™É½µumµÍœ¹Í•¹‘•Ét€øô…µ½Õ¹Ğ°€‰IÈÀè¥¹ÍÕ™™¥¥•¹Ğ…±±½İ…¹”ˆ¤ì(€€€€€€€…±±½İ…¹•m™É½µumµÍœ¹Í•¹‘•Ét€´ô…µ½Õ¹Ğì(€€€€€€€‰…±…¹•=™m™É½µt€´ô…µ½Õ¹Ğì(€€€€€€€‰…±…¹•=™mÑ½t€¬ô…µ½Õ¹Ğì(€€€€€€€•µ¥ĞQÉ…¹Í™•È¡™É½´°Ñ¼°…µ½Õ¹Ğ¤ì(€€€€€€€É•ÑÕÉ¸ÑÉÕ”ì(€€€ô)ô((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼5…±¥¥½ÕÍIÈÀƒŠPÉ”µ•¹Ñ•ÉÌ™Õ¹‘1½…¸¥¹Í¥‘”ÑÉ…¹Í™•ÉÉ½´€¡É••¹ÑÉ…¹äÑ•ÍĞ¤(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´)½¹ÑÉ…Ğ5…±¥¥½ÕÍIÈÀì(€€€1½…¹	½½¬ÁÕ‰±¥Œ‰½½¬ì(€€€Õ¥¹ĞÈÔØÁÕ‰±¥Œ…ÑÑ…­1½…¹%ì(€€€‰½½°€€€ÁÕ‰±¥Œ…ÑÑ…­¥¹œì((€€€µ…ÁÁ¥¹œ¡…‘‘É•ÍÌ€ôøÕ¥¹ĞÈÔØ¤ÁÕ‰±¥Œ‰…±…¹•=˜ì(€€€µ…ÁÁ¥¹œ¡…‘‘É•ÍÌ€ôøµ…ÁÁ¥¹œ¡…‘‘É•ÍÌ€ôøÕ¥¹ĞÈÔØ¤¤ÁÕ‰±¥Œ…±±½İ…¹”ì(€€€Õ¥¹ĞàÁÕ‰±¥Œ‘•¥µ…±Ì€ô€Øì((€€€™Õ¹Ñ¥½¸Í•ÑQ…É•Ğ¡…‘‘É•ÍÌ}‰½½¬°Õ¥¹ĞÈÔØ}±½…¹%¤•áÑ•É¹…°ì(€€€€€€€‰½½¬€ô1½…¹	½½¬¡}‰½½¬¤ì(€€€€€€€…ÑÑ…­1½…¹%€ô}±½…¹%ì(€€€ô((€€€™Õ¹Ñ¥½¸µ¥¹Ğ¡…‘‘É•ÍÌÑ¼°Õ¥¹ĞÈÔØ…µ½Õ¹Ğ¤•áÑ•É¹…°ì(€€€€€€€‰…±…¹•=™mÑ½t€¬ô…µ½Õ¹Ğì(€€€ô((€€€™Õ¹Ñ¥½¸…ÁÁÉ½Ù”¡…‘‘É•ÍÌÍÁ•¹‘•È°Õ¥¹ĞÈÔØ…µ½Õ¹Ğ¤•áÑ•É¹…°É•ÑÕÉ¹Ì€¡‰½½°¤ì(€€€€€€€…±±½İ‡]4ÖÚ$z{-®éÜj×KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆËÈ‹ˆØ[ˆ]\ÎˆÜ™X]Y][™Y]YQ]BˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆ[˜İ[Ûˆ\İÓØ[‘]\Ê
+HX›XÈÂˆZ[MˆH›ØÚË[Y\İ[\Â‚ˆ›Kœ˜[šÊ[XÙJNÂˆZ[MˆØ[’YH›ÛÚË˜Ü™X]SØ[Š›Ø‹SSÕS•TUSÓŠNÂ‚ˆØ[›ÛÚË“Ø[ˆY[[ÜHØ[ˆH›ÛÚË™Ù]Ø[ŠØ[’Y
+NÂˆ\ÜÙ\\JØ[‹˜Ü™X]Y]
+NÂˆ\ÜÙ\\JØ[‹™[™Y]
+NÂˆ\ÜÙ\\JØ[‹™YQ]K
+NÂ‚ˆ›KØ\œ
+
+ÈHİ\œÊNÂˆZ[Mˆ[™H›ØÚË[Y\İ[\Â‚ˆ›Kœ˜[šÊ›ØŠNÂˆ\ÙË˜\›İ™JY™\ÜÊ›ÛÚÊKSSÕS•
+NÂˆ›Kœ˜[šÊ›ØŠNÂˆ›ÛÚË™[™Ø[ŠØ[’Y
+NÂ‚ˆØ[ˆH›ÛÚË™Ù]Ø[ŠØ[’Y
+NÂˆ\ÜÙ\\JØ[‹™[™Y][™
+NÂˆ\ÜÙ\\JØ[‹™YQ]K[™
+ÈTUSÓŠNÂˆB‚ˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆËÈËˆ™\^[Y[[İÙYY\ˆYH]H
+›KØ\œ\İYQ]JBˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆ[˜İ[Ûˆ\İÔ™\^PY\‘YQ]J
+HX›XÈÂˆ›Kœ˜[šÊ[XÙJNÂˆZ[MˆØ[’YH›ÛÚË˜Ü™X]SØ[Š›Ø‹SSÕS•TUSÓŠNÂ‚ˆ›Kœ˜[šÊ›ØŠNÂˆ\ÙË˜\›İ™JY™\ÜÊ›ÛÚÊKSSÕS•
+NÂˆ›Kœ˜[šÊ›ØŠNÂˆ›ÛÚË™[™Ø[ŠØ[’Y
+NÂ‚ˆËÈØ\œ\İYH]Bˆ›KØ\œ
+›ØÚË[Y\İ[\
+ÈTUSÓˆ
+ÈJNÂ‚ˆ›Kœ˜[šÊ[XÙJNÂˆ\ÙË˜\›İ™JY™\ÜÊ›ÛÚÊKSSÕS•
+NÂˆ›Kœ˜[šÊ[XÙJNÂˆ›ÛÚËœ™\^SØ[ŠØ[’Y
+NÈËÈÚİ[“Õ™]™\‚ˆØ[›ÛÚË“Ø[ˆY[[ÜHØ[ˆH›ÛÚË™Ù]Ø[ŠØ[’Y
+NÂˆ\ÜÙ\\JZ[
+Ø[‹œİ]JKZ[
+Ø[›ÛÚË“Ø[”İ]K”™\ZY
+JNÂˆB‚ˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆËÈˆ[˜[Y[œ]ÈÛˆÜ™X]SØ[‚ˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆ[˜İ[Ûˆ\İÔ™]™\Ö™\›Ğ[[İ[
 
-import {Test} from "forge-std/Test.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {LoanBook} from "../LoanBook.sol";
+HX›XÈÂˆ›Kœ˜[šÊ[XÙJNÂˆ›K™^Xİ™]™\
+Ø[›ÛÚË“Ø[›ÛÚ××Ö™\›Ğ[[İ[œÙ[XİÜŠNÂˆ›ÛÚË˜Ü™X]SØ[Š›Ø‹TUSÓŠNÂˆB‚ˆ[˜İ[Ûˆ\İÔ™]™\Ö™\›Ñ\˜][ÛŠ
+HX›XÈÂˆ›Kœ˜[šÊ[XÙJNÂˆ›K™^Xİ™]™\
+Ø[›ÛÚË“Ø[›ÛÚ××Ö™\›Ñ\˜][Û‹œÙ[XİÜŠNÂˆ›ÛÚË˜Ü™X]SØ[Š›Ø‹SSÕS•
+NÂˆB‚ˆ[˜İ[Ûˆ\İÔ™]™\Ö™\›ĞY™\ÜÓ[™\Š
+HX›XÈÂˆ›Kœ˜[šÊ[XÙJNÂˆ›K™^Xİ™]™\
+Ø[›ÛÚË“Ø[›ÛÚ××Ò[˜[Y[™\‹œÙ[XİÜŠNÂˆ›ÛÚË˜Ü™X]SØ[ŠY™\ÜÊ
+KSSÕS•TUSÓŠNÂˆB‚ˆ[˜İ[Ûˆ\İÔ™]™\ÔÙ[“[™
 
-// ---------------------------------------------------------------------------
-// Minimal MockERC20 â€” standard ERC-20 with mint, approve, transfer, transferFrom
-// ---------------------------------------------------------------------------
-contract MockERC20 {
-    string public name;
-    string public symbol;
-    uint8  public decimals;
-    uint256 public totalSupply;
-
-    mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
-
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
-
-    constructor(string memory _name, string memory _symbol, uint8 _decimals) {
-        name = _name;
-        symbol = _symbol;
-        decimals = _decimals;
-    }
-
-    function mint(address to, uint256 amount) external {
-        totalSupply += amount;
-        balanceOf[to] += amount;
-        emit Transfer(address(0), to, amount);
-    }
-
-    function approve(address spender, uint256 amount) external returns (bool) {
-        allowance[msg.sender][spender] = amount;
-        emit Approval(msg.sender, spender, amount);
-        return true;
-    }
-
-    function transfer(address to, uint256 amount) external returns (bool) {
-        require(balanceOf[msg.sender] >= amount, "ERC20: insufficient balance");
-        balanceOf[msg.sender] -= amount;
-        balanceOf[to] += amount;
-        emit Transfer(msg.sender, to, amount);
-        return true;
-    }
-
-    function transferFrom(address from, address to, uint256 amount) external returns (bool) {
-        require(balanceOf[from] >= amount, "ERC20: insufficient balance");
-        require(allowance[from][msg.sender] >= amount, "ERC20: insufficient allowance");
-        allowance[from][msg.sender] -= amount;
-        balanceOf[from] -= amount;
-        balanceOf[to] += amount;
-        emit Transfer(from, to, amount);
-        return true;
-    }
-}
-
-// ---------------------------------------------------------------------------
-// MaliciousERC20 â€” re-enters fundLoan inside transferFrom (reentrancy test)
-// ---------------------------------------------------------------------------
-contract MaliciousERC20 {
-    LoanBook public book;
-    uint256 public attackLoanId;
-    bool    public attacking;
-
-    mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
-    uint8 public decimals = 6;
-
-    function setTarget(address _book, uint256 _loanId) external {
-        book = LoanBook(_book);
-        attackLoanId = _loanId;
-    }
-
-    function mint(address to, uint256 amount) external {
-        balanceOf[to] += amount;
-    }
-
-    function approve(address spender, uint256 amount) external returns (bool) {
-        allowance[msg.sender][spender] = amount;
-        return true;
-    }
-
-    // transferFrom re-enters fundLoan on first call
-    function transferFrom(address from, address to, uint256 amount) external returns (bool) {
-        require(balanceOf[from] >= amount, "bad balance");
-        require(allowance[from][msg.sender] >= amount, "bad allowance");
-        allowance[from][msg.sender] -= amount;
-        balanceOf[from] -= amount;
-        balanceOf[to] += amount;
-        if (!attacking) {
-            attacking = true;
-            book.fundLoan(attackLoanId); // re-enter â€” should revert
-        }
-        return true;
-    }
-
-    function transfer(address to, uint256 amount) external returns (bool) {
-        balanceOf[msg.sender] -= amount;
-        balanceOf[to] += amount;
-        return true;
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Main test contract
-// ---------------------------------------------------------------------------
-contract LoanBookTest is Test {
-    LoanBook    internal book;
-    MockERC20   internal usdc;
-
-    address internal alice   = makeAddr("alice");   // borrower
-    address internal bob     = makeAddr("bob");     // lender
-    address internal carol   = makeAddr("carol");   // third party
-
-    uint256 internal constant AMOUNT   = 100e6;  // 100 USDC
-    uint256 internal constant DURATION = 30 days;
-
-    function setUp() public {
-        usdc = new MockERC20("Mock USDC", "mUSDC", 6);
-        book = new LoanBook(address(usdc));
-
-        // seed balances
-        usdc.mint(bob,   1_000e6);
-        usdc.mint(alice, 1_000e6);
-    }
-
-    // -----------------------------------------------------------------------
-    // 1. Happy-path: createLoan â†’ fundLoan â†’ repayLoan (balance changes)
-    // -----------------------------------------------------------------------
-    function test_HappyPath_FullLifecycle() public {
-        // create
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-        assertEq(loanId, 1);
-
-        uint256 bobBefore   = usdc.balanceOf(bob);
-        uint256 aliceBefore = usdc.balanceOf(alice);
-
-        // fund: bob approves and funds
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        // bob lost AMOUNT, alice gained AMOUNT
-        assertEq(usdc.balanceOf(bob),   bobBefore   - AMOUNT);
-        assertEq(usdc.balanceOf(alice), aliceBefore + AMOUNT);
-
-        // repay: alice approves and repays
-        vm.prank(alice);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(alice);
-        book.repayLoan(loanId);
-
-        // alice lost AMOUNT back, bob regained AMOUNT
-        assertEq(usdc.balanceOf(alice), aliceBefore);
-        assertEq(usdc.balanceOf(bob),   bobBefore);
-
-        LoanBook.Loan memory loan = book.getLoan(loanId);
-        assertEq(uint(loan.state), uint(LoanBook.LoanState.Repaid));
-    }
-
-    // -----------------------------------------------------------------------
-    // 2. Loan dates: createdAt, fundedAt, dueDate
-    // -----------------------------------------------------------------------
-    function test_LoanDates() public {
-        uint256 t0 = block.timestamp;
-
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        LoanBook.Loan memory loan = book.getLoan(loanId);
-        assertEq(loan.createdAt, t0);
-        assertEq(loan.fundedAt, 0);
-        assertEq(loan.dueDate, 0);
-
-        vm.warp(t0 + 1 hours);
-        uint256 tFund = block.timestamp;
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        loan = book.getLoan(loanId);
-        assertEq(loan.fundedAt, tFund);
-        assertEq(loan.dueDate,  tFund + DURATION);
-    }
-
-    // -----------------------------------------------------------------------
-    // 3. Repayment allowed after due date (vm.warp past dueDate)
-    // -----------------------------------------------------------------------
-    function test_RepayAfterDueDate() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        // warp past due date
-        vm.warp(block.timestamp + DURATION + 1);
-
-        vm.prank(alice);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(alice);
-        book.repayLoan(loanId); // should NOT revert
-
-        LoanBook.Loan memory loan = book.getLoan(loanId);
-        assertEq(uint(loan.state), uint(LoanBook.LoanState.Repaid));
-    }
-
-    // -----------------------------------------------------------------------
-    // 4. Invalid inputs on createLoan
-    // -----------------------------------------------------------------------
-    function test_Revert_ZeroAmount() public {
-        vm.prank(alice);
-        vm.expectRevert(LoanBook.LoanBook__ZeroAmount.selector);
-        book.createLoan(bob, 0, DURATION);
-    }
-
-    function test_Revert_ZeroDuration() public {
-        vm.prank(alice);
-        vm.expectRevert(LoanBook.LoanBook__ZeroDuration.selector);
-        book.createLoan(bob, AMOUNT, 0);
-    }
-
-    function test_Revert_ZeroAddressLender() public {
-        vm.prank(alice);
-        vm.expectRevert(LoanBook.LoanBook__InvalidLender.selector);
-        book.createLoan(address(0), AMOUNT, DURATION);
-    }
-
-    function test_Revert_SelfLend() public {
-        vm.prank(alice);
-        vm.expectRevert(LoanBook.LoanBook__SelfLend.selector);
-        book.createLoan(alice, AMOUNT, DURATION);
-    }
-
-    // -----------------------------------------------------------------------
-    // 5. Wrong caller reverts
-    // -----------------------------------------------------------------------
-    function test_Revert_NonLenderFunds() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(carol);
+HX›XÈÂˆ›Kœ˜[šÊ[XÙJNÂˆ›K™^Xİ™]™\
+Ø[›ÛÚË“Ø[›ÛÚ××ÔÙ[“[™œÙ[XİÜŠNÂˆ›ÛÚË˜Ü™X]SØ[Š[XÙKSSÕS•TUSÓŠNÂˆB‚ˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆËÈKˆÜ›Û™ÈØ[\ˆ™]™\ÂˆËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKBˆ[˜İ[Ûˆ\İÔ™]™\Ó›Û“[™\‘[™Ê
+HX›XÈÂˆ›Kœ˜[šÊ[XÙJNÂˆZ[MˆØ[’YH›ÛÚË˜Ü™X]SØ[Š›Ø‹SSÕS•TUSÓŠNÂ‚ˆ›Kœ˜[šÊØVj¹âkºwµçhºÚn¶Šâ‚)Ú–Ú$zw(º{wÓMS¢Ö¥¢ëiºÙbë5rol);
         vm.expectRevert(LoanBook.LoanBook__NotLender.selector);
         book.fundLoan(loanId);
     }
@@ -338,285 +126,4 @@ contract LoanBookTest is Test {
         vm.prank(alice);
         usdc.transfer(carol, aliceBal);
 
-        vm.prank(alice);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(alice);
-        vm.expectRevert();
-        book.repayLoan(loanId);
-    }
-
-    // -----------------------------------------------------------------------
-    // 8. Double funding reverts
-    // -----------------------------------------------------------------------
-    function test_Revert_DoubleFund() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT * 2);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        vm.prank(bob);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                LoanBook.LoanBook__InvalidState.selector,
-                loanId,
-                LoanBook.LoanState.Funded,
-                LoanBook.LoanState.Open
-            )
-        );
-        book.fundLoan(loanId);
-    }
-
-    // -----------------------------------------------------------------------
-    // 9. Double repayment reverts
-    // -----------------------------------------------------------------------
-    function test_Revert_DoubleRepay() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        vm.prank(alice);
-        usdc.approve(address(book), AMOUNT * 2);
-        vm.prank(alice);
-        book.repayLoan(loanId);
-
-        vm.prank(alice);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                LoanBook.LoanBook__InvalidState.selector,
-                loanId,
-                LoanBook.LoanState.Repaid,
-                LoanBook.LoanState.Funded
-            )
-        );
-        book.repayLoan(loanId);
-    }
-
-    // -----------------------------------------------------------------------
-    // 10. Cancel before funding: works, emits LoanCancelled
-    // -----------------------------------------------------------------------
-    function test_CancelBeforeFunding() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(alice);
-        vm.expectEmit(true, true, false, true, address(book));
-        emit LoanBook.LoanCancelled(loanId, alice, block.timestamp);
-        book.cancelLoan(loanId);
-
-        LoanBook.Loan memory loan = book.getLoan(loanId);
-        assertEq(uint(loan.state), uint(LoanBook.LoanState.Cancelled));
-    }
-
-    // -----------------------------------------------------------------------
-    // 11. Cancel after funding reverts with InvalidState
-    // -----------------------------------------------------------------------
-    function test_Revert_CancelAfterFunded() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        vm.prank(alice);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                LoanBook.LoanBook__InvalidState.selector,
-                loanId,
-                LoanBook.LoanState.Funded,
-                LoanBook.LoanState.Open
-            )
-        );
-        book.cancelLoan(loanId);
-    }
-
-    // -----------------------------------------------------------------------
-    // 12. getLoan on nonexistent id reverts LoanBook__LoanNotFound
-    // -----------------------------------------------------------------------
-    function test_Revert_GetLoanNotFound() public {
-        vm.expectRevert(
-            abi.encodeWithSelector(LoanBook.LoanBook__LoanNotFound.selector, 0)
-        );
-        book.getLoan(0);
-
-        vm.expectRevert(
-            abi.encodeWithSelector(LoanBook.LoanBook__LoanNotFound.selector, 999)
-        );
-        book.getLoan(999);
-    }
-
-    // -----------------------------------------------------------------------
-    // 13. isOverdue edge cases
-    // -----------------------------------------------------------------------
-    function test_IsOverdue_OpenLoan_ReturnsFalse() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-        assertFalse(book.isOverdue(loanId));
-    }
-
-    function test_IsOverdue_JustFunded_ReturnsFalse() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        assertFalse(book.isOverdue(loanId));
-    }
-
-    function test_IsOverdue_AfterWarp_ReturnsTrue() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        vm.warp(block.timestamp + DURATION + 1);
-        assertTrue(book.isOverdue(loanId));
-    }
-
-    function test_IsOverdue_AfterRepaid_ReturnsFalse() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        vm.warp(block.timestamp + DURATION + 1);
-
-        vm.prank(alice);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(alice);
-        book.repayLoan(loanId);
-
-        assertFalse(book.isOverdue(loanId));
-    }
-
-    // -----------------------------------------------------------------------
-    // 14. Event emission
-    // -----------------------------------------------------------------------
-    function test_Event_LoanCreated() public {
-        vm.prank(alice);
-        vm.expectEmit(true, true, true, true, address(book));
-        emit LoanBook.LoanCreated(1, alice, bob, AMOUNT, DURATION);
-        book.createLoan(bob, AMOUNT, DURATION);
-    }
-
-    function test_Event_LoanFunded() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-        uint256 expectedDueDate = block.timestamp + DURATION;
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        vm.expectEmit(true, true, true, true, address(book));
-        emit LoanBook.LoanFunded(loanId, bob, alice, AMOUNT, expectedDueDate);
-        book.fundLoan(loanId);
-    }
-
-    function test_Event_LoanRepaid() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        vm.prank(bob);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(bob);
-        book.fundLoan(loanId);
-
-        uint256 repaidAt = block.timestamp;
-        vm.prank(alice);
-        usdc.approve(address(book), AMOUNT);
-        vm.prank(alice);
-        vm.expectEmit(true, true, true, true, address(book));
-        emit LoanBook.LoanRepaid(loanId, alice, bob, AMOUNT, repaidAt);
-        book.repayLoan(loanId);
-    }
-
-    function test_Event_LoanCancelled() public {
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, AMOUNT, DURATION);
-
-        uint256 cancelledAt = block.timestamp;
-        vm.prank(alice);
-        vm.expectEmit(true, true, false, true, address(book));
-        emit LoanBook.LoanCancelled(loanId, alice, cancelledAt);
-        book.cancelLoan(loanId);
-    }
-
-    // -----------------------------------------------------------------------
-    // 15. Constructor reverts
-    // -----------------------------------------------------------------------
-    function test_Constructor_Revert_ZeroAddress() public {
-        vm.expectRevert(LoanBook.LoanBook__InvalidUSDC.selector);
-        new LoanBook(address(0));
-    }
-
-    function test_Constructor_Revert_EOAAddress() public {
-        // EOA has no code â†’ should revert
-        address eoa = makeAddr("eoa");
-        vm.expectRevert(LoanBook.LoanBook__InvalidUSDC.selector);
-        new LoanBook(eoa);
-    }
-
-    // -----------------------------------------------------------------------
-    // 16. Reentrancy guard on fundLoan
-    // -----------------------------------------------------------------------
-    function test_Reentrancy_FundLoan() public {
-        MaliciousERC20 evil = new MaliciousERC20();
-
-        // Deploy a book that uses the malicious token
-        LoanBook evilBook = new LoanBook(address(evil));
-
-        // alice creates a loan with bob as lender
-        vm.prank(alice);
-        uint256 loanId = evilBook.createLoan(bob, AMOUNT, DURATION);
-
-        // wire the attacker: the malicious token re-enters fundLoan(loanId)
-        evil.setTarget(address(evilBook), loanId);
-
-        // give bob enough fake balance and allowance
-        evil.mint(bob, AMOUNT * 2);
-        vm.prank(bob);
-        evil.approve(address(evilBook), AMOUNT * 2);
-
-        // The reentrancy guard should cause the re-entrant call to revert,
-        // which bubbles up and causes the outer call to revert as well.
-        vm.prank(bob);
-        vm.expectRevert();
-        evilBook.fundLoan(loanId);
-    }
-
-    // -----------------------------------------------------------------------
-    // Fuzz: createLoan with valid non-zero amount and duration always succeeds
-    // -----------------------------------------------------------------------
-    function testFuzz_CreateLoan_ValidInputs(uint256 amount, uint256 duration) public {
-        amount   = bound(amount,   1, type(uint128).max);
-        duration = bound(duration, 1, 365 days);
-
-        vm.prank(alice);
-        uint256 loanId = book.createLoan(bob, amount, duration);
-        assertEq(loanId, 1);
-
-        LoanBook.Loan memory loan = book.getLoan(loanId);
-        assertEq(loan.borrower, alice);
-        assertEq(loan.lender,   bob);
-        assertEq(loan.amount,   amount);
-        assertEq(loan.duration, duration);
-        assertEq(uint(loan.state), uint(LoanBook.LoanState.Open));
-    }
-}
+×M5¶‰ËkºwµçS° ¢fÒç&æ²†Æ–6R“°¢fÒæW‡V7E&WfW'B€¢&’æVæ6öFUv—F…6VÆV7F÷"€¢Æöä&öö²äÆöä&ööµõô–çfÆ–E7FFRç6VÆV7F÷"À¢Æöä–BÀ¢Æöä&öö²äÆöå7FFRägVæFVBÀ¢Æöä&öö²äÆöå7FFRä÷Và¢¢“°¢&öö²æ6æ6VÄÆöâ†Æöä–B“°¢Ğ ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢òò"âvWDÆöâöâæöæW†—7FVçB–B&WfW'G2Æöä&ööµõôÆöäæ÷Df÷Væ@¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢gVæ7F–öâFW7Eõ&WfW'EôvWDÆöäæ÷Df÷VæB‚’V&Æ–2°¢fÒæW‡V7E&WfW'B€¢&’æVæ6öFUv—F…6VÆV7F÷"„Æöä&öö²äÆöä&ööµõôÆöäæ÷Df÷VæBç6VÆV7F÷"Â¢“°¢&öö²ævWDÆöâƒ“° ¢fÒæW‡V7E&WfW'B€¢&’æVæ6öFUv—F…6VÆV7F÷"„Æöä&öö²äÆöä&ööµõôÆöäæ÷Df÷VæBç6VÆV7F÷"Â““’¢“°¢&öö²ævWDÆöâƒ““’“°¢Ğ ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢òò2â—4÷fW&GVRVFvR66W0¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢gVæ7F–öâFW7Eô—4÷fW&GVUô÷VäÆöåõ&WGW&ç4fÇ6R‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“°¢76W'DfÇ6R†&öö²æ—4÷fW&GVR†Æöä–B’“°¢Ğ ¢gVæ7F–öâFW7Eô—4÷fW&GVUô§W7DgVæFVEõ&WGW&ç4fÇ6R‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“° ¢fÒç&æ²†&ö"“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†&ö"“°¢&öö²ægVæDÆöâ†Æöä–B“° ¢76W'DfÇ6R†&öö²æ—4÷fW&GVR†Æöä–B’“°¢Ğ ¢gVæ7F–öâFW7Eô—4÷fW&GVUôgFW%v'õ&WGW&ç5G'VR‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“° ¢fÒç&æ²†&ö"“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†&ö"“°¢&öö²ægVæDÆöâ†Æöä–B“° ¢fÒçv'†&Æö6²çF–ÖW7F×²EU$D”ôâ²“°¢76W'EG'VR†&öö²æ—4÷fW&GVR†Æöä–B’“°¢Ğ ¢gVæ7F–öâFW7Eô—4÷fW&GVUôgFW%&W–Eõ&WGW&ç4fÇ6R‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“° ¢fÒç&æ²†&ö"“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†&ö"“°¢&öö²ægVæDÆöâ†Æöä–B“° ¢fÒçv'†&Æö6²çF–ÖW7F×²EU$D”ôâ²“° ¢fÒç&æ²†Æ–6R“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†Æ–6R“°¢&öö²ç&W”Æöâ†Æöä–B“° ¢76W'DfÇ6R†&öö²æ—4÷fW&GVR†Æöä–B’“°¢Ğ ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢òòBâWfVçBVÖ—76–öà¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢gVæ7F–öâFW7EôWfVçEôÆöä7&VFVB‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢fÒæW‡V7DVÖ—B‡G'VRÂG'VRÂG'VRÂG'VRÂFG&W72†&öö²’“°¢VÖ—BÆöä&öö²äÆöä7&VFVBƒÂÆ–6RÂ&ö"ÂÔõTåBÂEU$D”ôâ“°¢&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“°¢Ğ ¢gVæ7F–öâFW7EôWfVçEôÆöägVæFVB‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“°¢V–çC#SbW‡V7FVDGVTFFRÒ&Æö6²çF–ÖW7F×²EU$D”ôã° ¢fÒç&æ²†&ö"“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†&ö"“°¢fÒæW‡V7DVÖ—B‡G'VRÂG'VRÂG'VRÂG'VRÂFG&W72†&öö²’“°¢VÖ—BÆöä&öö²äÆöägVæFVB†Æöä–BÂ&ö"ÂÆ–6RÂÔõTåBÂW‡V7FVDGVTFFR“°¢&öö²ægVæDÆöâ†Æöä–B“°¢Ğ ¢gVæ7F–öâFW7EôWfVçEôÆöå&W–B‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“° ¢fÒç&æ²†&ö"“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†&ö"“°¢&öö²ægVæDÆöâ†Æöä–B“° ¢V–çC#Sb&W–DBÒ&Æö6²çF–ÖW7F×°¢fÒç&æ²†Æ–6R“°¢W6F2æ&÷fR†FG&W72†&öö²’ÂÔõTåB“°¢fÒç&æ²†Æ–6R“°¢fÒæW‡V7DVÖ—B‡G'VRÂG'VRÂG'VRÂG'VRÂFG&W72†&öö²’“°¢VÖ—BÆöä&öö²äÆöå&W–B†Æöä–BÂÆ–6RÂ&ö"ÂÔõTåBÂ&W–DB“°¢&öö²ç&W”Æöâ†Æöä–B“°¢Ğ ¢gVæ7F–öâFW7EôWfVçEôÆöä6æ6VÆÆVB‚’V&Æ–2°¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“° ¢V–çC#Sb6æ6VÆÆVDBÒ&Æö6²çF–ÖW7F×°¢fÒç&æ²†Æ–6R“°¢fÒæW‡V7DVÖ—B‡G'VRÂG'VRÂfÇ6RÂG'VRÂFG&W72†&öö²’“°¢VÖ—BÆöä&öö²äÆöä6æ6VÆÆVB†Æöä–BÂÆ–6RÂ6æ6VÆÆVDB“°¢&öö²æ6æ6VÄÆöâ†Æöä–B“°¢Ğ ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢òòRâ6öç7G'V7F÷"&WfW'G0¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢gVæ7F–öâFW7Eô6öç7G'V7F÷%õ&WfW'Eõ¦W&ôFG&W72‚’V&Æ–2°¢fÒæW‡V7E&WfW'B„Æöä&öö²äÆöä&ööµõô–çfÆ–EU4D2ç6VÆV7F÷"“°¢æWrÆöä&öö²†FG&W72ƒ’“°¢Ğ ¢gVæ7F–öâFW7Eô6öç7G'V7F÷%õ&WfW'EôTôFG&W72‚’V&Æ–2°¢òòTô†2æò6öFR(i"6†÷VÆB&WfW'@¢FG&W72VöÒÖ¶TFG"‚&Vö"“°¢fÒæW‡V7E&WfW'B„Æöä&öö²äÆöä&ööµõô–çfÆ–EU4D2ç6VÆV7F÷"“°¢æWrÆöä&öö²†Vö“°¢Ğ ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢òòbâ&VVçG&æ7’wV&BöâgVæDÆöà¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢gVæ7F–öâFW7Eõ&VVçG&æ7•ôgVæDÆöâ‚’V&Æ–2°¢ÖÆ–6–÷W4U$3#Wf–ÂÒæWrÖÆ–6–÷W4U$3#‚“° ¢òòFWÆ÷’&öö²F†BW6W2F†RÖÆ–6–÷W2Fö¶Và¢Æöä&öö²Wf–Ä&öö²ÒæWrÆöä&öö²†FG&W72†Wf–Â’“° ¢òòÆ–6R7&VFW2Æöâv—F‚&ö"2ÆVæFW ¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒWf–Ä&öö²æ7&VFTÆöâ†&ö"ÂÔõTåBÂEU$D”ôâ“° ¢òòv—&RF†RGF6¶W#¢F†RÖÆ–6–÷W2Fö¶Vâ&RÖVçFW'2gVæDÆöâ†Æöä–B¢Wf–Âç6WEF&vWB†FG&W72†Wf–Ä&öö²’ÂÆöä–B“° ¢òòv—fR&ö"Væ÷Vv‚f¶R&Ææ6RæBÆÆ÷væ6P¢Wf–ÂæÖ–çB†&ö"ÂÔõTåB¢"“°¢fÒç&æ²†&ö"“°¢Wf–Âæ&÷fR†FG&W72†Wf–Ä&öö²’ÂÔõTåB¢"“° ¢òòF†R&VVçG&æ7’wV&B6†÷VÆB6W6RF†R&RÖVçG&çB6ÆÂFò&WfW'BÀ¢òòv†–6‚'V&&ÆW2WæB6W6W2F†R÷WFW"6ÆÂFò&WfW'B2vVÆÂà¢fÒç&æ²†&ö"“°¢fÒæW‡V7E&WfW'B‚“°¢Wf–Ä&öö²ægVæDÆöâ†Æöä–B“°¢Ğ ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢òògW§£¢7&VFTÆöâv—F‚fÆ–Bæöâ×¦W&òÖ÷VçBæBGW&F–öâÇv—27V66VVG0¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢gVæ7F–öâFW7DgW§¥ô7&VFTÆöåõfÆ–D–çWG2‡V–çC#SbÖ÷VçBÂV–çC#SbGW&F–öâ’V&Æ–2°¢Ö÷VçBÒ&÷VæB†Ö÷VçBÂÂG—R‡V–çC#‚’æÖ‚“°¢GW&F–öâÒ&÷VæB†GW&F–öâÂÂ3cRF—2“° ¢fÒç&æ²†Æ–6R“°¢V–çC#SbÆöä–BÒ&öö²æ7&VFTÆöâ†&ö"ÂÖ÷VçBÂGW&F–öâ“°¢76W'DW†Æöä–BÂ“° ¢Æöä&öö²äÆöâÖVÖ÷'’ÆöâÒ&öö²ævWDÆöâ†Æöä–B“°¢76W'DW†Æöâæ&÷'&÷vW"ÂÆ–6R“°¢76W'DW†ÆöâæÆVæFW"Â&ö"“°¢76W'DW†ÆöâæÖ÷VçBÂÖ÷VçB“°¢76W'DW†ÆöâæGW&F–öâÂGW&F–öâ“°¢76W'DW‡V–çB†Æöâç7FFR’ÂV–çB„Æöä&öö²äÆöå7FFRä÷Vâ’“°¢Ğ§Ğ

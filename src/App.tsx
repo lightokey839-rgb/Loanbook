@@ -8,11 +8,13 @@ import { NetworkGuard } from './components/NetworkGuard'
 import { OverviewPage } from './components/OverviewPage'
 import { MyLoansPage } from './components/MyLoansPage'
 import { CommunityHub } from './components/community/CommunityHub'
-import { LoanRequestPanel } from './components/LoanRequestPanel'
+import { currentInvite } from './lib/invites'
+import { ActivityPage } from './components/ActivityPage'
+import { activeChain, contractAddress, explorerUrl } from './network'
 import { CreateLoanPanel } from './components/CreateLoanPanel'
 import { LookupPanel } from './components/LookupPanel'
 import { useAuth } from './lib/useAuth'
-import { Activity, Settings, Zap } from 'lucide-react'
+import { Zap } from 'lucide-react'
 
 const PAGE_TITLES: Record<Page, string> = {
   'overview':     'Overview',
@@ -25,7 +27,7 @@ const PAGE_TITLES: Record<Page, string> = {
 }
 
 export default function App() {
-  const [page, setPage] = useState<Page>('overview')
+  const [page, setPage] = useState<Page>(() => currentInvite() ? 'communities' : 'overview')
   const [justCreatedId, setJustCreatedId] = useState<bigint | null>(null)
   const auth = useAuth()
 
@@ -51,6 +53,7 @@ export default function App() {
       case 'communities':
         return (
           <CommunityHub
+            key={auth.wallet ?? 'signed-out'}
             auth={auth}
             onLoanCreated={handleLoanCreated}
           />
@@ -60,24 +63,7 @@ export default function App() {
         return <MyLoansPage onNavigate={setPage} />
 
       case 'activity':
-        return (
-          <div className="max-w-2xl mx-auto py-12 text-center space-y-4">
-            <Activity size={32} className="mx-auto" style={{ color: 'var(--muted)' }} />
-            <h3 className="text-lg font-semibold" style={{ fontFamily: 'Space Grotesk' }}>Activity</h3>
-            <p className="text-sm text-pretty max-w-xs mx-auto" style={{ color: 'var(--muted)' }}>
-              A live feed of onchain LoanBook events is coming soon.
-              For now, use the Arc Explorer to see all contract transactions.
-            </p>
-            <a
-              href="https://explorer.testnet.arc.io/address/0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228"
-              target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
-              style={{ color: 'var(--accent-light)' }}
-            >
-              View on Arc Explorer
-            </a>
-          </div>
-        )
+        return <ActivityPage />
 
       case 'direct':
         return (
@@ -107,15 +93,7 @@ export default function App() {
         )
 
       case 'settings':
-        return (
-          <div className="max-w-2xl mx-auto py-12 text-center space-y-4">
-            <Settings size={32} className="mx-auto" style={{ color: 'var(--muted)' }} />
-            <h3 className="text-lg font-semibold" style={{ fontFamily: 'Space Grotesk' }}>Settings</h3>
-            <p className="text-sm max-w-xs mx-auto text-pretty" style={{ color: 'var(--muted)' }}>
-              Settings panel coming soon. Use the Get test USDC button in the Arc Studio sidebar for testnet funds.
-            </p>
-          </div>
-        )
+        return <div className="card p-6 space-y-4 max-w-xl"><h2 className="text-lg font-semibold">Network & privacy</h2><p>{activeChain.name} · Chain {activeChain.id}</p><a className="text-sm break-all underline" href={explorerUrl + '/address/' + contractAddress} target="_blank" rel="noreferrer">View LoanBook contract</a><p className="text-sm">Communities use wallet signatures to protect conversations. Loan amounts, counterparties and transactions are public on Arc. Loans are unsecured, zero interest, and have no guaranteed repayment.</p><button className="btn-secondary" onClick={auth.signOut}>Sign out of communities</button></div>
 
       default:
         return null
@@ -133,10 +111,7 @@ export default function App() {
         {/* Community page gets wider layout; others are narrower — handled inside each page */}
         {renderPage()}
 
-        {/* Request Loan sheet — shown over current page */}
-        {page === 'communities' && false /* handled inside CommunityHub */ && (
-          <LoanRequestPanel onCreated={handleLoanCreated} />
-        )}
+
       </AppShell>
     </NetworkGuard>
   )

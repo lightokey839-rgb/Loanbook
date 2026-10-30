@@ -1,3 +1,7 @@
+# Current handover — 29 October 2026
+
+Read README.md and NEXT_STEPS.md first. The fresh schema is already installed remotely; do not rerun it. The additive 004 migration has passed local tests but is NOT deployed. No GitHub push, public frontend deployment or mainnet transaction was performed. The following Studio memory is historical provenance and may describe earlier states.
+
 # LoanBook
 
 > Built with Arc Studio - money-powered apps in minutes
@@ -67,6 +71,21 @@ LoanBook is a private community P2P USDC micro-loan registry on Arc Testnet. Mem
 - `src/App.tsx` - Main application logic
 - `src/components/` - UI components
 - `src/config.ts` - wagmi config (chains, connectors, transports)
+
+## Supabase / Database
+
+**State:** Database is EMPTY (confirmed 2026-10-28 via SQL Editor).
+**Migration to run:** `supabase/migrations/001_loanbook_fresh_install.sql`
+This is a single-file fresh-install migration combining all schema, RLS policies, and
+SECURITY DEFINER functions. Tested 58/58 against Docker Postgres 15 (empty DB).
+Do NOT run the older numbered migrations (001_loanbook_schema, 002_security_hardening,
+003_native_web3_auth) — they are superseded by the fresh-install file.
+
+**Before running:** Enable Ethereum Web3 provider in Supabase Dashboard → Authentication → Providers → Web3.
+
+**Identity structure (verified from Supabase Auth Go source, 2026-10-28):**
+`auth.identities.identity_data->'custom_claims'->>'address'` — SIWE-verified wallet.
+`auth.identities.provider` = `'web3'`
 
 ## To Run
 

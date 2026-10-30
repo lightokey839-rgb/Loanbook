@@ -1,197 +1,1 @@
-import { useState } from 'react'
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { arcTestnet } from 'viem/chains'
-import { isAddress } from 'viem'
-import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseUsdc, validateUsdcInput } from '../loanbook-contract'
-import { parseOnchainError } from '../onchain-error'
-import { TxButton, type TxState } from './TxButton'
-import { TxReceipt } from './TxReceipt'
-
-interface Props { onCreated: (loanId: bigint) => void }
-
-export function CreateLoanPanel({ onCreated }: Props) {
-  const { address } = useAccount()
-  const [lenderAddr, setLenderAddr] = useState('')
-  const [amount, setAmount] = useState('0.01')
-  const [days, setDays] = useState('7')
-  const [error, setError] = useState('')
-
-  const { writeContract, data: hash, isPending, error: writeError, reset } = useWriteContract()
-  const { isLoading: isConfirming, isSuccess, data: receipt } =
-    useWaitForTransactionReceipt({ hash })
-
-  // Parse loanId from LoanCreated event in receipt
-  const createdLoanId = (() => {
-    if (!receipt) return null
-    // LoanCreated topic0 = keccak256("LoanCreated(uint256,address,address,uint256,uint256)")
-    for (const log of receipt.logs) {
-      if (
-        log.address.toLowerCase() === LOANBOOK_ADDRESS.toLowerCase() &&
-        log.topics[0] === '0xd62d0078daaad723b2ab43c15be6e72d2e7bf915e6314eb46555234b40f5fdf2'
-      ) {
-        // topics[1] = loanId (uint256, indexed)
-        return log.topics[1] ? BigInt(log.topics[1]) : null
-      }
-    }
-    return null
-  })()
-
-  if (isSuccess && createdLoanId !== null) {
-    onCreated(createdLoanId)
-  }
-
-  const txState: TxState =
-    isPending ? 'signing' :
-    isConfirming ? 'confirming' :
-    isSuccess ? 'success' : 'idle'
-
-  const displayError = error || (writeError ? parseOnchainError(writeError) : '')
-
-  function handleCreate() {
-    setError('')
-    if (!address) { setError('Connect your wallet first.'); return }
-    if (!isAddress(lenderAddr)) { setError('Enter a valid lender address.'); return }
-    if (lenderAddr.toLowerCase() === address.toLowerCase()) { setError('Borrower and lender must be different.'); return }
-    // LB-018 fix: string-based bigint validation â€” no floating-point
-    const amtErr = validateUsdcInput(amount, { min: 1n })
-    if (amtErr) { setError(amtErr); return }
-    const rawAmount = parseUsdc(amount)
-    const daysInt = parseInt(days, 10)
-    if (isNaN(daysInt) || daysInt <= 0 || daysInt > 3650) {
-      setError('Duration must be between 1 and 3650 days.'); return
-    }
-    const durationSecs = daysInt * 86400
-
-    reset()
-    writeContract({
-      address: LOANBOOK_ADDRESS,
-      abi: LOANBOOK_ABI,
-      functionName: 'createLoan',
-      args: [lenderAddr, rawAmount, BigInt(durationSecs)],
-      chainId: arcTestnet.id,
-    })
-  }
-
-  return (
-    <div className="glass p-6 space-y-5">
-      <div>
-        <h2 className="text-base font-semibold" style={{ fontFamily: 'Space Grotesk' }}>Create Loan Request</h2>
-        <p className="text-xs mt-1" style={{ color: 'var(--color-muted)' }}>
-          You are the borrower. Name a lender, amount, and duration.
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        <div>
-          <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--color-muted)' }}>
-            Lender address
-          </label>
-          <input
-            type="text"
-            placeholder="0xâ€¦"
-            value={lenderAddr}
-            onChange={e => setLenderAddr(e.target.value.trim())}
-            className="w-full rounded-xl px-4 py-3 text-sm mono outline-none transition-colors"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid var(--color-border)',
-              color: 'var(--color-text)',
-            }}
-          />
-        </div>
-
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--color-muted)' }}>
-              Amount (USDC)
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                min="0.000001"
-                step="0.01"
-                value={amount}
-                onChange={e => setAmount(e.target.value)}
-                className="w-full rounded-xl px-4 py-3 text-sm tabular-nums outline-none"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text)',
-                }}
-              />
-              <span
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold"
-                style={{ color: 'var(--color-accent-light)' }}
-              >
-                USDC
-              </span>
-            </div>
-            <div className="flex gap-1 mt-1.5">
-              {['0.01','0.10','1.00','5.00'].map(v => (
-                <button
-                  key={v}
-                  onClick={() => setAmount(v)}
-                  className="text-xs px-2 py-0.5 rounded-md transition-colors"
-                  style={{
-                    background: amount === v ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)',
-                    color: amount === v ? 'var(--color-accent-light)' : 'var(--color-muted)',
-                  }}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="w-32">
-            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--color-muted)' }}>
-              Duration (days)
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                min="1"
-                step="1"
-                value={days}
-                onChange={e => setDays(e.target.value)}
-                className="w-full rounded-xl px-4 py-3 text-sm tabular-nums outline-none"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text)',
-                }}
-              />
-              <span
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs"
-                style={{ color: 'var(--color-muted)' }}
-              >
-                d
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {displayError && (
-        <p className="text-xs rounded-lg px-3 py-2" style={{ color: 'var(--color-red)', background: 'rgba(239,68,68,0.08)' }}>
-          {displayError}
-        </p>
-      )}
-
-      <TxButton state={txState} onClick={handleCreate} className="w-full">
-        Create Loan Request
-      </TxButton>
-
-      {hash && <TxReceipt hash={hash} label="Create tx" chainId={arcTestnet.id} />}
-
-      {isSuccess && createdLoanId !== null && (
-        <div
-          className="rounded-xl px-4 py-3 text-sm"
-          style={{ background: 'rgba(34,197,94,0.08)', color: 'var(--color-green)' }}
-        >
-          Loan #{createdLoanId.toString()} created. Scroll down to fund it.
-        </div>
-      )}
-    </div>
-  )
-}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíÛŽ¶N‹Z–‹­¦ëeŠw¬Õ¥µÁ½ÉÐìÕÍ•MÑ…Ñ”°ÕÍ•™™•Ðô™É½´€É•…Ðœ)¥µÁ½ÉÐìÕÍ•½Õ¹Ð°ÕÍ•]É¥Ñ•½¹ÑÉ…Ð°ÕÍ•]…¥Ñ½ÉQÉ…¹Í…Ñ¥½¹I••¥ÁÐô™É½´€Ý…µ¤œ)¥µÁ½ÉÐì…Ñ¥Ù•¡…¥¸…Ì…ÉQ•ÍÑ¹•Ðô™É½´€œ¸¸½¹•ÑÝ½É¬œ)¥µÁ½ÉÐì¥Í‘‘É•ÍÌô™É½´€Ù¥•´œ)¥µÁ½ÉÐì1=9	==-}IML°1=9	==-}	$°Á…ÉÍ•UÍ‘Œ°Ù…±¥‘…Ñ•UÍ‘%¹ÁÕÐô™É½´€œ¸¸½±½…¹‰½½¬µ½¹ÑÉ…Ðœ)¥µÁ½ÉÐìÁ…ÉÍ•=¹¡…¥¹ÉÉ½Èô™É½´€œ¸¸½½¹¡…¥¸µ•ÉÉ½Èœ)¥µÁ½ÉÐìQá	ÕÑÑ½¸°ÑåÁ”QáMÑ…Ñ”ô™É½´€œ¸½Qá	ÕÑÑ½¸œ)¥µÁ½ÉÐìQáI••¥ÁÐô™É½´€œ¸½QáI••¥ÁÐœ()¥¹Ñ•É™…”AÉ½ÁÌì½¹É•…Ñ•è€¡±½…¹%è‰¥¥¹Ð¤€ôøÙ½¥ô()•áÁ½ÉÐ™Õ¹Ñ¥½¸É•…Ñ•1½…¹A…¹•°¡ì½¹É•…Ñ•ôèAÉ½ÁÌ¤ì(€½¹ÍÐì…‘‘É•ÍÌô€ôÕÍ•½Õ¹Ð ¤(€½¹ÍÐm±•¹‘•É‘‘È°Í•Ñ1•¹‘•É‘‘Ét€ôÕÍ•MÑ…Ñ” œœ¤(€½¹ÍÐm…µ½Õ¹Ð°Í•Ñµ½Õ¹Ñt€ôÕÍ•MÑ…Ñ” œÀ¸ÀÄœ¤(€½¹ÍÐm‘…åÌ°Í•Ñ…åÍt€ôÕÍ•MÑ…Ñ” œÜœ¤(€½¹ÍÐm•ÉÉ½È°Í•ÑÉÉ½Ét€ôÕÍ•MÑ…Ñ” œœ¤((€½¹ÍÐìÝÉ¥Ñ•½¹ÑÉ…Ð°‘…Ñ„è¡…Í °¥ÍA•¹‘¥¹œ°•ÉÉ½ÈèÝÉ¥Ñ•ÉÉ½È°É•Í•Ðô€ôÕÍ•]É¥Ñ•½¹ÑÉ…Ð ¤(€½¹ÍÐì¥Í1½…‘¥¹œè¥Í½¹™¥Éµ¥¹œ°¥ÍMÕ•ÍÌ°‘…Ñ„èÉ••¥ÁÐô€ô(€€€ÕÍ•]…¥Ñ½ÉQÉ…¹Í…Ñ¥½¹I••¥ÁÐ¡ì¡…Í ô¤((€€¼¼A…ÉÍ”±½…¹%™É½´1½…¹É•…Ñ••Ù•¹Ð¥¸É••¥ÁÐ(€½¹ÍÐÉ•…Ñ•‘1½…¹%€ô€  ¤€ôøì(€€€¥˜€ …É••¥ÁÐ¤É•ÑÕÉ¸¹Õ±°(€€€€¼¼1½…¹É•…Ñ•Ñ½Á¥ŒÀ€ô­•…¬ÈÔØ ‰1½…¹É•…Ñ•¡Õ¥¹ÐÈÔØ±…‘‘É•ÍÌ±…‘‘É•ÍÌ±Õ¥¹ÐÈÔØ±Õ¥¹ÐÈÔØ¤ˆ¤(€€€™½È€¡½¹ÍÐ±½œ½˜É••¥ÁÐ¹±½Ì¤ì(€€€€€¥˜€ (€€€€€€€±½œ¹…‘‘É•ÍÌ¹Ñ½1½Ý•É…Í” ¤€ôôô1=9	==-}IML¹Ñ½1½Ý•É…Í” ¤€˜˜(€€€€€€€±½œ¹Ñ½Á¥ÍlÁt€ôôô€œÁáØÉÀÀÜá‘………ÜÈÍˆÉ…ˆÐÍŒÄÕ‰”Ù”ÜÉÉ”Ý‰˜äÄÕ”ØÌÄÑ•ˆÐØÔÔÔÈÌÑˆÐÁ˜Õ™‘˜Èœ(€€€€€€¤ì(€€€€€€€€¼¼Ñ½Á¥ÍlÅt€ô±½…¹%€¡Õ¥¹ÐÈÔØ°¥¹‘•á•¤(€€€€€€€É•ÑÕÉ¸±½œ¹Ñ½Á¥ÍlÅt€ü	¥%¹Ð¡±½œ¹Ñ½Á¥ÍlÅt¤€è¹Õ±°(€€€€€ô(€€€ô(€€€É•ÑÕÉ¸¹Õ±°(€ô¤ ¤((€ÕÍ•™™•Ð  ¤€ôøì(€€€¥˜€¡¥ÍMÕ•ÍÌ€˜˜É••¥ÁÐü¹ÍÑ…ÑÕÌ€ôôô€ÍÕ•ÍÌœ€˜˜É•…Ñ•‘1½…¹%€„ôô¹Õ±°¤½¹É•…Ñ•¡É•…Ñ•‘1½…¹%¤(€ô°m¥ÍMÕ•ÍÌ°É••¥ÁÐü¹ÍÑ…ÑÕÌ°É•…Ñ•‘1½…¹%°½¹É•…Ñ•‘t¤((€½¹ÍÐÑáMÑ…Ñ”èQáMÑ…Ñ”€ô(€€€¥ÍA•¹‘¥¹œ€ü€Í¥¹¥¹œœ€è(€€€¥Í½¹™¥Éµ¥¹œ€ü€½¹™¥Éµ¥¹œœ€è(€€€¥ÍMÕ•ÍÌ€ü€ÍÕ•ÍÌœ€è€¥‘±”œ((€½¹ÍÐ‘¥ÍÁ±…åÉÉ½È€ô•ÉÉ½Èñð€¡ÝÉ¥Ñ•ÉÉ½È€üÁ…ÉÍ•=¹¡…¥¹ÉÉ½È¡ÝÉ¥Ñ•ÉÉ½È¤€è€œœ¤((€™Õ¹Ñ¥½¸¡…¹‘±•É•…Ñ” ¤ì(€€€Í•ÑÉÉ½È œœ¤(€€€¥˜€ ……‘‘É•ÍÌ¤ìÍ•ÑÉÉ½È ½¹¹•Ðå½ÕÈÝ…±±•Ð™¥ÉÍÐ¸œ¤ìÉ•ÑÕÉ¸ô(€€€¥˜€ …¥Í‘‘É•ÍÌ¡±•¹‘•É‘‘È¤¤ìÍ•ÑÉÉ½È ¹Ñ•È„Ù…±¥±•¹‘•È…‘‘É•ÍÌ¸œ¤ìÉ•ÑÕÉ¸ô(€€€¥˜€¡±•¹‘•É‘‘È¹Ñ½1½Ý•É…Í” ¤€ôôô…‘‘É•ÍÌ¹Ñ½1½Ý•É…Í” ¤¤ìÍ•ÑÉÉ½È 	½ÉÉ½Ý•È…¹±•¹‘•ÈµÕÍÐ‰”‘¥™™•É•¹Ð¸œ¤ìÉ•ÑÕÉ¸ô(€€€€¼¼1´ÀÄà™¥àèÍÑÉ¥¹œµ‰…Í•‰¥¥¹ÐÙ…±¥‘…Ñ¥½¸ƒŠP¹¼™±½…Ñ¥¹œµÁ½¥¹Ð(€€€½¹ÍÐ…µÑÉÈ€ôÙ…±¥‘…Ñ•UÍ‘%¹ÁÕÐ¡…µ½Õ¹Ð°ìµ¥¸è€Å¸ô¤(€€€¥˜€¡…µÑÉÈ¤ìÍ•ÑÉÉ½È¡…µÑÉÈ¤ìÉ•ÑÕÉ¸ô(€€€½¹ÍÐÉ…Ýµ½Õ¹Ð€ôÁ…ÉÍ•UÍ‘Œ¡…µ½Õ¹Ð¤(€€€½¹ÍÐ‘…åÍ%¹Ð€ô9Õµ‰•È¡‘…åÌ¤(€€€¥˜€ …9Õµ‰•È¹¥Í%¹Ñ••È¡‘…åÍ%¹Ð¤ñð‘…åÍ%¹Ð€ðô€Àñð‘…åÍ%¹Ð€ø€ÌØÔÀ¤ì(€€€€€Í•ÑÉÉ½È ÕÉ…Ñ¥½¸µÕÍÐ‰”‰•ÑÝ••¸€Ä…¹€ÌØÔÀ‘…åÌ¸œ¤ìÉ•ÑÕÉ¸(€€€ô(€€€½¹ÍÐ‘ÕÉ…Ñ¥½¹M•Ì€ô‘…åÍ%¹Ð€¨€àØÐÀÀ((€€€É•Í•Ð ¤(€€€ÝÉ¥Ñ•½¹ÑÉ…Ð¡ì(€€€€€…‘‘É•ÍÌè1=9	==-}IML°(€€€€€…‰¤è1=9	==-}	$°(€€€€€™Õ¹Ñ¥½¹9…µ”è€É•…Ñ•1½…¸œ°(€€€€€…ÉÌèm±•¹‘•É‘‘È°É…Ýµ½Õ¹Ð°	¥%¹Ð¡‘ÕÉ…Ñ¥½¹M•Ì¥t°(€€€€€¡…¥¹%è…ÉQ•ÍÑ¹•Ð¹¥°(€€€ô¤(€ô((€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰±…ÍÌÀ´ØÍÁ…”µçŽ¶¶‰žËkºwµçP¢öä6†ævS×¶RÓâ6WDÖ÷VçB†RçF&vWBçfÇVR—Ð¢6Æ74æÖSÒ'rÖgVÆÂ&÷VæFVB×†Â‚ÓB’Ó2FW‡B×6ÒF'VÆ"ÖçV×2÷WFÆ–æRÖæöæR ¢7G–ÆS×·°¢&6¶w&÷VæC¢w&v&ƒ#SRÃ#SRÃ#SRÃãB’rÀ¢&÷&FW#¢s‚6öÆ–Bf"‚ÒÖ6öÆ÷"Ö&÷&FW"’rÀ¢6öÆ÷#¢wf"‚ÒÖ6öÆ÷"×FW‡B’rÀ¢×Ð¢óà¢Ç7à¢6Æ74æÖSÒ&'6öÇWFR&–v‡BÓ2F÷Óó"×G&ç6ÆFR×’Óó"FW‡B×‡2föçB×6VÖ–&öÆB ¢7G–ÆS×·²6öÆ÷#¢wf"‚ÒÖ6öÆ÷"Ö66VçBÖÆ–v‡B’r×Ð¢à¢U4D0¢Â÷7ãà¢ÂöF—cà¢ÆF—b6Æ74æÖSÒ&fÆW‚vÓ×BÓãR#à¢µ²sãrÂsãrÂsãrÂsRãuÒæÖ‡bÓâ€¢Æ'WGFöà¢¶W“×·gÐ¢öä6Æ–6³×²‚’Óâ6WDÖ÷VçB‡b—Ð¢6Æ74æÖSÒ'FW‡B×‡2‚Ó"’ÓãR&÷VæFVBÖÖBG&ç6—F–öâÖ6öÆ÷'2 ¢7G–ÆS×·°¢&6¶w&÷VæC¢Ö÷VçBÓÓÒbòw&v&ƒS’Ã3Ã#CbÃã"’r¢w&v&ƒ#SRÃ#SRÃ#SRÃãR’rÀ¢6öÆ÷#¢Ö÷VçBÓÓÒbòwf"‚ÒÖ6öÆ÷"Ö66VçBÖÆ–v‡B’r¢wf"‚ÒÖ6öÆ÷"Ö×WFVB’rÀ¢×Ð¢à¢·gÐ¢Âö'WGFöãà¢’—Ð¢ÂöF—cà¢ÂöF—cà ¢ÆF—b6Æ74æÖSÒ'rÓ3"#à¢ÆÆ&VÂ6Æ74æÖSÒ&&Æö6²FW‡B×‡2föçBÖÖVF—VÒÖ"ÓãR"7G–ÆS×·²6öÆ÷#¢wf"‚ÒÖ6öÆ÷"Ö×WFVB’r×Óà¢GW&F–öâ†F—2¢ÂöÆ&VÃà¢ÆF—b6Æ74æÖSÒ'&VÆF—fR#à¢Æ–çW@¢G—SÒ&çVÖ&W" ¢Ö–ãÒ# ¢7FWÒ# ¢fÇVS×¶F—7Ð¢öä6†ævS×¶RÓâ6WDF—2†RçF&vWBçfÇVR—Ð¢6Æ74æÖSÒ'rÖgVÆÂ&÷VæFVB×†Â‚ÓB’Ó2FW‡B×6ÒF'VÆ"ÖçV×2÷WFÆ–æRÖæöæR ¢7G–ÆS×·°¢&6¶w&÷VæC¢w&v&ƒ#SRÃ#SRÃ#SRÃãB’rÀ¢&÷&FW#¢s‚6öÆ–Bf"‚ÒÖ6öÆ÷"Ö&÷&FW"’rÀ¢6öÆ÷#¢wf"‚ÒÖ6öÆ÷"×FW‡B’rÀ¢×Ð¢óà¢Ç7à¢6Æ74æÖSÒ&'6öÇWFR&–v‡BÓ2F÷Óó"×G&ç6ÆFR×’Óó"FW‡B×‡2 ¢7G–ÆS×·²6öÆ÷#¢wf"‚ÒÖ6öÆ÷"Ö×WFVB’r×Ð¢à¢@¢Â÷7ãà¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà ¢¶F—7Æ”W'&÷"bb€¢Ç6Æ74æÖSÒ'FW‡B×‡2&÷VæFVBÖÆr‚Ó2’Ó""7G–ÆS×·²6öÆ÷#¢wf"‚ÒÖ6öÆ÷"×&VB’rÂ&6¶w&÷VæC¢w&v&ƒ#3’Ãc‚Ãc‚Ãã‚’r×Óà¢¶F—7Æ”W'&÷'Ð¢Â÷à¢—Ð ¢ÅG„'WGFöâ7FFS×·G…7FFWÒöä6Æ–6³×¶†æFÆT7&VFWÒ6Æ74æÖSÒ'rÖgVÆÂ#à¢7&VFRÆöâ&WVW7@¢ÂõG„'WGFöãà ¢¶†6‚bbÅG…&V6V—B†6ƒ×¶†6‡ÒÆ&VÃÒ$7&VFRG‚"6†–ä–C×¶&5FW7FæWBæ–GÒóçÐ ¢¶—57V66W72bb7&VFVDÆöä–BÓÒçVÆÂbb€¢ÆF—`¢6Æ74æÖSÒ'&÷VæFVB×†Â‚ÓB’Ó2FW‡B×6Ò ¢7G–ÆS×·²&6¶w&÷VæC¢w&v&ƒ3BÃ“rÃ“BÃã‚’rÂ6öÆ÷#¢wf"‚ÒÖ6öÆ÷"Öw&VVâ’r×Ð¢à¢Æöâ7¶7&VFVDÆöä–BçFõ7G&–ær‚—Ò7&VFVBâ67&öÆÂF÷vâFògVæB—Bà¢ÂöF—cà¢—Ð¢ÂöF—cà¢§Ð 

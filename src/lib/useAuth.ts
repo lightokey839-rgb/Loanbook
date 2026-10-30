@@ -1,94 +1,65 @@
-/**
- * useAuth — React hook wrapping the wallet-signature auth flow.
- *
- * Returns the current session (if any), a signIn function, and a signOut function.
- * The session is stored in sessionStorage so it survives page reloads but not
- * new browser sessions or private-browsing windows.
- */
-import { useState, useEffect, useCallback } from 'react'
-import { useAccount, useSignMessage } from 'wagmi'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useAccount, useWalletClient } from 'wagmi'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import {
-  signIn as authSignIn,
-  signOut as authSignOut,
-  loadSession,
-  clearSession,
-  makeWagmiSigner,
-  type AuthSession,
-  AuthError,
-} from './auth'
-import { makeSupabaseClient } from './supabase'
-
+import { signIn as authenticate, signOut as endSession, restoreSession, verifiedWallet, type AuthSession } from './auth'
+import { getSupabaseClient } from './supabase'
 export type AuthStatus = 'idle' | 'signing' | 'verifying' | 'authenticated' | 'error'
-
 export interface AuthState {
-  status: AuthStatus
-  session: AuthSession | null
-  client: SupabaseClient | null
-  error: string | null
-  signIn: () => Promise<void>
-  signOut: () => void
+  status: AuthStatus; session: AuthSession | null; client: SupabaseClient | null;
+  wallet: string | null; error: string | null; signIn: () => Promise<void>; signOut: () => void;
 }
-
 export function useAuth(): AuthState {
-  const { address } = useAccount()
-  const { signMessageAsync } = useSignMessage()
-
+  const { address, status: connection } = useAccount()
+  const { data: walletClient } = useWalletClient()
   const [status, setStatus] = useState<AuthStatus>('idle')
   const [session, setSession] = useState<AuthSession | null>(null)
   const [error, setError] = useState<string | null>(null)
-
-  // Restore session from sessionStorage on mount / wallet change
+  const generation = useRef(0)
+  const busy = useRef(false)
   useEffect(() => {
-    const saved = loadSession()
-    if (saved && address && saved.wallet === address.toLowerCase()) {
-      const client = makeSupabaseClient(saved.token)
-      if (client) {
-        setSession({ ...saved, client })
-        setStatus('authenticated')
-        return
+    const version = ++generation.current
+    let active = true
+    // Synchronize React state with the external wallet identity and connection.
+    // oxlint-disable-next-line react/set-state-in-effect
+    setSession(null); setStatus('idle'); setError(null)
+    if (connection === 'reconnecting' || connection === 'connecting') return
+    if (!address) { void endSession(); return }
+    void restoreSession(address).then(restored => {
+      if (active && version === generation.current && !busy.current && restored) {
+        setSession(restored); setStatus('authenticated')
       }
-    }
-    // Wallet changed or no saved session — clear
-    if (session && address && session.wallet !== address.toLowerCase()) {
-      clearSession()
-      setSession(null)
-      setStatus('idle')
-    }
-  // Only re-run when address changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address])
-
+    }).catch(() => { /* AuthGate offers a fresh signature after a failed restore. */ })
+    const client = getSupabaseClient()
+    const subscription = client?.auth.onAuthStateChange((event, next) => {
+      // Do not await Supabase calls here: the SDK holds its auth lock.
+      if (!active || busy.current || event === 'INITIAL_SESSION') return
+      if (!next || verifiedWallet(next.user) !== address.toLowerCase()) {
+        setSession(null); setStatus('idle')
+      } else if (client) {
+        setSession({ wallet: address.toLowerCase(), userId: next.user.id, client }); setStatus('authenticated')
+      }
+    }).data.subscription
+    return () => { active = false; generation.current = version + 1; subscription?.unsubscribe() }
+  }, [address, connection])
   const signIn = useCallback(async () => {
-    if (!address) { setError('Connect your wallet first'); return }
-    setError(null)
-    setStatus('signing')
+    if (busy.current) return
+    if (!address || !walletClient) { setError('Connect and unlock your wallet first.'); return }
+    const version = generation.current
+    busy.current = true; setError(null); setStatus('signing')
     try {
-      const signer = makeWagmiSigner(signMessageAsync)
-      setStatus('verifying')
-      const sess = await authSignIn(address, signer)
-      setSession(sess)
-      setStatus('authenticated')
+      const next = await authenticate(address, walletClient, () => version === generation.current)
+      if (version !== generation.current) return
+      const { error: profileError } = await next.client.rpc('upsert_my_profile')
+      if (profileError) throw new Error('Wallet verified, but your community profile could not load. Check database setup and retry.')
+      if (version === generation.current) { setSession(next); setStatus('authenticated') }
     } catch (e) {
-      const msg = e instanceof AuthError ? e.message : 'Sign-in failed'
-      setError(msg)
-      setStatus('error')
-    }
-  }, [address, signMessageAsync])
-
+      if (version === generation.current) { setSession(null); setError(e instanceof Error ? e.message : 'Sign-in failed'); setStatus('error') }
+    } finally { busy.current = false }
+  }, [address, walletClient])
   const signOut = useCallback(() => {
-    authSignOut()
-    setSession(null)
-    setStatus('idle')
-    setError(null)
+    generation.current++; setSession(null); setStatus('idle'); setError(null); void endSession()
   }, [])
-
-  return {
-    status,
-    session,
-    client: (session?.client ?? null),
-    error,
-    signIn,
-    signOut,
-  }
+  const visible = address && session?.wallet === address.toLowerCase() ? session : null
+  return { status: status === 'authenticated' && !visible ? 'idle' : status, session: visible,
+    client: visible?.client ?? getSupabaseClient(), wallet: visible?.wallet ?? null, error, signIn, signOut }
 }

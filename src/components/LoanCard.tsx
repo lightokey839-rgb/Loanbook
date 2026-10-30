@@ -1,5 +1,5 @@
 import { useReadContract } from 'wagmi'
-import { arcTestnet } from 'viem/chains'
+import { activeChain as arcTestnet } from '../network'
 import { LOANBOOK_ADDRESS, LOANBOOK_ABI, LoanData, formatUsdc, formatTs, shortAddr, parseLoan } from '../loanbook-contract'
 import { LoanStatusBadge } from './LoanStatusBadge'
 import { buildAddressExplorerUrl } from '../onchain-facts'

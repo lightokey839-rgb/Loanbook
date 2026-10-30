@@ -1,153 +1,106 @@
-/**
- * Wallet-signature authentication for LoanBook.
- *
- * Flow:
- *  1. Request a nonce from /api/auth/nonce  (POST { wallet })
- *  2. Show a pre-structured SIWE message to the wallet for personal_sign
- *  3. POST { wallet, signature, nonce } to /api/auth/verify
- *  4. Receive a JWT — store it in sessionStorage (not localStorage, so it
- *     does not persist across browser sessions)
- *  5. Use that JWT for all Supabase calls (makeSupabaseClient(token))
- *
- * Security notes:
- * - We never trust a user-supplied address claim; the server recovers the
- *   signer address from the signature and compares it to the wallet param.
- * - Nonces are single-use and expire in 5 minutes.
- * - The JWT binds the session to a verified wallet address.
- * - Domain binding is enforced server-side (APP_DOMAIN in the SIWE message).
- */
-
-import { type WalletClient } from 'viem'
-import type { SupabaseClient } from '@supabase/supabase-js'
-import { makeSupabaseClient } from './supabase'
-
-const SESSION_KEY = 'loanbook:auth_token'
-const SESSION_WALLET_KEY = 'loanbook:auth_wallet'
-
-// ── Types ─────────────────────────────────────────────────────────────────
-
-export interface AuthSession {
-  token: string
-  wallet: string
-  client: SupabaseClient
-}
-
-// ── Helpers ────────────────────────────────────────────────────────────────
-
-function saveSession(token: string, wallet: string): void {
-  sessionStorage.setItem(SESSION_KEY, token)
-  sessionStorage.setItem(SESSION_WALLET_KEY, wallet.toLowerCase())
-}
-
-export function loadSession(): { token: string; wallet: string } | null {
-  const token  = sessionStorage.getItem(SESSION_KEY)
-  const wallet = sessionStorage.getItem(SESSION_WALLET_KEY)
-  if (!token || !wallet) return null
-  // Basic expiry check — decode the payload (no verify, server verifies)
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1])) as { exp?: number }
-    if (payload.exp && payload.exp < Date.now() / 1000) {
-      clearSession()
-      return null
-    }
-  } catch {
-    return null
-  }
-  return { token, wallet }
-}
-
-export function clearSession(): void {
-  sessionStorage.removeItem(SESSION_KEY)
-  sessionStorage.removeItem(SESSION_WALLET_KEY)
-}
-
-export function getAuthClient(): ReturnType<typeof makeSupabaseClient> {
-  const s = loadSession()
-  if (!s) return null
-  return makeSupabaseClient(s.token)
-}
-
-// ── Auth flow ──────────────────────────────────────────────────────────────
-
+/** Native Supabase Web3 auth. Never trust editable user_metadata. */
+import type { SupabaseClient, User } from '@supabase/supabase-js'
+import { getAddress, verifyMessage, type WalletClient } from 'viem'
+import { createSiweMessage } from 'viem/siwe'
+import { getSupabaseClient } from './supabase'
+export interface AuthSession { wallet: string; userId: string; client: SupabaseClient }
 export class AuthError extends Error {
   constructor(message: string) { super(message); this.name = 'AuthError' }
 }
-
-/**
- * Full sign-in flow. Calls the auth server, prompts wallet signature,
- * verifies with server, stores session, returns AuthSession.
- *
- * @param wallet  - lowercase 0x address (from useAccount)
- * @param signMessage - async function that signs a message with the wallet
- */
-export async function signIn(
-  wallet: string,
-  signMessage: (message: string) => Promise<string>,
-): Promise<AuthSession> {
-  const norm = wallet.toLowerCase()
-
-  // Step 1 — Get nonce
-  const nonceRes = await fetch('/api/auth/nonce', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ wallet: norm }),
+export function verifiedWallet(user: Pick<User, 'identities'>): string | null {
+  const identity = user.identities?.find(i => {
+    const data = i.identity_data as { custom_claims?: { chain?: unknown } } | undefined
+    return i.provider === 'web3' && data?.custom_claims?.chain === 'ethereum'
   })
-  if (!nonceRes.ok) {
-    const err = await nonceRes.json().catch(() => ({})) as { error?: string }
-    throw new AuthError(err.error ?? 'Failed to get nonce')
+  const data = identity?.identity_data as { custom_claims?: { address?: unknown } } | undefined
+  const address = data?.custom_claims?.address
+  return typeof address === 'string' && /^0x[0-9a-f]{40}$/i.test(address) ? address.toLowerCase() : null
+}
+export function buildSignInMessage(address: string, chainId: number, origin: string, now = new Date()) {
+  if (![5042, 5042002].includes(chainId)) throw new AuthError('Switch to an Arc network before signing in.')
+  const url = new URL(origin)
+  // Supabase Auth's SIWE parser accepts `localhost` but rejects IP-literal
+  // domains such as 127.0.0.1. Keep the signed domain identical to the page
+  // origin and direct local users to the registered localhost origin.
+  if (url.protocol === 'http:' && url.hostname !== 'localhost') {
+    throw new AuthError('Use the registered local URL http://localhost:5173 for wallet sign-in.')
   }
-  const { nonce, message } = await nonceRes.json() as { nonce: string; message: string }
-
-  // Step 2 — Sign message
-  let signature: string
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') {
+    throw new AuthError('Wallet sign-in requires HTTPS.')
+  }
+  const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('')
+  return createSiweMessage({
+    address: getAddress(address), chainId, domain: url.host, uri: url.origin + '/',
+    version: '1', nonce, issuedAt: now, expirationTime: new Date(now.getTime() + 5 * 60_000),
+    statement: 'Sign in to LoanBook private lending circles. This does not authorize a transfer.',
+  })
+}
+export async function authenticateWallet(client: SupabaseClient, connectedAddress: string,
+  walletClient: WalletClient, origin: string, stillCurrent: () => boolean = () => true): Promise<AuthSession> {
+  const expected = getAddress(connectedAddress)
+  const checkAccount = async () => {
+    const accounts = await walletClient.getAddresses()
+    const providerAddress = accounts[0]
+    const clientAddress = walletClient.account?.address
+    if (!providerAddress || !stillCurrent() || providerAddress.toLowerCase() !== expected.toLowerCase()) {
+      throw new AuthError('Wallet changed. Sign in again with your connected account.')
+    }
+    // A WalletClient can outlive a connector account switch. Refuse to sign
+    // if its bound JSON-RPC account differs from the provider's active account.
+    if (clientAddress && clientAddress.toLowerCase() !== providerAddress.toLowerCase()) {
+      throw new AuthError('Your wallet connection is stale. Disconnect and reconnect the same account, then try again.')
+    }
+    return getAddress(providerAddress)
+  }
   try {
-    signature = await signMessage(message)
-  } catch {
-    throw new AuthError('Wallet signature cancelled or failed')
+    const activeAddress = await checkAccount()
+    const chainId = await walletClient.getChainId()
+    const message = buildSignInMessage(activeAddress, chainId, origin)
+    // Use viem's signer instead of manually constructing personal_sign params.
+    // This binds the request to the WalletClient's active JSON-RPC account and
+    // avoids injected-wallet address-verification mismatches.
+    const signature = await walletClient.signMessage({ account: activeAddress, message })
+    await checkAccount()
+    if (await walletClient.getChainId() !== chainId) throw new AuthError('Network changed. Please sign in again.')
+    if (!await verifyMessage({ address: expected, message, signature })) throw new AuthError('Signature does not match the connected wallet.')
+    const { data, error } = await client.auth.signInWithWeb3({ chain: 'ethereum', message, signature })
+    if (error || !data.session || !data.user) {
+      const serverMessage = error?.message ?? ''
+      if (/URI which is not allowed|signed for another app/i.test(serverMessage)) {
+        throw new AuthError('Supabase has not allowlisted this app URL. Add http://localhost:5173/** under Authentication → URL Configuration → Redirect URLs, then retry.')
+      }
+      throw new AuthError(serverMessage || 'Sign-in verification failed.')
+    }
+    if (!stillCurrent() || verifiedWallet(data.user) !== expected.toLowerCase()) {
+      await client.auth.signOut({ scope: 'local' })
+      throw new AuthError('Session wallet mismatch. Please sign in again.')
+    }
+    return { wallet: expected.toLowerCase(), userId: data.user.id, client }
+  } catch (error) {
+    if (error instanceof AuthError) throw error
+    const code = (error as { code?: number })?.code
+    const message = error instanceof Error ? error.message : ''
+    if (code === 4001 || /reject|denied|cancel/i.test(message)) throw new AuthError('Signature cancelled. You can try again.')
+    throw new AuthError('Wallet sign-in failed. Check your connection and try again.')
   }
-
-  // Step 3 — Verify
-  const verifyRes = await fetch('/api/auth/verify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ wallet: norm, signature, nonce }),
-  })
-  if (!verifyRes.ok) {
-    const err = await verifyRes.json().catch(() => ({})) as { error?: string }
-    throw new AuthError(err.error ?? 'Signature verification failed')
+}
+export async function signIn(address: string, wallet: WalletClient, stillCurrent?: () => boolean) {
+  const client = getSupabaseClient()
+  if (!client) throw new AuthError('Communities are not configured yet.')
+  return authenticateWallet(client, address, wallet, window.location.origin, stillCurrent)
+}
+export async function signOut(): Promise<void> {
+  await getSupabaseClient()?.auth.signOut({ scope: 'local' })
+}
+export async function restoreSession(expectedWallet: string): Promise<AuthSession | null> {
+  const client = getSupabaseClient()
+  if (!client) return null
+  const { data: { session }, error } = await client.auth.getSession()
+  if (error || !session) return null
+  const { data: { user }, error: userError } = await client.auth.getUser()
+  if (userError || !user || verifiedWallet(user) !== expectedWallet.toLowerCase()) {
+    await client.auth.signOut({ scope: 'local' }); return null
   }
-  const { token } = await verifyRes.json() as { token: string }
-
-  saveSession(token, norm)
-
-  const client = makeSupabaseClient(token)
-  if (!client) throw new AuthError('Supabase not configured')
-
-  return { token, wallet: norm, client }
+  return { wallet: expectedWallet.toLowerCase(), userId: user.id, client }
 }
 
-/** Sign out: clear local session */
-export function signOut(): void {
-  clearSession()
-}
-
-// ── wagmi adapter ─────────────────────────────────────────────────────────
-
-/**
- * Helper used by the useAuth hook to sign a message via wagmi's
- * useSignMessage hook result.
- */
-export function makeWagmiSigner(
-  signMessageAsync: (args: { message: string }) => Promise<`0x${string}`>,
-): (message: string) => Promise<string> {
-  return (message: string) => signMessageAsync({ message })
-}
-
-// For direct viem WalletClient usage (e.g. testing)
-export function makeViemSigner(
-  walletClient: WalletClient,
-  account: `0x${string}`,
-): (message: string) => Promise<string> {
-  return (message: string) =>
-    walletClient.signMessage({ account, message })
-}

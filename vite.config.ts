@@ -4,10 +4,11 @@ import path from 'path'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH || '/',
   plugins: [react(), nodePolyfills()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
     dedupe: ['react', 'react-dom'],
   },
@@ -35,16 +36,9 @@ export default defineConfig({
     ],
   },
   server: {
-    allowedHosts: true,
-    cors: true,
-    proxy: {
-      // Proxy /api/auth/* → auth server on port 3001
-      // The auth server strips /api before routing, so /api/auth/nonce → /nonce
-      '/api/auth': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/auth/, ''),
-      },
-    },
+    host: '127.0.0.1',
+    cors: false,
+    // No /api proxy needed: authentication is handled natively by Supabase Auth
+    // (signInWithWeb3). The browser talks directly to the Supabase project URL.
   },
 })

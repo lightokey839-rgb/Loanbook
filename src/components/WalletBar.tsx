@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAccount, useReadContract, useBalance } from 'wagmi'
 import { ConnectKitButton } from 'connectkit'
 import { erc20Abi } from 'viem'
-import { arcTestnet } from 'viem/chains'
+import { activeChain as arcTestnet } from '../network'
 import { getUsdc } from '../onchain-facts'
 import { shortAddr } from '../loanbook-contract'
 

@@ -1,479 +1,1 @@
-{
-  "contractAddress": "0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228",
-  "network": "ARC-TESTNET",
-  "deployerWalletId": "3c2464b2-8369-52e2-a782-800bbeca5396",
-  "contract_code_path": "/home/user/app/contracts/LoanBook.sol",
-  "contract_compiled_code_path": "/home/user/app/contracts/out/LoanBook.sol/LoanBook.json",
-  "contract_network_and_links": {
-    "Arc Testnet": "https://explorer.testnet.arc.io/address/0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228"
-  },
-  "contract_deployments": [
-    {
-      "chain": "Arc Testnet",
-      "address": "0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228",
-      "explorerUrl": "https://explorer.testnet.arc.io/address/0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228",
-      "txHash": "0x827075b605b8a29e04c78841506f13610c1226d73b7d830f1f341f3407faf4e7",
-      "deployedAt": "2026-10-26T14:26:32.432Z"
-    }
-  ],
-  "abi": [
-    {
-      "type": "constructor",
-      "inputs": [
-        {
-          "name": "usdc_",
-          "type": "address",
-          "internalType": "address"
-        }
-      ],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "cancelLoan",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "createLoan",
-      "inputs": [
-        {
-          "name": "lender",
-          "type": "address",
-          "internalType": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "duration",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "fundLoan",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "getLoan",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "",
-          "type": "tuple",
-          "internalType": "struct LoanBook.Loan",
-          "components": [
-            {
-              "name": "borrower",
-              "type": "address",
-              "internalType": "address"
-            },
-            {
-              "name": "lender",
-              "type": "address",
-              "internalType": "address"
-            },
-            {
-              "name": "amount",
-              "type": "uint256",
-              "internalType": "uint256"
-            },
-            {
-              "name": "duration",
-              "type": "uint256",
-              "internalType": "uint256"
-            },
-            {
-              "name": "createdAt",
-              "type": "uint256",
-              "internalType": "uint256"
-            },
-            {
-              "name": "fundedAt",
-              "type": "uint256",
-              "internalType": "uint256"
-            },
-            {
-              "name": "dueDate",
-              "type": "uint256",
-              "internalType": "uint256"
-            },
-            {
-              "name": "state",
-              "type": "uint8",
-              "internalType": "enum LoanBook.LoanState"
-            }
-          ]
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "isOverdue",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool",
-          "internalType": "bool"
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "loanCount",
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "loans",
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "borrower",
-          "type": "address",
-          "internalType": "address"
-        },
-        {
-          "name": "lender",
-          "type": "address",
-          "internalType": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "duration",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "createdAt",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "fundedAt",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "dueDate",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "state",
-          "type": "uint8",
-          "internalType": "enum LoanBook.LoanState"
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "function",
-      "name": "repayLoan",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ],
-      "outputs": [],
-      "stateMutability": "nonpayable"
-    },
-    {
-      "type": "function",
-      "name": "usdc",
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "",
-          "type": "address",
-          "internalType": "contract IERC20"
-        }
-      ],
-      "stateMutability": "view"
-    },
-    {
-      "type": "event",
-      "name": "LoanCancelled",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "borrower",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "cancelledAt",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "event",
-      "name": "LoanCreated",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "borrower",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "lender",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        },
-        {
-          "name": "duration",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "event",
-      "name": "LoanFunded",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "lender",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "borrower",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        },
-        {
-          "name": "dueDate",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "event",
-      "name": "LoanRepaid",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "indexed": true,
-          "internalType": "uint256"
-        },
-        {
-          "name": "borrower",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "lender",
-          "type": "address",
-          "indexed": true,
-          "internalType": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        },
-        {
-          "name": "repaidAt",
-          "type": "uint256",
-          "indexed": false,
-          "internalType": "uint256"
-        }
-      ],
-      "anonymous": false
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__InvalidLender",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__InvalidState",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        },
-        {
-          "name": "actual",
-          "type": "uint8",
-          "internalType": "enum LoanBook.LoanState"
-        },
-        {
-          "name": "expected",
-          "type": "uint8",
-          "internalType": "enum LoanBook.LoanState"
-        }
-      ]
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__InvalidUSDC",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__LoanNotFound",
-      "inputs": [
-        {
-          "name": "loanId",
-          "type": "uint256",
-          "internalType": "uint256"
-        }
-      ]
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__NotBorrower",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__NotLender",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__SelfLend",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__ZeroAmount",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "LoanBook__ZeroDuration",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "ReentrancyGuardReentrantCall",
-      "inputs": []
-    },
-    {
-      "type": "error",
-      "name": "SafeERC20FailedOperation",
-      "inputs": [
-        {
-          "name": "token",
-          "type": "address",
-          "internalType": "address"
-        }
-      ]
-    }
-  ]
-}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Õì(€€‰½¹ÑÉ…Ñ‘‘É•ÍÌˆè€ˆÁá”ÅˆÔÈÜÔÉ‰˜Õ”ÙŒØÑ„Õ˜ØÕ”ĞàÕ•„ÌÕ•˜İ˜İ„ÈÈàˆ°(€€‰¹•Ñİ½É¬ˆè€‰IµQMQ9Pˆ°(€€‰‘•Á±½å•É]…±±•Ñ%ˆè€ˆÍŒÈĞØÑˆÈ´àÌØä´ÔÉ”Èµ„ÜàÈ´àÀÁ‰‰•„ÔÌäØˆ°(€€‰½¹ÑÉ…Ñ}½‘•}Á…Ñ ˆè€ˆ½¡½µ”½ÕÍ•È½…ÁÀ½½¹ÑÉ…ÑÌ½1½…¹	½½¬¹Í½°ˆ°(€€‰½¹ÑÉ…Ñ}½µÁ¥±•‘}½‘•}Á…Ñ ˆè€ˆ½¡½µ”½ÕÍ•È½…ÁÀ½½¹ÑÉ…ÑÌ½½ÕĞ½1½…¹	½½¬¹Í½°½1½…¹	½½¬¹©Í½¸ˆ°(€€‰½¹ÑÉ…Ñ}¹•Ñİ½É­}…¹‘}±¥¹­Ìˆèì(€€€€‰ÉŒQ•ÍÑ¹•Ğˆè€‰¡ÑÑÁÌè¼½•áÁ±½É•È¹Ñ•ÍÑ¹•Ğ¹…ÉŒ¹¥¼½…‘‘É•ÍÌ¼Áá”ÅˆÔÈÜÔÉ‰˜Õ”ÙŒØÑ„Õ˜ØÕ”ĞàÕ•„ÌÕ•˜İ˜İ„ÈÈàˆ(€ô°(€€‰½¹ÑÉ…Ñ}‘•Á±½åµ•¹ÑÌˆèl(€€€ì(€€€€€€‰¡…¥¸ˆè€‰ÉŒQ•ÍÑ¹•Ğˆ°(€€€€€€‰…‘‘É•ÍÌˆè€ˆÁá”ÅˆÔÈÜÔÉ‰˜Õ”ÙŒØÑ„Õ˜ØÕ”ĞàÕ•„ÌÕ•˜İ˜İ„ÈÈàˆ°(€€€€€€‰•áÁ±½É•ÉUÉ°ˆè€‰¡ÑÑÁÌè¼½•áÁ±½É•È¹Ñ•ÍÑ¹•Ğ¹…ÉŒ¹¥¼½…‘‘É•ÍÌ¼Áá”ÅˆÔÈÜÔÉ‰˜Õ”ÙŒØÑ„Õ˜ØÕ”ĞàÕ•„ÌÕ•˜İ˜İ„ÈÈàˆ°(€€€€€€‰Ñá!…Í ˆè€ˆÁààÈÜÀÜÕˆØÀÕˆá„Èå”ÀÑŒÜààĞÄÔÀÙ˜ÄÌØÄÁŒÄÈÈÙÜÍˆİàÌÁ˜Å˜ÌĞÅ˜ÌĞÀİ™…˜Ñ”Üˆ°(€€€€€€‰‘•Á±½å•‘Ğˆè€ˆÈÀÈØ´ÄÀ´ÈÙPÄĞèÈØèÌÈ¸ĞÌÉhˆ(€€€ô(€t°(€€‰…‰¤ˆèl(€€€ì(€€€€€€‰ÑåÁ”ˆè€‰½¹ÍÑÉÕÑ½Èˆ°(€€€€€€‰¥¹ÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰ÕÍ‘|ˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰…‘‘É•ÍÌˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰…‘‘É•ÍÌˆ(€€€€€€€ô(€€€€€t°(€€€€€€‰ÍÑ…Ñ•5ÕÑ…‰¥±¥Ñäˆè€‰¹½¹Á…å…‰±”ˆ(€€€ô°(€€€ì(€€€€€€‰ÑåÁ”ˆè€‰™Õ¹Ñ¥½¸ˆ°(€€€€€€‰¹…µ”ˆè€‰…¹•±1½…¸ˆ°(€€€€€€‰¥¹ÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰±½…¹%ˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€ô(€€€€€t°(€€€€€€‰½ÕÑÁÕÑÌˆèmt°(€€€€€€‰ÍÑ…Ñ•5ÕÑ…‰¥±¥Ñäˆè€‰¹½¹Á…å…‰±”ˆ(€€€ô°(€€€ì(€€€€€€‰ÑåÁ”ˆè€‰™Õ¹Ñ¥½¸ˆ°(€€€€€€‰¹…µ”ˆè€‰É•…Ñ•1½…¸ˆ°(€€€€€€‰¥¹ÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰±•¹‘•Èˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰…‘‘É•ÍÌˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰…‘‘É•ÍÌˆ(€€€€€€€ô°(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰…µ½Õ¹Ğˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€ô°(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰‘ÕÉ…Ñ¥½¸ˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€ô(€€€€€t°(€€€€€€‰½ÕÑÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰±½…¹%ˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€ô(€€€€€t°(€€€€€€‰ÍÑ…Ñ•5ÕÑ…‰¥±¥Ñäˆè€‰¹½¹Á…å…‰±”ˆ(€€€ô°(€€€ì(€€€€€€‰ÑåÁ”ˆè€‰™Õ¹Ñ¥½¸ˆ°(€€€€€€‰¹…µ”ˆè€‰™Õ¹‘1½…¸ˆ°(€€€€€€‰¥¹ÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰±½…¹%ˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€ô(€€€€€t°(€€€€€€‰½ÕÑÁÕÑÌˆèmt°(€€€€€€‰ÍÑ…Ñ•5ÕÑ…‰¥±¥Ñäˆè€‰¹½¹Á…å…‰±”ˆ(€€€ô°(€€€ì(€€€€€€‰ÑåÁ”ˆè€‰™Õ¹Ñ¥½¸ˆ°(€€€€€€‰¹…µ”ˆè€‰•Ñ1½…¸ˆ°(€€€€€€‰¥¹ÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€‰±½…¹%ˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€ô(€€€€€t°(€€€€€€‰½ÕÑÁÕÑÌˆèl(€€€€€€€ì(€€€€€€€€€€‰¹…µ”ˆè€ˆˆ°(€€€€€€€€€€‰ÑåÁ”ˆè€‰ÑÕÁ±”ˆ°(€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰ÍÑÉÕĞ1½…¹	½½¬¹1½…¸ˆ°(€€€€€€€€€€‰½µÁ½¹•¹ÑÌˆèl(€€€€€€€€€€€ì(€€€€€€€€€€€€€€‰¹…µ”ˆè€‰‰½ÉÉ½İ•Èˆ°(€€€€€€€€€€€€€€‰ÑåÁ”ˆè€‰…‘‘É•ÍÌˆ°(€€€€€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰…‘‘É•ÍÌˆ(€€€€€€€€€€€ô°(€€€€€€€€€€€ì(€€€€€€€€€€€€€€‰¹…µ”ˆè€‰±•¹‘•Èˆ°(€€€€€€€€€€€€€€‰ÑåÁ”ˆè€‰…‘‘É•ÍÌˆ°(€€€€€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰…‘‘É•ÍÌˆ(€€€€€€€€€€€ô°(€€€€€€€€€€€ì(€€€€€€€€€€€€€€‰¹…µ”ˆè€‰…µ½Õ¹Ğˆ°(€€€€€€€€€€€€€€‰ÑåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ°(€€€€€€€€€€€€€€‰¥¹Ñ•É¹…±QåÁ”ˆè€‰Õ¥¹ĞÈÔØˆ(€€€€€€€€€€€ô°(€€€€€€€€€€€ì(€€€€€€€€€€€€€€‰¹…·]4ÖÚ$z{-®éÜj×ˆBˆKˆœİ]S]]Xš[]HˆšY]È‚ˆKˆÂˆ\Hˆ™]™[‹ˆ›˜[YHˆ“Ø[Ø[˜Ù[Y‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆ›Ø[’Y‹ˆ\HˆZ[Mˆ‹ˆš[™^YˆYKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ˜›Üœ›İÙ\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ˜Ø[˜Ù[Y]‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆBˆKˆ˜[›Û[[İ\Èˆ˜[ÙBˆKˆÂˆ\Hˆ™]™[‹ˆ›˜[YHˆ“Ø[Ü™X]Y‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆ›Ø[’Y‹ˆ\HˆZ[Mˆ‹ˆš[™^YˆYKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ˜›Üœ›İÙ\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ›[™\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ˜[[İ[‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ™\˜][Ûˆ‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆBˆKˆ˜[›Û[[İ\Èˆ˜[ÙBˆKˆÂˆ\Hˆ™]™[‹ˆ›˜[YHˆ“Ø[‘[™Y‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆ›Ø[’Y‹ˆ\HˆZ[Mˆ‹ˆš[™^YˆYKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ›[™\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ˜›Üœ›İÙ\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ˜[[İ[‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ™YQ]H‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆBˆKˆ˜[›Û[[İ\Èˆ˜[ÙBˆKˆÂˆ\Hˆ™]™[‹ˆ›˜[YHˆ“Ø[”™\ZY‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆ›Ø[’Y‹ˆ\HˆZ[Mˆ‹ˆš[™^YˆYKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ˜›Üœ›İÙ\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ›[™\ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[™^YˆYKˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆKˆÂˆ›˜[YHˆ˜[[İ[‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆœ™\ZY]‹ˆ\HˆZ[Mˆ‹ˆš[™^Yˆ˜[ÙKˆš[\›˜[\HˆZ[Mˆ‚ˆBˆKˆ˜[›Û[[İ\Èˆ˜[ÙBˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ò[˜[Y[™\ˆ‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ò[˜[Yİ]H‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆ›Ø[’Y‹ˆ\HˆZ[Mˆ‹ˆš[\›˜[\HˆZ[Mˆ‚ˆKˆÂˆ›˜[YHˆ˜XİX[‹ˆ\HˆZ[‹ˆš[\›˜[\Hˆ™[[HØ[›ÛÚË“Ø[”İ]H‚ˆKˆÂˆ›˜[YHˆ™^XİY‹ˆ\HˆZ[‹ˆš[\›˜[\Hˆ™[[HØ[›ÛÚË“Ø[”İ]H‚ˆBˆBˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ò[˜[YTÑÈ‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××ÓØ[“›İ›İ[™‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆ›Ø[’Y‹ˆ\HˆZ[Mˆ‹ˆš[\›˜[\HˆZ[Mˆ‚ˆBˆBˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ó›İ›Üœ›İÙ\ˆ‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ó›İ[™\ˆ‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××ÔÙ[“[™‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ö™\›Ğ[[İ[‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ“Ø[›ÛÚ××Ö™\›Ñ\˜][Ûˆ‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ”™Y[˜[˜ŞQİX\™™Y[˜[Ø[‹ˆš[œ]Èˆ×BˆKˆÂˆ\Hˆ™\œ›Üˆ‹ˆ›˜[YHˆ”ØY™QTÌŒ˜Z[YÜ\˜][Ûˆ‹ˆš[œ]ÈˆÂˆÂˆ›˜[YHˆÚÙ[ˆ‹ˆ\Hˆ˜Y™\ÜÈ‹ˆš[\›˜[\Hˆ˜Y™\ÜÈ‚ˆBˆBˆBˆBŸB

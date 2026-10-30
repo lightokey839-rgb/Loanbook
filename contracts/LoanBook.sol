@@ -1,181 +1,1 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-
-/// @title LoanBook
-/// @notice Private community P2P USDC micro-loan registry.
-/// @dev This contract never custodies funds. It coordinates direct lender->borrower
-///      and borrower->lender transfers via ERC-20 allowances.
-contract LoanBook is ReentrancyGuard {
-    using SafeERC20 for IERC20;
-
-    enum LoanState {
-        Open,
-        Funded,
-        Repaid,
-        Cancelled
-    }
-
-    struct Loan {
-        address borrower;
-        address lender;
-        uint256 amount; // USDC in 6-decimal units (e.g. 5_000_000 = 5 USDC)
-        uint256 duration; // seconds
-        uint256 createdAt;
-        uint256 fundedAt;
-        uint256 dueDate; // set when funded, not at creation
-        LoanState state;
-    }
-
-    error LoanBook__ZeroAmount();
-    error LoanBook__ZeroDuration();
-    error LoanBook__InvalidLender();
-    error LoanBook__InvalidUSDC();
-    error LoanBook__SelfLend();
-    error LoanBook__NotBorrower();
-    error LoanBook__NotLender();
-    error LoanBook__InvalidState(uint256 loanId, LoanState actual, LoanState expected);
-    error LoanBook__LoanNotFound(uint256 loanId);
-
-    event LoanCreated(
-        uint256 indexed loanId,
-        address indexed borrower,
-        address indexed lender,
-        uint256 amount,
-        uint256 duration
-    );
-    event LoanFunded(
-        uint256 indexed loanId,
-        address indexed lender,
-        address indexed borrower,
-        uint256 amount,
-        uint256 dueDate
-    );
-    event LoanRepaid(
-        uint256 indexed loanId,
-        address indexed borrower,
-        address indexed lender,
-        uint256 amount,
-        uint256 repaidAt
-    );
-    event LoanCancelled(uint256 indexed loanId, address indexed borrower, uint256 cancelledAt);
-
-    mapping(uint256 => Loan) public loans;
-    uint256 public loanCount;
-    IERC20 public immutable usdc;
-
-    /// @param usdc_ Address of USDC token contract on the target network.
-    constructor(address usdc_) {
-        if (usdc_ == address(0)) revert LoanBook__InvalidUSDC();
-        if (usdc_.code.length == 0) revert LoanBook__InvalidUSDC();
-        usdc = IERC20(usdc_);
-    }
-
-    /// @notice Create a new loan request addressed to a specific lender.
-    /// @param lender Intended lender for this loan.
-    /// @param amount Loan principal amount in USDC 6-decimal units.
-    /// @param duration Loan duration in seconds.
-    /// @return loanId Newly created loan ID.
-    function createLoan(address lender, uint256 amount, uint256 duration) external returns (uint256 loanId) {
-        address borrower = msg.sender;
-
-        if (lender == address(0)) revert LoanBook__InvalidLender();
-        if (lender == borrower) revert LoanBook__SelfLend();
-        if (amount == 0) revert LoanBook__ZeroAmount();
-        if (duration == 0) revert LoanBook__ZeroDuration();
-
-        loanId = ++loanCount; // starts IDs at 1
-
-        loans[loanId] = Loan({
-            borrower: borrower,
-            lender: lender,
-            amount: amount,
-            duration: duration,
-            createdAt: block.timestamp,
-            fundedAt: 0,
-            dueDate: 0,
-            state: LoanState.Open
-        });
-
-        emit LoanCreated(loanId, borrower, lender, amount, duration);
-    }
-
-    /// @notice Fund an open loan by transferring USDC directly to the borrower.
-    /// @dev Checks-effects-interactions: state updates happen before transfer.
-    /// @param loanId ID of the loan to fund.
-    function fundLoan(uint256 loanId) external nonReentrant {
-        Loan storage loan = _getExistingLoan(loanId);
-
-        if (msg.sender != loan.lender) revert LoanBook__NotLender();
-        if (loan.state != LoanState.Open) {
-            revert LoanBook__InvalidState(loanId, loan.state, LoanState.Open);
-        }
-
-        loan.state = LoanState.Funded;
-        loan.fundedAt = block.timestamp;
-        loan.dueDate = block.timestamp + loan.duration;
-
-        usdc.safeTransferFrom(msg.sender, loan.borrower, loan.amount);
-
-        emit LoanFunded(loanId, loan.lender, loan.borrower, loan.amount, loan.dueDate);
-    }
-
-    /// @notice Repay a funded loan by transferring USDC directly to the lender.
-    /// @dev Checks-effects-interactions: state updates happen before transfer.
-    /// @param loanId ID of the loan to repay.
-    function repayLoan(uint256 loanId) external nonReentrant {
-        Loan storage loan = _getExistingLoan(loanId);
-
-        if (msg.sender != loan.borrower) revert LoanBook__NotBorrower();
-        if (loan.state != LoanState.Funded) {
-            revert LoanBook__InvalidState(loanId, loan.state, LoanState.Funded);
-        }
-
-        loan.state = LoanState.Repaid;
-
-        usdc.safeTransferFrom(msg.sender, loan.lender, loan.amount);
-
-        emit LoanRepaid(loanId, loan.borrower, loan.lender, loan.amount, block.timestamp);
-    }
-
-    /// @notice Cancel an open loan request.
-    /// @param loanId ID of the loan to cancel.
-    function cancelLoan(uint256 loanId) external {
-        Loan storage loan = _getExistingLoan(loanId);
-
-        if (msg.sender != loan.borrower) revert LoanBook__NotBorrower();
-        if (loan.state != LoanState.Open) {
-            revert LoanBook__InvalidState(loanId, loan.state, LoanState.Open);
-        }
-
-        loan.state = LoanState.Cancelled;
-
-        emit LoanCancelled(loanId, loan.borrower, block.timestamp);
-    }
-
-    /// @notice Return the full loan struct for a valid loan ID.
-    /// @param loanId ID of the loan.
-    /// @return Loan data.
-    function getLoan(uint256 loanId) external view returns (Loan memory) {
-        Loan storage loan = _getExistingLoan(loanId);
-        return loan;
-    }
-
-    /// @notice Whether a funded loan is overdue.
-    /// @param loanId ID of the loan.
-    /// @return True when funded and current timestamp is past due date.
-    function isOverdue(uint256 loanId) external view returns (bool) {
-        Loan storage loan = _getExistingLoan(loanId);
-        if (loan.state != LoanState.Funded) return false;
-        return block.timestamp > loan.dueDate;
-    }
-
-    /// @dev Validates loan existence and returns storage reference.
-    function _getExistingLoan(uint256 loanId) internal view returns (Loan storage loan) {
-        if (loanId == 0 || loanId > loanCount) revert LoanBook__LoanNotFound(loanId);
-        loan = loans[loanId];
-    }
-}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíÛ^úN‹Z–‹­¦ëeŠw¬Ô¼¼MA`µ1¥•¹Í”µ%‘•¹Ñ¥™¥•Èè5%P)ÁÉ…µ„Í½±¥‘¥ÑäxÀ¸à¸ÈÀì()¥µÁ½ÉÐ€‰½Á•¹é•ÁÁ•±¥¸½½¹ÑÉ…ÑÌ½Ñ½­•¸½IÈÀ½ÕÑ¥±Ì½M…™•IÈÀ¹Í½°ˆì)¥µÁ½ÉÐ€‰½Á•¹é•ÁÁ•±¥¸½½¹ÑÉ…ÑÌ½Ñ½­•¸½IÈÀ½%IÈÀ¹Í½°ˆì)¥µÁ½ÉÐ€‰½Á•¹é•ÁÁ•±¥¸½½¹ÑÉ…ÑÌ½ÕÑ¥±Ì½I••¹ÑÉ…¹åÕ…É¹Í½°ˆì((¼¼¼Ñ¥Ñ±”1½…¹	½½¬(¼¼¼¹½Ñ¥”AÉ¥Ù…Ñ”½µµÕ¹¥Ñä@É@UMµ¥É¼µ±½…¸É•¥ÍÑÉä¸(¼¼¼‘•ØQ¡¥Ì½¹ÑÉ…Ð¹•Ù•ÈÕÍÑ½‘¥•Ì™Õ¹‘Ì¸%Ð½½É‘¥¹…Ñ•Ì‘¥É•Ð±•¹‘•È´ù‰½ÉÉ½Ý•È(¼¼¼€€€€€…¹‰½ÉÉ½Ý•È´ù±•¹‘•ÈÑÉ…¹Í™•ÉÌÙ¥„I´ÈÀ…±±½Ý…¹•Ì¸)½¹ÑÉ…Ð1½…¹	½½¬¥ÌI••¹ÑÉ…¹åÕ…Éì(€€€ÕÍ¥¹œM…™•IÈÀ™½È%IÈÀì((€€€•¹Õ´1½…¹MÑ…Ñ”ì(€€€€€€€=Á•¸°(€€€€€€€Õ¹‘•°(€€€€€€€I•Á…¥°(€€€€€€€…¹•±±•(€€€ô((€€€ÍÑÉÕÐ1½…¸ì(€€€€€€€…‘‘É•ÍÌ‰½ÉÉ½Ý•Èì(€€€€€€€…‘‘É•ÍÌ±•¹‘•Èì(€€€€€€€Õ¥¹ÐÈÔØ…µ½Õ¹Ðì€¼¼UM¥¸€Øµ‘•¥µ…°Õ¹¥ÑÌ€¡”¹œ¸€Õ|ÀÀÁ|ÀÀÀ€ô€ÔUM¤(€€€€€€€Õ¥¹ÐÈÔØ‘ÕÉ…Ñ¥½¸ì€¼¼Í•½¹‘Ì(€€€€€€€Õ¥¹ÐÈÔØÉ•…Ñ•‘Ðì(€€€€€€€Õ¥¹ÐÈÔØ™Õ¹‘•‘Ðì(€€€€€€€Õ¥¹ÐÈÔØ‘Õ•…Ñ”ì€¼¼Í•ÐÝ¡•¸™Õ¹‘•°¹½Ð…ÐÉ•…Ñ¥½¸(€€€€€€€1½…¹MÑ…Ñ”ÍÑ…Ñ”ì(€€€ô((€€€•ÉÉ½È1½…¹	½½­}}i•É½µ½Õ¹Ð ¤ì(€€€•ÉÉ½È1½…¹	½½­}}i•É½ÕÉ…Ñ¥½¸ ¤ì(€€€•ÉÉ½È1½…¹	½½­}}%¹Ù…±¥‘1•¹‘•È ¤ì(€€€•ÉÉ½È1½…¹	½½­}}%¹Ù…±¥‘UM ¤ì(€€€•ÉÉ½È1½…¹	½½­}}M•±™1•¹ ¤ì(€€€•ÉÉ½È1½…¹	½½­}}9½Ñ	½ÉÉ½Ý•È ¤ì(€€€•ÉÉ½È1½…¹	½½­}}9½Ñ1•¹‘•È ¤ì(€€€•ÉÉ½È1½…¹	½½­}}%¹Ù…±¥‘MÑ…Ñ”¡Õ¥¹ÐÈÔØ±½…¹%°1½…¹MÑ…Ñ”…ÑÕ…°°1½…¹MÑ…Ñ”•áÁ•Ñ•¤ì(€€€•ÉÉ½È1½…¹	½½­}}1½…¹9½Ñ½Õ¹¡Õ¥¹ÐÈÔØ±½…¹%¤ì((€€€•Ù•¹Ð1½…¹É•…Ñ• (€€€€€€€Õ¥¹ÐÈÔØ¥¹‘•á•±½…¹%°(€€€€€€€…‘‘É•ÍÌ¥¹‘•á•‰½ÉÉ½Ý•È°(€€€€€€€…‘‘É•ÍÌ¥¹‘•á•±•¹‘•È°(€€€€€€€Õ¥¹ÐÈÔØ…µ½Õ¹Ð°(€€€€€€€Õ¥¹ÐÈÔØ‘ÕÉ…Ñ¥½¸(€€€€¤ì(€€€•Ù•¹Ð1½…¹Õ¹‘• (€€€€€€€Õ¥¹ÐÈÔØ¥¹‘•á•±½…¹%°(€€€€€€€…‘‘É•ÍÌ¥¹‘•á•±•¹‘•È°(€€€€€€€…‘‘É•ÍÌ¥¹‘•á•‰½ÉÉ½Ý•È°(€€€€€€€Õ¥¹ÐÈÔØ…µ½Õ¹Ð°(€€€€€€€Õ¥¹ÐÈÔØ‘Õ•…Ñ”(€€€€¤ì(€€€•Ù•¹Ð1½…¹I•Á…¥ (€€€€€€€Õ¥¹ÐÈÔØ¥¹‘•á•±½…¹%°(€€€€€€€…‘‘É•ÍÌ¥¹‘•á•‰½ÉÉ½Ý•È°(€€€€€€€…‘‘É•ÍÌ¥¹‘•á•±•¹‘•È°(€€€€€€€Õ¥¹ÐÈÔØ…µ½Õ¹Ð°(€€€€€€€Õ¥¹ÐÈÔØÉ•Á…¥‘Ð(€€€€¤ì(€€€•Ù•¹Ð1½…¹…¹•±±•¡Õ¥¹ÐÈÔØ¥¹‘•á•±½…¹%°…‘‘É•ÍÌ¥¹‘•á•‰½ÉÉ½Ý•È°Õ¥¹ÐÈÔØ…¹•±±•‘Ð¤ì((€€€µ…ÁÁ¥¹œ¡Õ¥¹ÐÈÔØ€ôø1½…¸¤ÁÕ‰±¥Œ±½…¹Ìì(€€€Õ¥¹ÐÈÔØÁÕ‰±¥Œ±½…¹½Õ¹Ðì(€€€%IÈÀÁÕ‰±¥Œ¥µµÕÑ…‰±”ÕÍ‘Œì((€€€€¼¼¼Á…É…´ÕÍ‘|‘‘É•ÍÌ½˜UMÑ½­•¸½¹ÑÉ…Ð½¸Ñ¡”Ñ…É•Ð¹•ÑÝ½É¬¸(€€€½¹ÍÑÉÕÑ½È¡…‘‘É•ÍÌÕÍ‘|¤ì(€€€€€€€¥˜€¡ÕÍ‘|€ôô…‘‘É•ÍÌ À¤¤É•Ù•ÉÐ1½…¹	½½­}}%¹Ù…±¥‘UM ¤ì(€€€€€€€¥˜€¡ÕÍ‘|¹½‘”¹±•¹Ñ €ôô€À¤É•Ù•ÉÐ1½…¹	½½­}}%¹Ù…±¥‘UM ¤ì(€€€€€€€ÕÍ‘Œ€ô%IÈÀ¡ÕÍ‘|¤ì(€€€ô((€€€€¼¼¼¹½Ñ¥”É•…Ñ”„¹•Ü±½…¸É•ÅÕ•ÍÐ…‘‘É•ÍÍ•Ñ¼„ÍÁ•¥™¥Œ±•¹‘•È¸(€€€€¼¼¼Á…É…´±•¹‘•È%¹Ñ•¹‘•±•¹‘•È™½ÈÑ¡¥Ì±½…¸¸(€€€€¼¼¼Á…É…´…µ½Õ¹Ð1½…¸ÁÉ¥¹¥Á…°…µ½Õ¹Ð¥¸UM€Øµ‘•¥µ…°Õ¹¥ÑÌ¸(€€€€¼¼¼Á…É…´‘ÕÉ…Ñ¥½¸1½…¸‘ÕÉ…Ñ¥½¸¥¸Í•½¹‘Ì¸(€€€€¼¼¼É•ÑÕÉ¸±½…¹%9•Ý±äÉ•…Ñ•±½…¸%¸(€€€™Õ¹Ñ¥½¸É•…Ñ•1½…¸¡…‘‘É•ÍÌ±•¹‘•È°Õ¥¹ÐÈÔØ…µ½Õ¹Ð°Õ¥¹ÐÈÔØ‘ÕÉ…Ñ¥½¸¤•áÑ•É¹…°É•ÑÕÉ¹Ì€¡Õ¥¹ÐÈÔØ±½…¹%¤ì(€€€€€€€…‘‘É•ÍÌ‰½ÉÉ½Ý•È€ôµÍœ¹Í•¹‘•Èì((€€€€€€€¥˜€¡±•¹‘•È€ôô…‘‘É•ÍÌ À¤¤É•Ù•ÉÐ1½…¹	½½­}}%¹Ù…±¥‘1•¹‘•È ¤ì(€€€€€€€¥˜€¡±•¹‘•È€ôô‰½ÉÉ½Ý•È¤É•Ù•ÉÐ1½…¹	½½­}}M•±™1•¹ ¤ì(€€€€€€€¥˜€¡…µ½Õ¹Ð€ôô€À¤É•Ù•ÉÐ1½…¹	½½­}}i•É½µ½Õ¹Ð ¤ì(€€€€€€€¥˜€¡‘ÕÉ…Ñ¥¿^ú¶‰žËkºwµçR&÷'&÷vW"à¢òòòFWb6†V6·2ÖVffV7G2Ö–çFW&7F–öç3¢7FFRWFFW2†Vâ&Vf÷&RG&ç6fW"à¢òòò&ÒÆöä–B”BöbF†RÆöâFògVæBà¢gVæ7F–öâgVæDÆöâ‡V–çC#SbÆöä–B’W‡FW&æÂæöå&VVçG&çB°¢Æöâ7F÷&vRÆöâÒövWDW†—7F–ætÆöâ†Æöä–B“° ¢–b†×6rç6VæFW"ÒÆöâæÆVæFW"’&WfW'BÆöä&ööµõôæ÷DÆVæFW"‚“°¢–b†Æöâç7FFRÒÆöå7FFRä÷Vâ’°¢&WfW'BÆöä&ööµõô–çfÆ–E7FFR†Æöä–BÂÆöâç7FFRÂÆöå7FFRä÷Vâ“°¢Ð ¢Æöâç7FFRÒÆöå7FFRägVæFVC°¢ÆöâægVæFVDBÒ&Æö6²çF–ÖW7F×°¢ÆöâæGVTFFRÒ&Æö6²çF–ÖW7F×²ÆöâæGW&F–öã° ¢W6F2ç6fUG&ç6fW$g&öÒ†×6rç6VæFW"ÂÆöâæ&÷'&÷vW"ÂÆöâæÖ÷VçB“° ¢VÖ—BÆöägVæFVB†Æöä–BÂÆöâæÆVæFW"ÂÆöâæ&÷'&÷vW"ÂÆöâæÖ÷VçBÂÆöâæGVTFFR“°¢Ð ¢òòòæ÷F–6R&W’gVæFVBÆöâ'’G&ç6fW'&–ærU4D2F—&V7FÇ’FòF†RÆVæFW"à¢òòòFWb6†V6·2ÖVffV7G2Ö–çFW&7F–öç3¢7FFRWFFW2†Vâ&Vf÷&RG&ç6fW"à¢òòò&ÒÆöä–B”BöbF†RÆöâFò&W’à¢gVæ7F–öâ&W”Æöâ‡V–çC#SbÆöä–B’W‡FW&æÂæöå&VVçG&çB°¢Æöâ7F÷&vRÆöâÒövWDW†—7F–ætÆöâ†Æöä–B“° ¢–b†×6rç6VæFW"ÒÆöâæ&÷'&÷vW"’&WfW'BÆöä&ööµõôæ÷D&÷'&÷vW"‚“°¢–b†Æöâç7FFRÒÆöå7FFRägVæFVB’°¢&WfW'BÆöä&ööµõô–çfÆ–E7FFR†Æöä–BÂÆöâç7FFRÂÆöå7FFRägVæFVB“°¢Ð ¢Æöâç7FFRÒÆöå7FFRå&W–C° ¢W6F2ç6fUG&ç6fW$g&öÒ†×6rç6VæFW"ÂÆöâæÆVæFW"ÂÆöâæÖ÷VçB“° ¢VÖ—BÆöå&W–B†Æöä–BÂÆöâæ&÷'&÷vW"ÂÆöâæÆVæFW"ÂÆöâæÖ÷VçBÂ&Æö6²çF–ÖW7F×“°¢Ð ¢òòòæ÷F–6R6æ6VÂâ÷VâÆöâ&WVW7Bà¢òòò&ÒÆöä–B”BöbF†RÆöâFò6æ6VÂà¢gVæ7F–öâ6æ6VÄÆöâ‡V–çC#SbÆöä–B’W‡FW&æÂ°¢Æöâ7F÷&vRÆöâÒövWDW†—7F–ætÆöâ†Æöä–B“° ¢–b†×6rç6VæFW"ÒÆöâæ&÷'&÷vW"’&WfW'BÆöä&ööµõôæ÷D&÷'&÷vW"‚“°¢–b†Æöâç7FFRÒÆöå7FFRä÷Vâ’°¢&WfW'BÆöä&ööµõô–çfÆ–E7FFR†Æöä–BÂÆöâç7FFRÂÆöå7FFRä÷Vâ“°¢Ð ¢Æöâç7FFRÒÆöå7FFRä6æ6VÆÆVC° ¢VÖ—BÆöä6æ6VÆÆVB†Æöä–BÂÆöâæ&÷'&÷vW"Â&Æö6²çF–ÖW7F×“°¢Ð ¢òòòæ÷F–6R&WGW&âF†RgVÆÂÆöâ7G'V7Bf÷"fÆ–BÆöâ”Bà¢òòò&ÒÆöä–B”BöbF†RÆöâà¢òòò&WGW&âÆöâFFà¢gVæ7F–öâvWDÆöâ‡V–çC#SbÆöä–B’W‡FW&æÂf–Wr&WGW&ç2„ÆöâÖVÖ÷'’’°¢Æöâ7F÷&vRÆöâÒövWDW†—7F–ætÆöâ†Æöä–B“°¢&WGW&âÆöã°¢Ð ¢òòòæ÷F–6Rv†WF†W"gVæFVBÆöâ—2÷fW&GVRà¢òòò&ÒÆöä–B”BöbF†RÆöâà¢òòò&WGW&âG'VRv†VâgVæFVBæB7W'&VçBF–ÖW7F×—27BGVRFFRà¢gVæ7F–öâ—4÷fW&GVR‡V–çC#SbÆöä–B’W‡FW&æÂf–Wr&WGW&ç2†&ööÂ’°¢Æöâ7F÷&vRÆöâÒövWDW†—7F–ætÆöâ†Æöä–B“°¢–b†Æöâç7FFRÒÆöå7FFRägVæFVB’&WGW&âfÇ6S°¢&WGW&â&Æö6²çF–ÖW7F×âÆöâæGVTFFS°¢Ð ¢òòòFWbfÆ–FFW2ÆöâW†—7FVæ6RæB&WGW&ç27F÷&vR&VfW&Væ6Rà¢gVæ7F–öâövWDW†—7F–ætÆöâ‡V–çC#SbÆöä–B’–çFW&æÂf–Wr&WGW&ç2„Æöâ7F÷&vRÆöâ’°¢–b†Æöä–BÓÒÇÂÆöä–BâÆöä6÷VçB’&WfW'BÆöä&ööµõôÆöäæ÷Df÷VæB†Æöä–B“°¢ÆöâÒÆöç5¶Æöä–EÓ°¢Ð§Ð 

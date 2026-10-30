@@ -1,180 +1,1 @@
-# Supabase Setup Guide for LoanBook Phase 4
-
-This guide covers setting up Supabase, configuring the auth server, and running the
-community features locally and in production.
-
----
-
-## 1. Create a Supabase project
-
-1. Go to [https://supabase.com](https://supabase.com) and create a free account.
-2. Create a new project. Choose a region close to your users.
-3. Wait for the project to finish provisioning (~2 minutes).
-
----
-
-## 2. Run the database migrations
-
-LoanBook ships with a single migration file at `supabase/migrations/001_loanbook_schema.sql`.
-Apply it to your project one of two ways:
-
-### Option A â€” Supabase SQL Editor (easiest)
-
-1. Open your project in the Supabase dashboard.
-2. Go to **SQL Editor** â†’ **New query**.
-3. Paste the entire contents of `supabase/migrations/001_loanbook_schema.sql`.
-4. Click **Run**.
-
-### Option B â€” Supabase CLI
-
-```bash
-# Install (once)
-npm install -g supabase
-
-# Link to your project (run from the repo root)
-supabase login
-supabase link --project-ref <your-project-ref>
-
-# Apply migrations
-supabase db push
-```
-
----
-
-## 3. Configure environment variables
-
-Copy `.env.example` to `.env` and fill in your values:
-
-```bash
-cp .env.example .env
-```
-
-Open `.env` and set:
-
-| Variable | Where to find it |
-|---|---|
-| `VITE_SUPABASE_URL` | Supabase Dashboard â†’ Settings â†’ API â†’ Project URL |
-| `VITE_SUPABASE_ANON_KEY` | Supabase Dashboard â†’ Settings â†’ API â†’ anon/public |
-| `SUPABASE_URL` | Same as `VITE_SUPABASE_URL` |
-| `SUPABASE_SERVICE_KEY` | Supabase Dashboard â†’ Settings â†’ API â†’ service_role (secret!) |
-| `SUPABASE_JWT_SECRET` | Supabase Dashboard â†’ Settings â†’ API â†’ JWT Settings â†’ JWT Secret |
-| `APP_DOMAIN` | `localhost` for local dev; your deployed domain in production |
-| `AUTH_PORT` | `3001` (default; change if needed) |
-
-> **Security**: `SUPABASE_SERVICE_KEY` and `SUPABASE_JWT_SECRET` bypass Row-Level Security.
-> Never use a `VITE_` prefix for them. Never commit `.env`.
-
----
-
-## 4. Start the auth server
-
-The auth server handles wallet-signature auth, nonce generation, and JWT issuance.
-It runs alongside the Vite dev server.
-
-```bash
-# Terminal 1 â€” Vite dev server
-bun run dev
-
-# Terminal 2 â€” Auth server
-bun run server:auth
-```
-
-The auth server starts on port 3001 (or `AUTH_PORT`). The Vite dev server proxies
-`/api/auth/*` â†’ `http://localhost:3001/*`, so the frontend never needs to know the
-auth server's port.
-
----
-
-## 5. Verify the setup
-
-1. Open the app in your browser (http://localhost:5173).
-2. Connect your wallet.
-3. Click the **Community** tab.
-4. Click **Sign in with wallet** â€” you should see a signature request in your wallet.
-5. After signing, you'll be authenticated and can create or join groups.
-
----
-
-## Auth flow (how it works)
-
-```
-Browser                         Auth server (port 3001)          Supabase
-  |                                    |                              |
-  |  GET /api/auth/nonce               |                              |
-  |  (wallet address as query param)   |                              |
-  |â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º|                              |
-  |  { nonce, message }                |  upsert profile (nonce)     |
-  |â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€|â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º|
-  |                                    |                              |
-  |  (user signs message in wallet)    |                              |
-  |                                    |                              |
-  |  POST /api/auth/verify             |                              |
-  |  { wallet, signature }             |                              |
-  |â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º|                              |
-  |                                    |  verify nonce + sig          |
-  |                                    |  issue JWT (HS256)           |
-  |  { token }                         |â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º|
-  |â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€|                              |
-  |                                    |                              |
-  |  all Supabase calls include token  |                              |
-  |  in Authorization: Bearer header   |                              |
-  |â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º|
-```
-
-The JWT is a standard `HS256` token. The `sub` claim is the user's wallet address
-(checksummed). Supabase uses it to enforce Row-Level Security policies.
-
----
-
-## 6. Row-Level Security
-
-All RLS policies are defined in the migration SQL. Key rules:
-
-| Table | Read | Write |
-|---|---|---|
-| `profiles` | Public (wallet + display name) | Own row only |
-| `groups` | Members only | Owner only |
-| `group_members` | Group members only | Owner can insert/delete; own row only otherwise |
-| `messages` | Group members only | Own wallet only |
-| `loan_requests` | Group members only | Own wallet only |
-| `loan_interests` | Group members only | Own wallet only |
-
-The JWT `sub` claim (`auth.jwt() ->> 'sub'`) is the wallet address. Every policy
-compares against it, so there is no separate user ID to track.
-
----
-
-## 7. Realtime
-
-Supabase Realtime is used for:
-- **Chat messages** â€” new messages appear instantly in ChatPane
-- **Loan requests** â€” new requests appear in GroupView without refresh
-- **Interest expressions** â€” interest counts update live in RequestCard
-
-Realtime requires the tables to have `REPLICA IDENTITY FULL` set (included in the
-migration) and for the Supabase project to have Realtime enabled (it is by default).
-
----
-
-## 8. Deploying to production
-
-1. Set all environment variables on your hosting platform (Netlify, Vercel, etc.).
-2. The `SUPABASE_SERVICE_KEY` and `SUPABASE_JWT_SECRET` go into the server environment
-   only (never in a `VITE_` variable).
-3. Change `APP_DOMAIN` to your production domain (used in SIWE message binding).
-4. Start the auth server alongside your frontend (e.g. as a separate Node/Bun process,
-   a Render service, a Railway app, or a Docker container).
-5. Update `CORS_ORIGIN` logic in `server/auth.ts` if your frontend is on a different
-   origin than the server.
-
----
-
-## 9. Troubleshooting
-
-| Symptom | Fix |
-|---|---|
-| `401 Nonce not found` on verify | The nonce expired (5-minute TTL) or the wallet address changed between nonce fetch and verify. |
-| `JWT Secret is missing` on server start | `SUPABASE_JWT_SECRET` is not set in `.env`. |
-| RLS errors (403 from Supabase) | The JWT `sub` does not match the wallet doing the write. Check the token in the browser's sessionStorage. |
-| Realtime messages not appearing | Check the Supabase dashboard â†’ Realtime â†’ Enabled tables; ensure your tables are listed. |
-| Auth server not reachable from browser | Vite proxy is not running â€” ensure `bun run dev` is running (not just `bun run server:auth`). |
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíÛİ¹N‹Z–‹­¦ëeŠw¬ÔŒ1½…¹	½½¬ƒŠPMÕÁ…‰…Í”M•ÑÕÀÕ¥‘”€¡9…Ñ¥Ù”]•ˆÌÕÑ ¤()Q¡¥ÌÕ¥‘”…Ñ¥Ù…Ñ•ÌÑ¡”½µµÕ¹¥Ñ¥•Ì™•…ÑÕÉ”ÕÍ¥¹œMÕÁ…‰…Í”Ì‰Õ¥±Ğµ¥¸)M¥¸¥¸İ¥Ñ ]•ˆÌ€¡M%]€¼%@´ĞÌØÄ¤¸9¼Í•Á…É…Ñ”…ÕÑ Í•ÉÙ•È½È)]PÍ•É•Ğ)¥ÌÉ•ÅÕ¥É•¸((´´´((ŒŒ]¡…Ğå½Ô¹••()ğI•ÅÕ¥É•µ•¹Ğğ9½Ñ•Ìğ)ğ´´µğ´´µğ)ğMÕÁ…‰…Í”ÁÉ½©•ĞğÉ•”Ñ¥•È¥ÌÍÕ™™¥¥•¹Ğğ)ğY%Q}MUA	M}UI1€ğAÉ½©•ĞUI0™É½´MÕÁ…‰…Í”A$Í•ÑÑ¥¹Ìğ)ğY%Q}MUA	M}9=9}-e€ğ¹½¸½ÁÕ‰±¥Œ­•ä™É½´MÕÁ…‰…Í”A$Í•ÑÑ¥¹Ìğ)ğ]•ˆÌÑ¡•É•Õ´ÁÉ½Ù¥‘•È•¹…‰±•ğ=¹”Ñ½±”¥¸MÕÁ…‰…Í”…Í¡‰½…Éğ()9¼MUA	M}MIY%}-e€°¹¼MUA	M})]Q}MIQ€°¹¼	Õ¸…ÕÑ Í•ÉÙ•È¸((´´´((ŒŒMÑ•À€ÄƒŠPÉ•…Ñ”„MÕÁ…‰…Í”ÁÉ½©•Ğ((Ä¸¼Ñ¼m¡ÑÑÁÌè¼½ÍÕÁ…‰…Í”¹½µt¡¡ÑÑÁÌè¼½ÍÕÁ…‰…Í”¹½´¤…¹Í¥¸¥¸¸(È¸±¥¬€¨©9•ÜÁÉ½©•Ğ¨¨¸¡½½Í”„É•¥½¸±½Í”Ñ¼å½ÕÈÕÍ•ÉÌ¸(Ì¸]…¥ĞøÈµ¥¹ÕÑ•Ì™½ÈÑ¡”ÁÉ½©•ĞÑ¼ÁÉ½Ù¥Í¥½¸¸((´´´((ŒŒMÑ•À€ÈƒŠP¹…‰±”]•ˆÌ€¡Ñ¡•É•Õ´¤…ÕÑ¡•¹Ñ¥…Ñ¥½¸((Ä¸=Á•¸å½ÕÈÁÉ½©•Ğ¥¸Ñ¡”MÕÁ…‰…Í”…Í¡‰½…É¸(È¸¼Ñ¼€¨©ÕÑ¡•¹Ñ¥…Ñ¥½¸ƒŠHAÉ½Ù¥‘•ÉÌ¨¨¸(Ì¸MÉ½±°Ñ¼Ñ¡”€¨©]•ˆÌ¨¨Í•Ñ¥½¸…¹Ñ½±”€¨©Ñ¡•É•Õ´¨¨½¸¸(Ğ¸M…Ù”¡…¹•Ì¸((´´´((ŒŒMÑ•À€ÌƒŠP‘å½ÕÈ…ÁÀUI0Ñ¼I•‘¥É•ĞUI1Ì()MÕÁ…‰…Í”Ù…±¥‘…Ñ•ÌÑ¡”M%]µ•ÍÍ…”UI%€™¥•±……¥¹ÍĞå½ÕÈÁÉ½©•ĞÌ)…±±½İ•I•‘¥É•ĞUI1Ì¸Q¡¥ÌÁÉ•Ù•¹ÑÌ…¹½Ñ¡•È…ÁÀ™É½´É•ÕÍ¥¹œ„Í¥¹…ÑÕÉ”)µ•…¹Ğ™½È1½…¹	½½¬¸((Ä¸¼Ñ¼€¨©ÕÑ¡•¹Ñ¥…Ñ¥½¸ƒŠHUI0½¹™¥ÕÉ…Ñ¥½¸¨¨¸(È¸U¹‘•È€¨©I•‘¥É•ĞUI1Ì¨¨°…‘è(€€€´¡ÑÑÀè¼½±½…±¡½ÍĞèÔÄÜÌ¼¨©€€¡±½…°‘•Ù•±½Áµ•¹Ğ¤(€€€´e½ÕÈÁÉ½‘ÕÑ¥½¸UI0°”¹œ¸¡ÑÑÁÌè¼½±½…¹‰½½¬¹•á…µÁ±”¹½´¼¨©€(€€€´Q¡”±½ˆÁ…ÑÑ•É¸€¡€¨©€¤±•ÑÌ…¹äÁ…Ñ Õ¹‘•ÈÑ¡”‘½µ…¥¸Í¥¸¥¸¸((´´´((ŒŒMÑ•À€ĞƒŠPIÕ¸Ñ¡”‘…Ñ…‰…Í”µ¥É…Ñ¥½¸()Q¡”µ¥É…Ñ¥½¸€¡€ÀÀÍ}¹…Ñ¥Ù•}İ•ˆÍ}…ÕÑ ¹ÍÅ±€°€¨©ØÌ¨¨¤É•…Ñ•Ì…±°Ñ…‰±•Ì°I1L)Á½±¥¥•Ì°¡•±Á•È™Õ¹Ñ¥½¹Ì°…¹‰…­™¥±±Ì•á¥ÍÑ¥¹œÉ½İÌ¸UÍ”Ñ¡”ME0‘¥Ñ½È)¥¸Ñ¡”MÕÁ…‰…Í”…Í¡‰½…É¸Q¡”µ¥É…Ñ¥½¸ÉÕ¹Ì¥¹Í¥‘”„Í¥¹±”ÑÉ…¹Í…Ñ¥½¸ƒŠP)¥˜…¹åÑ¡¥¹œ™…¥±Ì°Ñ¡”‘…Ñ…‰…Í”¥Ì±•™ĞÕ¹¡…¹•¸((¨©=ÁÑ¥½¸ƒŠPME0‘¥Ñ½È€¡Í¥µÁ±•ÍĞ¤¨¨((Ä¸¼Ñ¼€¨©ME0‘¥Ñ½ÈƒŠH9•ÜÅÕ•Éä¨¨¸(È¸A…ÍÑ”Ñ¡”•¹Ñ¥É”½¹Ñ•¹ÑÌ½˜ÍÕÁ…‰…Í”½µ¥É…Ñ¥½¹Ì¼ÀÀÍ}¹…Ñ¥Ù•}İ•ˆÍ}…ÕÑ ¹ÍÅ±€¸(Ì¸±¥¬€¨©IÕ¸¨¨¸((¨©=ÁÑ¥½¸ƒŠPMÕÁ…‰…Í”1$¨¨()‰…Í (Œ%¹ÍÑ…±°1$½¹”)¹Á´¥¹ÍÑ…±°€µœÍÕÁ…‰…Í”((Œ1¥¹¬Ñ¼å½ÕÈÁÉ½©•Ğ)ÍÕÁ…‰…Í”±½¥¸)ÍÕÁ…‰…Í”±¥¹¬€´µÁÉ½©•ĞµÉ•˜€ñå½ÕÈµÁÉ½©•ĞµÉ•˜ø((ŒAÕÍ µ¥É…Ñ¥½¹Ì)ÍÕÁ…‰…Í”‘ˆÁÕÍ )€((ø€¨©É•Í ÁÉ½©•Ğ½È•á¥ÍÑ¥¹œÁÉ½©•Ğ¨¨è€ÀÀÍ}¹…Ñ¥Ù•}İ•ˆÍ}…ÕÑ ¹ÍÅ±€ØÌ¡…¹‘±•Ì(ø‰½Ñ …Í•Ì¸Ù•ÉäIQQ	1€ÕÍ•Ì%9=Pa%MQM€Í¼¥Ğ¥ÌÍ…™”Ñ¼ÉÕ¸½¸(ø„ÁÉ½©•ĞÑ¡…Ğ…±É•…‘ä¡…ÌÑ…‰±•Ì™É½´µ¥É…Ñ¥½¸€ÀÀÄ¸Q¡”µ¥É…Ñ¥½¸‰…­™¥±±Ì(øÕÍ•É}¥‘€½‰½ÉÉ½İ•É}¥‘€½Í•¹‘•É}¥‘€½±•¹‘•É}¥‘€½½İ¹•É}¥‘€½±Õµ¹Ì™½È•á¥ÍÑ¥¹œ(øÉ½İÌ‰äµ…Ñ¡¥¹œİ…±±•Ğ…‘‘É•ÍÍ•Ì……¥¹ÍĞ…ÕÑ ¹¥‘•¹Ñ¥Ñ¥•Í€¸I½İÌÑ¡…Ğ…¹¹½Ğ(ø‰”µ…Ñ¡•…É”É•Á½ÉÑ•…ÌME0]I9%9Ì€¡¹½¸µ™…Ñ…°¤™½È½Á•É…Ñ½ÈÉ•Ù¥•Ü¸(ø(ø¼9=PÉÕ¸€ÀÀÅ}±½…¹‰½½­}Í¡•µ„¹ÍÅ±€½È€ÀÀÉ}Í•ÕÉ¥Ñå}¡…É‘•¹¥¹œ¹ÍÅ±€…™Ñ•È(øÑ¡¥Ìµ¥É…Ñ¥½¸ƒŠPÑ¡•ä…É”ÍÕÁ•ÉÍ•‘•¸((´´´((ŒŒMÑ•À€ÔƒŠP½¹™¥ÕÉ”•¹Ù¥É½¹µ•¹ĞÙ…É¥…‰±•Ì()½Áä€¹•¹Ø¹•á…µÁ±•€Ñ¼€¹•¹Ù€è()‰…Í )À€¹•¹Ø¹•á…µÁ±”€¹•¹Ø)€()=Á•¸€¹•¹Ù€…¹›İ¹¶‰ËkºwµçvÖVÖ&W'6Âw&÷WÖVÖ&W'2öæÇ’Â÷væW"†7&VF–öâ’÷"f–¦ö–åöw&÷Wö'•ö–çf—FR‚–À§ÂÖW76vW6Âw&÷WÖVÖ&W'2öæÇ’Â÷vâvÆÆWBÂ×W7B&RÖVÖ&W"À§ÂÆöå÷&WVW7G6Âw&÷WÖVÖ&W'2öæÇ’Â&÷'&÷vW"†æò7FGW2W66ÆF–öâFògVæFVB÷&W–B’À§ÂÆöåö–çFW&W7G6Âw&÷WÖVÖ&W'2öæÇ’Â÷vâvÆÆWBÂ×W7B&RÖVÖ&W"À ¢¢¤¦ö–æ–ærw&÷W2¢£¢F†R¦ö–åöw&÷Wö'•ö–çf—FR‡ö–çf—FUö6öFR–D"gVæ7F–öâ—0¦4T5U$•E’DTd”äU&gVæ7F–öââ—B&VG2F†R6ÆÆW"w2vÆÆWBg&öÒF†R¥u@¦–çFW&æÆÇ’(	BF†R'&÷w6W"6ææ÷B72F–ffW&VçBvÆÆWBâF†—2&WfVçG0¦–FVçF—G’7ööf–ærv†Vâ¦ö–æ–ærw&÷Wà ¢¢¤Æöâ7FGW2W66ÆF–öâ¢£¢F†R&WVW7G5÷WFFUö&÷'&÷vW%÷&W7G&–7FVFöÆ–7¦&Æö6·26Æ–VçG2g&öÒ6WGF–ær7FGW2ÒvgVæFVBv÷"w&W–BvâF†÷6P§G&ç6—F–öç2&WV—&R6W'f–6R×&öÆR6ÆÂFòWFFUöÆöå÷&WVW7E÷7FGW2‚–gFW §6W'fW"×6–FRfW&–f–6F–öâöbF†Röæ6†–âG&ç67F–öâ&V6V—Bà ¢ÒÒĞ ¢22FW7F–ærv—F‚F‡&VR–FVçF—F–W0 ¥FòfW&–g’F†R$Å2öÆ–6–W2v÷&²6÷'&V7FÇ“  ¢¢¤ÆW‚†÷væW"’¢ £â6öææV7BvÆÆWBÂ6–vâ–âÂ7&VFRw&÷W$g&–VæG2"à£"â6÷’F†R–çf—FR6öFRà ¢¢¥6&‚†–çf—FVBÖVÖ&W"’¢ £2â6öææV7BvÆÆWB"Â6–vâ–âà£Bâ¦ö–â$g&–VæG2"W6–ærÆW‚w2–çf—FR6öFRà£Râ6†÷VÆB6VRF†Rw&÷WæB&R&ÆRFò6†BæB÷7BÆöâ&WVW7G2à ¢¢¤¦ÖW2†÷WG6–FW"’¢ £bâ6öææV7BvÆÆWB2Â6–vâ–âà£râG'’Fò¦ö–âv—F‚&æFöÒ–çf—FR6öFR(i"6†÷VÆBf–Âà£‚âG'’Fò&VBÖW76vW2F—&V7FÇ’f–F†R7W&6R6Æ–VçB(i"$Å2&Æö6·2—Bà£’âG'’Fò6ÆÂ¦ö–åöw&÷Wö'•ö–çf—FVv—F‚fÆ–B6öFRg&öÒæ÷F†W"6W76–öâ(i"vWEö×•÷vÆÆWB‚–&WGW&ç2¦ÖW2w2vÆÆWBÂæ÷BÆW‚w2(	B†R¦ö–ç22†–×6VÆbÂæ÷B–×W'6öæF–ærç–öæRà ¢ÒÒĞ ¢22G&÷V&ÆW6†ö÷F–æp §Â7–×FöÒÂf—‚À§ÂÒÒ×ÂÒÒ×À§Â%6–vâÖ–âfW&–f–6F–öâf–ÆVB"Â6†V6²F†BF†RvV#2WF†W&WVÒ&÷f–FW"—2Væ&ÆVB–âF6†&ö&B(i"WF†VçF–6F–öâ(i"&÷f–FW'2âÀ§Â%6–væGW&R6æ6VÆÆVB"ÂF†RW6W"F—6Ö—76VBF†RvÆÆWB6–væGW&R&ö×B(	BG'’v–ââÀ§Â$Å2W'&÷'2†æòFF&WGW&æVB’ÂF†R6W76–öâ¥uBÖ’&RW‡—&VBâ6–vâ÷WBæB6–vâ–âv–ââÀ§ÂvWEö×•÷vÆÆWB‚–&WGW&ç2çVÆÂÂF†R6W76–öâ†2æòW6W%öÖWFFFçvÆÆWFâF†—26†÷VÆBæ÷B†Vâv—F‚4•tS²6–vâ÷WBæBG'’v–ââÀ§Â&VÇF–ÖRæ÷Bv÷&¶–ærÂ6†V6²7W&6RF6†&ö&B(i"&VÇF–ÖR(i"Væ&ÆVBF&ÆW3¢ÖW76vW6ÂÆöå÷&WVW7G6ÂÆöåö–çFW&W7G66†÷VÆB&RÆ—7FVBâÀ§Â$–çfÆ–B&VF—&V7BU$Â"W'&÷"Â–÷W"U$Â—2æ÷B–âF6†&ö&B(i"WF†VçF–6F–öâ(i"U$Â6öæf–wW&F–öâ(i"&VF—&V7BU$Ç2âÀ§ÂVçbf"æ÷B–6¶VBWÂf—FR&VG2æVçföæÇ’B7F'GW(	B&W7F'B'Vâ'VâFWfgFW"VF—F–æræVçfâÀ ¢ÒÒĞ ¢22&öGV7F–öâFWÆ÷–ÖVç@ £â6WBd•DUõ5U$4UõU$ÆæBd•DUõ5U$4Uôäôåô´U––â–÷W"†÷7Bw0¢Vçf—&öæÖVçBf&–&ÆW2„æWFÆ–g’ÂfW&6VÂÂWF2â’à£"âFB–÷W"&öGV7F–öâFöÖ–âFò7W&6R&VF—&V7BU$Ç2à£2âF†R—2gVÆÇ’7FF–2'V–ÆB(	BæòæöFRô'Vâ6W'fW"æVVFVBf÷"WF‚à£Bâ6W'f–6R×&öÆR¶W’†5U$4Uõ4U%d”4Uô´U–’—2öæÇ’æVVFVB–b–÷RFB¢6W'fW"×6–FR&ö6W72FòfW&–g’öæ6†–â&V6V—G2&Vf÷&RÖ&¶–ærÆöç2&W–Bà¢F†B¶W’æWfW"vöW2–âd•DUöf&–&ÆRæBæWfW"6†—2FòF†R'&÷w6W"à

@@ -1,338 +1,54 @@
-/**
- * Transaction Tracing Instrumentation
- *
- * Patches globalThis.fetch to capture all viem http() transport RPC calls
- * and regular HTTP requests, and patches window.ethereum.request() to capture
- * EIP-1193 provider calls (e.g. eth_sendTransaction via injected wallets).
- * Events are sent to the parent frame via postMessage.
- *
- * Imported as a side-effect before any app code runs.
- * Built with Arc Studio â€” https://studio.arc.io
- */
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Ô¼¨¨(€¨QÉ…¹Í…Ñ¥½¸QÉ…¥¹œ%¹ÍÑÉÕµ•¹Ñ…Ñ¥½¸(€¨(€¨A…Ñ¡•Ì±½‰…±Q¡¥Ì¹™•Ñ Ñ¼…ÁÑÕÉ”…±°Ù¥•´¡ÑÑÀ ¤ÑÉ…¹ÍÁ½ÉĞIA…±±Ì(€¨…¹É•Õ±…È!QQ@É•ÅÕ•ÍÑÌ°…¹Á…Ñ¡•Ìİ¥¹‘½Ü¹•Ñ¡•É•Õ´¹É•ÅÕ•ÍĞ ¤Ñ¼…ÁÑÕÉ”(€¨%@´ÄÄäÌÁÉ½Ù¥‘•È…±±Ì€¡”¹œ¸•Ñ¡}Í•¹‘QÉ…¹Í…Ñ¥½¸Ù¥„¥¹©•Ñ•İ…±±•ÑÌ¤¸(€¨Ù•¹ÑÌ…É”Í•¹ĞÑ¼Ñ¡”Á…É•¹Ğ™É…µ”Ù¥„Á½ÍÑ5•ÍÍ…”¸(€¨(€¨%µÁ½ÉÑ•…Ì„Í¥‘”µ•™™•Ğ‰•™½É”…¹ä…ÁÀ½‘”ÉÕ¹Ì¸(€¨	Õ¥±Ğİ¥Ñ ÉŒMÑÕ‘¥¼ƒŠP¡ÑÑÁÌè¼½ÍÑÕ‘¥¼¹…ÉŒ¹¥¼(€¨¼((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼QåÁ•Ì€¡¥¹±¥¹•ƒŠPÍ…¹‘‰½à…¸ĞÕÍ”…ÁÀµ½‘Õ±”…±¥…Í•Ì¤(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´()¥¹Ñ•É™…”QÉ…•É½ÕÁI•˜ì¥èÍÑÉ¥¹œì±…‰•°èÍÑÉ¥¹œìô()¥¹Ñ•É™…”IÁQÉ…•Ù•¹Ğì(€­¥¹è€ÉÁŒœì(€¥èÍÑÉ¥¹œì(€Ñ¥µ•ÍÑ…µÀè¹Õµ‰•Èì(€µ•Ñ¡½èÍÑÉ¥¹œì(€Á…É…µÌèÕ¹­¹½İ¹mtì(€¡…¥¹%è¹Õµ‰•Èì(€É•ÍÕ±ĞüèÕ¹­¹½İ¸ì(€•ÉÉ½ÈüèÍÑÉ¥¹œì(€‘ÕÉ…Ñ¥½¸üè¹Õµ‰•Èì(€É½ÕÁÌüèQÉ…•É½ÕÁI•™mtì)ô()¥¹Ñ•É™…”!ÑÑÁQÉ…•Ù•¹Ğì(€­¥¹è€¡ÑÑÀœì(€¥èÍÑÉ¥¹œì(€Ñ¥µ•ÍÑ…µÀè¹Õµ‰•Èì(€µ•Ñ¡½èÍÑÉ¥¹œì(€ÕÉ°èÍÑÉ¥¹œì(€ÍÑ…ÑÕÌè¹Õµ‰•Èì(€‘ÕÉ…Ñ¥½¸è¹Õµ‰•Èì(€É•ÅÕ•ÍÑ	½‘äüèÕ¹­¹½İ¸ì(€É•ÍÁ½¹Í•	½‘äüèÕ¹­¹½İ¸ì(€É½ÕÁÌüèQÉ…•É½ÕÁI•™mtì)ô()¥¹Ñ•É™…”É½ÕÁMÑ…ÉÑQÉ…•Ù•¹Ğì(€­¥¹è€É½ÕÀµÍÑ…ÉĞœì(€¥èÍÑÉ¥¹œì(€Ñ¥µ•ÍÑ…µÀè¹Õµ‰•Èì(€É½ÕÁ%èÍÑÉ¥¹œì(€±…‰•°èÍÑÉ¥¹œì(€É½ÕÁÌèQÉ…•É½ÕÁI•™mtì)ô()¥¹Ñ•É™…”É½ÕÁ¹‘QÉ…•Ù•¹Ğì(€­¥¹è€É½ÕÀµ•¹œì(€¥èÍÑÉ¥¹œì(€Ñ¥µ•ÍÑ…µÀè¹Õµ‰•Èì(€É½ÕÁ%èÍÑÉ¥¹œì(€É½ÕÁÌèQÉ…•É½ÕÁI•™mtì)ô()ÑåÁ”QÉ…•Ù•¹Ğ€ôIÁQÉ…•Ù•¹Ğğ!ÑÑÁQÉ…•Ù•¹ĞğÉ½ÕÁMÑ…ÉÑQÉ…•Ù•¹ĞğÉ½ÕÁ¹‘QÉ…•Ù•¹Ğì((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼!•±Á•ÉÌ(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´()½¹ÍĞ1=€ô€mÍÑÕ‘¥¼µÑÉ…•tœì()™Õ¹Ñ¥½¸±½œ ¸¸¹…ÉÌèÕ¹­¹½İ¹mt¤èÙ½¥ì(€½¹Í½±”¹±½œ¡1=°€¸¸¹…ÉÌ¤ì)ô()½¹ÍĞ5a}	=d€ô€ÄÁ|ÀÀÀì)±•Ğ}½Õ¹Ñ•È€ô€Àì)½¹ÍĞ}ÁÉ•™¥à€ôÑåÁ•½˜ÉåÁÑ¼€„ôô€Õ¹‘•™¥¹•œ€˜˜ÉåÁÑ¼¹É…¹‘½µUU%(€€üÉåÁÑ¼¹É…¹‘½µUU% ¤¹Í±¥” À°€à¤(€€è5…Ñ ¹É…¹‘½´ ¤¹Ñ½MÑÉ¥¹œ ÌØ¤¹Í±¥” È°€ÄÀ¤ì()™Õ¹Ñ¥½¸¥ ¤èÍÑÉ¥¹œì(€É•ÑÕÉ¸€‘í}ÁÉ•™¥áô´‘ì¬­}½Õ¹Ñ•Éõ€ì)ô((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼É½ÕÀÍÑ…¬ƒŠPÍÑ…¬µ‰…Í•¹•ÍÑ¥¹œ™½ÈÑÉ…”É½ÕÁÌ(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´()¥¹Ñ•É™…”É½ÕÁMÑ…­¹ÑÉäì¥èÍÑÉ¥¹œì±…‰•°èÍÑÉ¥¹œìô)½¹ÍĞ}É½ÕÁMÑ…¬èÉ½ÕÁMÑ…­¹ÑÉåmt€ômtì)±•Ğ}…¡•‘É½ÕÁÌèQÉ…•É½ÕÁI•™mtğ¹Õ±°€ô¹Õ±°ì()™Õ¹Ñ¥½¸ÕÉÉ•¹ÑÉ½ÕÁÌ ¤èQÉ…•É½ÕÁI•™mtì(€¥˜€ …}…¡•‘É½ÕÁÌ¤ì(€€€}…¡•‘É½ÕÁÌ€ô}É½ÕÁMÑ…¬¹µ…À¡œ€ôø€¡ì¥èœ¹¥°±…‰•°èœ¹±…‰•°ô¤¤ì(€ô(€É•ÑÕÉ¸}…¡•‘É½ÕÁÌì)ô()™Õ¹Ñ¥½¸¥¹Ù…±¥‘…Ñ•É½ÕÁ…¡” ¤èÙ½¥ì(€}…¡•‘É½ÕÁÌ€ô¹Õ±°ì)ô()¥¹Ñ•É™…”MÑÕ‘¥½QÉ…•A$ì(€ÍÑ…ÉÑÉ½ÕÀè€¡±…‰•°èÍÑÉ¥¹œ¤€ôøÍÑÉ¥¹œì(€•¹‘É½ÕÀè€ ¤€ôøÙ½¥ì)ô()™Õ¹Ñ¥½¸Í•ÑÕÁQÉ…•A$ ¤èÙ½¥ì(€½¹ÍĞ…Á¤èMÑÕ‘¥½QÉ…•A$€ôì(€€€ÍÑ…ÉÑÉ½ÕÀ¡±…‰•°èÍÑÉ¥¹œ¤èÍÑÉ¥¹œì(€€€€€½¹ÍĞÉ½ÕÁ%€ô¥ ¤ì(€€€€€½¹ÍĞÉ½ÕÁÌ€ôÕÉÉ•¹ÑÉ½ÕÁÌ ¤ì(€€€€€}É½ÕÁMÑ…¬¹ÁÕÍ ¡ì¥èÉ½ÕÃ]4ÖÚ$z{-®éÜj×Ú›ÛYKY^[œÚ[Û‹ËÉË	ÛØØ[ÜİLMÌÉ×NÂ‚™[˜İ[Ûˆ\Ó›Ú\ÙJ\›ˆİš[™ÊNˆ›ÛÛX[ˆÂˆ™]\›ˆ“ÒTÑKœÛÛYJ
+
+HOˆ\›š[˜ÛY\Ê
+JNÂŸB‚‹ËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‹ËÈÚZ[’YˆX\›ˆœ›ÛH™\ÜÛœÙ\ËÙ^YYH”ÈT“Üİ˜[YB‹ËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚˜ÛÛœİØÚZ[RÜİH™]ÈX\İš[™Ë[X™\Š
+NÂ‚™[˜İ[ÛˆÜİ
+\›ˆİš[™ÊNˆİš[™ÈÂˆHÂˆ™]\›ˆ™]ÈT“
+\›
+KšÜİ˜[YNÂˆHØ]ÚÂˆ™]\›ˆ	ÉÎÂˆBŸB‚‹ÊŠ‚ˆ
+ˆ™\ÛÛ™HH™]Ú\™Ù]È[ˆXœÛÛ]HT“YØZ[œİH[›š[™È\	ÜÈÜšYÚ[‹‚ˆ
+ˆØ[YK[ÜšYÚ[ˆ™]Ú\È\ÜÈH™[]]™H]
+K™Ëˆ	ËØ\KÙ\İ[X]IÊNÈØ\\š[™È]ˆ
+ˆXœÛÛ]H\™HYX[œÈH˜XÙH[™[ÚİÜÈH™X[Ø[™›ŞÜİ[œİXYÙˆBˆ
+ˆXÙZÛ\‹[™Üİ
 
-// ---------------------------------------------------------------------------
-// Types (inlined â€” sandbox can't use app module aliases)
-// ---------------------------------------------------------------------------
+KØÚZ[‘›Ü•\›
 
-interface TraceGroupRef { id: string; label: string; }
-
-interface RpcTraceEvent {
-  kind: 'rpc';
-  id: string;
-  timestamp: number;
-  method: string;
-  params: unknown[];
-  chainId: number;
-  result?: unknown;
-  error?: string;
-  duration?: number;
-  groups?: TraceGroupRef[];
-}
-
-interface HttpTraceEvent {
-  kind: 'http';
-  id: string;
-  timestamp: number;
-  method: string;
-  url: string;
-  status: number;
-  duration: number;
-  requestBody?: unknown;
-  responseBody?: unknown;
-  groups?: TraceGroupRef[];
-}
-
-interface GroupStartTraceEvent {
-  kind: 'group-start';
-  id: string;
-  timestamp: number;
-  groupId: string;
-  label: string;
-  groups: TraceGroupRef[];
-}
-
-interface GroupEndTraceEvent {
-  kind: 'group-end';
-  id: string;
-  timestamp: number;
-  groupId: string;
-  groups: TraceGroupRef[];
-}
-
-type TraceEvent = RpcTraceEvent | HttpTraceEvent | GroupStartTraceEvent | GroupEndTraceEvent;
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-const LOG = '[studio-trace]';
-
-function log(...args: unknown[]): void {
-  console.log(LOG, ...args);
-}
-
-const MAX_BODY = 10_000;
-let _counter = 0;
-const _prefix = typeof crypto !== 'undefined' && crypto.randomUUID
-  ? crypto.randomUUID().slice(0, 8)
-  : Math.random().toString(36).slice(2, 10);
-
-function id(): string {
-  return `${_prefix}-${++_counter}`;
-}
-
-// ---------------------------------------------------------------------------
-// Group stack â€” stack-based nesting for trace groups
-// ---------------------------------------------------------------------------
-
-interface GroupStackEntry { id: string; label: string; }
-const _groupStack: GroupStackEntry[] = [];
-let _cachedGroups: TraceGroupRef[] | null = null;
-
-function currentGroups(): TraceGroupRef[] {
-  if (!_cachedGroups) {
-    _cachedGroups = _groupStack.map(g => ({ id: g.id, label: g.label }));
-  }
-  return _cachedGroups;
-}
-
-function invalidateGroupCache(): void {
-  _cachedGroups = null;
-}
-
-interface StudioTraceAPI {
-  startGroup: (label: string) => string;
-  endGroup: () => void;
-}
-
-function setupTraceAPI(): void {
-  const api: StudioTraceAPI = {
-    startGroup(label: string): string {
-      const groupId = id();
-      const groups = currentGroups();
-      _groupStack.push({ id: groupId, label });
-      invalidateGroupCache();
-      if (_enabled) {
-        emit({ kind: 'group-start', id: id(), timestamp: Date.now(), groupId, label, groups });
-      }
-      return groupId;
-    },
-    endGroup(): void {
-      const entry = _groupStack.pop();
-      invalidateGroupCache();
-      if (!entry) {
-        log('endGroup called with empty stack â€” ignoring');
-        return;
-      }
-      if (_enabled) {
-        emit({ kind: 'group-end', id: id(), timestamp: Date.now(), groupId: entry.id, groups: currentGroups() });
-      }
-    },
-  };
-  (window as unknown as { __studioTrace: StudioTraceAPI }).__studioTrace = api;
-}
-
-setupTraceAPI();
-
-// ---------------------------------------------------------------------------
-// emitWithGroups â€” attaches current group ancestry to RPC/HTTP events
-// ---------------------------------------------------------------------------
-
-function emitWithGroups(event: RpcTraceEvent | HttpTraceEvent): void {
-  const groups = currentGroups();
-  emit(groups.length > 0 ? { ...event, groups } : event);
-}
-
-/**
- * Resolve the parent frame's origin for targeted postMessage.
- * Falls back to '*' only if the origin cannot be determined.
- */
-const _parentOrigin: string = (() => {
-  try {
-    // ancestorOrigins is available in Chromium and Safari
-    if (window.location.ancestorOrigins?.length) {
-      return window.location.ancestorOrigins[0];
-    }
-  } catch { /* sandboxed iframe may throw */ }
-
-  try {
-    if (document.referrer) {
-      return new URL(document.referrer).origin;
-    }
-  } catch { /* malformed referrer */ }
-
-  return '*';
-})();
-
-function emit(event: TraceEvent): void {
-  try {
-    window.parent.postMessage({ type: 'studio-trace-event', event }, _parentOrigin);
-  } catch {
-    /* ignore */
-  }
-}
-
-function truncate(s: string): string {
-  return s.length > MAX_BODY ? s.slice(0, MAX_BODY) : s;
-}
-
-function tryJson(v: unknown): unknown {
-  if (typeof v !== 'string') {
-    return v;
-  }
-
-  try {
-    return JSON.parse(v);
-  } catch {
-    return v;
-  }
-}
-
-function stringify(v: unknown): string {
-  try {
-    return JSON.stringify(v);
-  } catch {
-    return String(v);
-  }
-}
-
-function parseChainId(raw: unknown): number {
-  if (typeof raw === 'number') {
-    return raw;
-  }
-
-  if (typeof raw === 'string') {
-    const n = raw.startsWith('0x') ? parseInt(raw, 16) : parseInt(raw, 10);
-    return Number.isNaN(n) ? 0 : n;
-  }
-
-  return 0;
-}
-
-// ---------------------------------------------------------------------------
-// Opt-in/opt-out â€” parent frame controls whether tracing is active
-// ---------------------------------------------------------------------------
-
-let _enabled = false;
-
-window.addEventListener('message', (e: MessageEvent<MessageData>) => {
-  if (e.source !== window.parent) {
-    return;
-  }
-
-  if (e.data?.type === 'studio-trace-config') {
-    _enabled = !!e.data.enabled;
-    log('tracing', _enabled ? 'enabled' : 'disabled');
-  }
-});
-
-const NOISE = ['/_vite/', '/@vite/', '/@id/', '/node_modules/.vite/', 'chrome-extension://', 'localhost:5173'];
-
-function isNoise(url: string): boolean {
-  return NOISE.some((p) => url.includes(p));
-}
-
-// ---------------------------------------------------------------------------
-// ChainId: learn from responses, keyed by RPC URL hostname
-// ---------------------------------------------------------------------------
-
-const _chainByHost = new Map<string, number>();
-
-function host(url: string): string {
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return '';
-  }
-}
-
-/**
- * Resolve a fetch target to an absolute URL against the running app's origin.
- * Same-origin fetches pass a relative path (e.g. '/api/estimate'); capturing it
- * absolute here means the trace panel shows the real sandbox host instead of a
- * placeholder, and host()/chainForUrl() can key off it reliably.
- */
-function toAbsoluteUrl(raw: string): string {
-  try {
-    return new URL(raw, window.location.href).href;
-  } catch {
-    return raw;
-  }
-}
-
-function chainForUrl(url: string): number {
-  const h = host(url);
-  return (h && _chainByHost.get(h)) || 0;
-}
-
-function learnChain(url: string, chainId: number): void {
-  const h = host(url);
-  if (h && chainId > 0) {
-    _chainByHost.set(h, chainId);
-    log('chain learned:', h, 'â†’', chainId);
-  }
-}
-
-/** Pre-register a chain's RPC URL so events show the correct chain from the start. */
-export function registerChain(chainId: number, rpcUrl: string): void {
-  learnChain(rpcUrl, chainId);
-}
-
-// ---------------------------------------------------------------------------
-// JSON-RPC helpers (single + batch)
-// ---------------------------------------------------------------------------
-
-interface JRPCReq { method: string; params?: unknown[]; id?: unknown }
-interface JRPCRes { id?: unknown; result?: unknown; error?: { message?: string } }
-
-interface EIP1193Provider {
-  request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
-  on?: (event: string, handler: (...args: unknown[]) => void) => void;
-  __studioPatched?: boolean;
-}
-
-interface MessageData {
-  type?: string;
-  enabled?: boolean;
-}
-
-interface EIP6963AnnounceProviderEvent extends Event {
-  detail?: { provider?: EIP1193Provider };
-}
-
-/** Type-safe accessor for window.ethereum (may be set by wallet extensions). */
-function getEthereum(): EIP1193Provider | undefined {
-  const w = window as unknown as { ethereum?: EIP1193Provider };
-  return w.ethereum;
-}
-
-function isRpc(b: unknown): b is JRPCReq {
-  return typeof b === 'object' && b !== null && !Array.isArray(b)
-    && 'method' in b && typeof (b as Record<string, unknown>).method === 'string';
-}
-
-function hasRpc(b: unknown): boolean {
-  return isRpc(b) || (Array.isArray(b) && b.length > 0 && isRpc(b[0]));
-}
-
-function toReqs(b: unknown): JRPCReq[] {
-  if (isRpc(b)) {
-    return [b];
-  }
-
-  if (Array.isArray(b)) {
-    return b.filter(isRpc);
-  }
-
-  return [];
-}
-
-function toResps(b: unknown): JRPCRes[] {
-  if (typeof b !== 'object' || b === null) {
-    return [];
-  }
-
-  return Array.isArray(b) ? (b as JRPCRes[]) : [b];
+HØ[ˆÙ^HÙ™ˆ]™[XX›K‚ˆ
+‹Â™[˜İ[ÛˆĞXœÛÛ]U\›
+˜]Îˆİš[™ÊNˆİš[™ÈÂˆHÂˆ™]\›ˆ™]ÈT“
+˜]ËÚ[™İË›ØØ][Û‹š™YŠKš™YÂˆHØ]ÚÂˆ™]\›ˆ˜]ÎÂˆBŸB‚™[˜İ[ÛˆÚZ[‘›Ü•\›
+\›ˆİš[™ÊNˆ[X™\ˆÂˆÛÛœİHÜİ
+\›
+NÂˆ™]\›ˆ
+	‰ˆØÚZ[RÜİ™Ù]
+
+JHÂŸB‚™[˜İ[ÛˆX\›ÚZ[Š\›ˆİš[™ËÚZ[’Yˆ[X™\ŠNˆ›ÚYÂˆÛÛœİHÜİ
+\›
+NÂˆYˆ
+	‰ˆÚZ[’Yˆ
+HÂˆØÚZ[RÜİœÙ]
+ÚZ[’Y
+NÂˆÙÊ	ØÚZ[ˆX\›™Y‰Ë	ø¡¤‰ËÚZ[’Y
+NÂˆBŸB‚‹ÊŠˆ™K\™YÚ\İ\ˆHÚZ[‰ÜÈ”ÈT“ÛÈ]™[ÈÚİÈHÛÜœ™XİÚZ[ˆœ›ÛHHİ\ˆ
+‹Â™^Ü[˜İ[Ûˆ™YÚ\İ\ÚZ[ŠÚZ[’Yˆ[X™\‹œÕ\›ˆİš[™ÊNˆ›ÚYÂˆX\›ÚZ[ŠœÕ\›ÚZ[’Y
+NÂŸB‚‹ËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‹ËÈ”ÓÓ‹T”È[\œÈ
+Ú[™ÛH
+È˜]Ú
+B‹ËÈKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚š[\™˜XÙH””Ô™\HÈY]Ùˆİš[™ÎÈ\˜[\ÏÎˆ[šÛ›İÛ–×NÈYÎˆ[šÛ›İÛˆBš[\™˜XÙH””Ô™\ÈÈYÎˆ[šÛ›İÛÈ™\İ[Îˆ[šÛ›İÛÈ\œ›ÜÎˆÈY\ÜØYÙOÎˆİš[™ÈHB‚š[\™˜XÙHRTLNLÔ›İšY\ˆÂˆ™\]Y\İˆ
+\™ÜÎˆÈY]Ùˆİš[™ÎÈ\˜[\ÏÎˆ[šÛ›İÛ–×HJHOˆ›ÛZ\ÙO[šÛ›İÛÂˆÛÎˆ
+]™[ˆİš[™Ë[™\ˆ
+‹‹˜\™ÜÎˆ[šÛ›İÛ–×JHOˆ›ÚY
+HOˆ›ÚYÂˆ×ÜİY[Ô]ÚYÎˆ›ÛÛX[ÂŸB‚š[\™˜XÙHY\ÜØYÙQ]HÂˆ\OÎˆİš[™ÎÂˆ[˜X›YÎˆ›ÛÛX[ÂŸB‚š[\™˜XÙHRTMŒĞ[››İ[˜ÙT›İšY\‘]™[^[™È]™[Âˆ]Z[ÎˆÈ›İšY\ÎˆRTLNLÔ›İšY\ˆNÂŸB‚‹ÊŠˆ\K\ØY™HXØÙ\ÜÛÜˆ›ÜˆÚ[™İË™]\™][H
+X^H™HÙ]HØ[]^[œÚ[ÛœÊKˆ
+‹Â™[˜İ[ÛˆÙ]]\™][J
+NˆRTLNLÔ›İšY\ˆ[™Yš[™YÂˆÛÛœİÈHÚ[™İÈ\È[šÛ›İÛˆ\ÈÈ]\™][OÎˆRTLNLÔ›İšY\ˆNÂˆ™]\›ˆË™]\™][NÂŸB‚™[˜İ[Ûˆ\ÔœÊˆ[šÛ›İÛŠNˆˆ\È””Ô™\HÂˆ™]\›ˆ\[ÙˆˆOOH	ÛØš™Xİ	È	‰ˆˆOOH[	‰ˆP\œ˜^Kš\Ğ\œ˜^JŠBˆ	‰ˆ	ÛY]Ù	È[ˆˆ	‰ˆ\[Ùˆ
+ˆ\È™XÛÜ™İš[™Ë[šÛ›İÛŠK›Y]ÙOOH	Üİš[™ÉÎÂŸB‚™[˜İ[Ûˆ\ÔœÊˆ[šÛ›İÛŠNˆ›ÛÛX[ˆÂˆ™]\›ˆ\ÔœÊŠH
+\œ˜^Kš\Ğ\œ˜^JŠH	‰ˆ‹›[™İˆ	‰ˆ\ÔœÊ–ÌJJNÂŸB‚™[˜İ[ÛˆÔ™\\Êˆ[šÛ›İÛŠNˆ””Ô™\V×HÂˆYˆ
+\ÔœÊŠJHÂˆ™]\›ˆØ—NÂˆB‚ˆYˆ
+\œ˜^Kš\Ğ\œ˜^JŠJHÂˆ™]\›ˆ‹™š[\Š\ÔœÊNÂˆB‚ˆ™]\›ˆ×NÂŸB‚™[˜İ[ÛˆÔ™\ÜÊˆ[šÛ›İÛŠNˆ””Ô™\Ö×HÂˆYˆ
+\[ÙˆˆOOH	ÛØš™Xİ	ÈˆOOH[
+HÂˆ™]\›ˆ×NÂˆB‚ˆ™]\›ˆ\œ˜Vj¹âkºwµçhºÚn¶Šâ‚)Ú–Ú$zw(º{vÓ“¢Ö¥¢ëiºÙbë5y.isArray(b) ? (b as JRPCRes[]) : [b];
 }
 
 function findResp(resps: JRPCRes[], reqId: unknown): JRPCRes | undefined {
@@ -400,9 +116,7 @@ try {
           // Also learn from responses that embed chainId (e.g. eth_getTransactionByHash)
           if (result && typeof result === 'object' && 'chainId' in (result as Record<string, unknown>)) {
             const embedded = parseChainId((result as Record<string, unknown>).chainId);
-            if (embedded > 0) learnChain(url, embedded);
-          }
-          emitWithGroups({ kind: 'rpc', id: id(), timestamp: ts, method: r.method, params: r.params ?? [], chainId: chainForUrl(url), result, error, duration: dur });
+         ãkh‘éì¶»§q«^t method: r.method, params: r.params ?? [], chainId: chainForUrl(url), result, error, duration: dur });
         }
       } else {
         emitWithGroups({ kind: 'http', id: id(), timestamp: ts, method, url, status: res.status, duration: dur, requestBody: reqBody, responseBody: resBody });

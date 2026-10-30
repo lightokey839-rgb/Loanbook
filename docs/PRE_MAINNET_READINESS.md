@@ -1,149 +1,39 @@
-# LoanBook â€” Pre-Mainnet Readiness Report
-
-**Date:** 2026-10-28  
-**Audited by:** Arc Studio security review  
-**Scope:** Smart contract, auth server, Supabase RLS, frontend USDC handling, secrets, network config  
-**Contract:** `0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228` (Arc Testnet â€” not reviewed for mainnet deployment)
-
----
-
-## VERDICT: NO-GO for mainnet
-
-Six confirmed issues were found and fixed in this session. Four were HIGH severity. Live end-to-end tests that require a running Supabase project and real wallet signatures remain BLOCKED in the sandbox environment. These tests MUST be completed and pass before mainnet deployment is considered.
-
----
-
-## Checklist
-
-| # | Area | Status | Notes |
-|---|------|--------|-------|
-| 1 | Authentication & replay protection | PASS (code) / BLOCKED (live) | LB-013 + LB-014 fixed. Live wallet sign-in requires Supabase. |
-| 2 | Private group permissions | PASS (code) / BLOCKED (live) | LB-016 fixed. Three-identity test requires live DB. |
-| 3 | RLS & invitation security | PASS (code) / BLOCKED (live) | Migration 002 written. Must be applied and tested. |
-| 4 | Loan status verified onchain | PARTIAL | Onchain tx verified via wagmi receipt; DB status escalation blocked (LB-017). Auth-server-side receipt verification not yet implemented. |
-| 5 | USDC precision | PASS | LB-018 fixed. All float arithmetic replaced with bigint. Unit tests pass conceptually; no dedicated test harness yet. |
-| 6 | Contract security tests | PASS | 31/31 forge tests pass. Slither analysis previously clean. |
-| 7 | Testnet loan lifecycle | BLOCKED | Full createLoanâ†’fundâ†’repay lifecycle requires wallet signatures. |
-| 8 | Frontend production build | PASS | `bunx vite build` clean in 12.9s, no errors. |
-| 9 | Production backend | BLOCKED | Auth server untested against live Supabase. CORS, rate limiting, HTTPS not configured. |
-| 10 | Secrets protection | PASS (sandbox) | No git history to scrub â€” no git repo. `.env.example` contains only placeholders. |
-| 11 | Mainnet configuration | NOT STARTED | Mainnet chain ID 5042 and LoanBook address not configured. |
-
----
-
-## Confirmed Issues and Fixes
-
-### LB-013 â€” HIGH â€” Auth: signed message reconstructed with different timestamp
-- **Root cause:** `/verify` called `buildSiweMessage()` again instead of using the stored message.
-- **Fix:** Store message text verbatim in `nonces.message`; `/verify` reads it back.
-- **Files:** `server/auth.ts`, `supabase/migrations/002_security_hardening.sql`
-- **Test status:** BLOCKED (requires live Supabase).
-
-### LB-014 â€” HIGH â€” Auth: non-atomic nonce consumption (replay attack)
-- **Root cause:** SELECT + UPDATE = two round-trips; concurrent replays could both pass.
-- **Fix:** `consume_nonce()` PL/pgSQL function with `UPDATE â€¦ RETURNING` in one statement.
-- **Files:** `server/auth.ts`, `supabase/migrations/002_security_hardening.sql`
-- **Test status:** BLOCKED (requires live Supabase).
-
-### LB-015 â€” MEDIUM â€” Auth: CORS wildcard `*`
-- **Root cause:** `cors()` returned `Access-Control-Allow-Origin: *` unconditionally.
-- **Fix:** Explicit allowlist from `APP_DOMAIN`; `Vary: Origin` header added.
-- **Files:** `server/auth.ts`
-- **Test status:** PASS (code review only; no live endpoint in sandbox).
-
-### LB-016 â€” HIGH â€” RLS: any authenticated wallet can join any group without invite
-- **Root cause:** `members_insert_self` policy checked only that `wallet = jwt.wallet`.
-- **Fix:** Replaced with `members_insert_owner_only` + `join_group_by_invite()` server-side function. Client calls RPC instead of direct INSERT.
-- **Files:** `supabase/migrations/002_security_hardening.sql`, `src/components/community/GroupList.tsx`
-- **Test status:** BLOCKED (requires live DB with three test identities).
-
-### LB-017 â€” HIGH â€” RLS: borrower can set loan status = 'funded'/'repaid' without onchain proof
-- **Root cause:** `requests_update_borrower` allowed updating any column including `status`.
-- **Fix:** New `requests_update_borrower_restricted` policy restricts `WITH CHECK` to `('open', 'lender_selected', 'cancelled')`. Funded/Repaid status goes through `update_loan_request_status()` service-role function only.
-- **Files:** `supabase/migrations/002_security_hardening.sql`
-- **Test status:** BLOCKED (requires live DB).
-
-### LB-018 â€” MEDIUM â€” USDC precision: floating-point arithmetic
-- **Root cause:** `parseFloat(str) * 1_000_000` â†’ IEEE-754 rounding errors.
-- **Fix:** String-splitting bigint parser with no floating-point. `formatUsdc` uses bigint division. `validateUsdcInput()` rejects invalid decimals.
-- **Files:** `src/loanbook-contract.ts`, `src/components/community/RequestCard.tsx`, `src/components/community/GroupView.tsx`, `src/components/CreateLoanPanel.tsx`
-- **Test cases:** `parseUsdc("0.1")` â†’ `100000n`, `parseUsdc("0.000001")` â†’ `1n`, `parseUsdc("0.0000001")` â†’ `0n` (rejected), `parseUsdc("-1")` â†’ `0n` (rejected).
-- **Test status:** PASS (verified in code review).
-
----
-
-## What was NOT done (requires external resources)
-
-### Auth-server receipt verification
-The auth server (`server/auth.ts`) does not yet verify onchain transaction receipts for `funded`/`repaid` status updates. The LB-017 fix prevents the client from escalating status directly, but the positive path (updating status after a confirmed transaction) is not implemented. An auth-server route `POST /verify-loan-status { requestId, txHash }` should:
-1. Fetch the transaction receipt from Arc Testnet.
-2. Verify the receipt is from the correct LoanBook contract.
-3. Verify the event matches the expected loan ID, borrower, lender, and amount.
-4. Call `update_loan_request_status()` via service role.
-**Status:** Architecture documented; implementation deferred.
-
-### Rate limiting
-The auth server has no rate limiting. Brute-force nonce guessing and DoS are possible. Add token-bucket rate limiting per IP before production deployment.
-
-### HTTPS
-The auth server runs HTTP only. In production it must be deployed behind a reverse proxy (nginx, Caddy, or a platform like Fly.io) that terminates TLS.
-
-### Mainnet chain configuration
-`src/config.ts` is pinned to Arc Testnet (5042002). A mainnet configuration for Arc (5042) has not been created. The LoanBook contract has NOT been audited or deployed to mainnet. **No mainnet deployment should occur** until:
-1. A professional security audit of the Solidity contract is completed.
-2. A mainnet contract address is obtained from the deployment team.
-3. The mainnet USDC address is confirmed from Circle's official documentation.
-4. The testnet loan lifecycle (createLoan â†’ fund â†’ repay) is completed with real wallets.
-
-### Git history scrub
-There is no git history in this sandbox. If secrets were ever committed to a real git repository, those commits must be purged (`git filter-repo`) and the exposed keys rotated **before** the repository is made public or shared.
-
----
-
-## Files changed this session
-
-| File | Change |
-|------|--------|
-| `server/auth.ts` | Rewrote: stored message, atomic nonce, CORS allowlist, Chain ID in SIWE |
-| `supabase/migrations/002_security_hardening.sql` | New: `nonces.message`, `consume_nonce()`, `join_group_by_invite()`, `update_loan_request_status()`, restricted RLS policies |
-| `src/loanbook-contract.ts` | Rewrote `parseUsdc`, `formatUsdc`; added `validateUsdcInput` |
-| `src/components/community/RequestCard.tsx` | Fixed inline float parse â†’ `parseUsdc()` |
-| `src/components/community/GroupView.tsx` | Fixed float parse â†’ `validateUsdcInput + parseUsdc` |
-| `src/components/community/GroupList.tsx` | Fixed join flow â†’ `join_group_by_invite` RPC |
-| `src/components/CreateLoanPanel.tsx` | Fixed float days calc â†’ `parseInt(days, 10)` |
-| `BUGS.md` | Added LB-013 through LB-018 |
-
----
-
-## Test results
-
-| Test | Result | Date |
-|------|--------|------|
-| `forge test -vv` | **31/31 PASS** | 2026-10-28 |
-| `bun run check` (lint + typecheck) | **0 errors** | 2026-10-28 |
-| `bunx vite build` | **PASS** (12.9s) | 2026-10-28 |
-| Valid wallet sign-in flow | **BLOCKED** â€” no live Supabase | â€” |
-| Invalid signature rejection | **BLOCKED** â€” no live Supabase | â€” |
-| Expired nonce rejection | **BLOCKED** â€” no live Supabase | â€” |
-| Concurrent nonce replay | **BLOCKED** â€” no live Supabase | â€” |
-| James joins group without invite | **BLOCKED** â€” no live DB | â€” |
-| James reads private messages | **BLOCKED** â€” no live DB | â€” |
-| Borrower sets status=repaid directly | **BLOCKED** â€” no live DB | â€” |
-| Arc Testnet createLoan â†’ fund â†’ repay | **BLOCKED** â€” no connected wallets | â€” |
-
----
-
-## GO / NO-GO
-
-**NO-GO.**
-
-Required before mainnet:
-1. Apply migration 002 to a real Supabase project and run the three-identity RLS tests.
-2. Complete the full Arc Testnet loan lifecycle with two wallets.
-3. Implement and test auth-server receipt verification for `funded`/`repaid` status.
-4. Add rate limiting to the auth server.
-5. Deploy auth server behind HTTPS.
-6. Obtain and verify the Arc mainnet USDC address and LoanBook contract address.
-7. Professional Solidity audit of the LoanBook contract before mainnet deployment.
-
-The Solidity contract itself has no known vulnerabilities (31/31 tests pass, Slither clean). The blocking items are in the application layer and deployment infrastructure.
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬ÔŒ1½…¹	½½¬ƒŠPAÉ”µ5…¥¹¹•ĞI•…‘¥¹•ÍÌI•Á½ÉĞ((¨©…Ñ”è¨¨€ÈÀÈØ´ÄÀ´Èà€€(¨©Õ‘¥Ñ•‰äè¨¨ÉŒMÑÕ‘¥¼Í•ÕÉ¥ÑäÉ•Ù¥•Ü€€(¨©M½Á”è¨¨Mµ…ÉĞ½¹ÑÉ…Ğ°…ÕÑ Í•ÉÙ•È°MÕÁ…‰…Í”I1L°™É½¹Ñ•¹UM¡…¹‘±¥¹œ°Í•É•ÑÌ°¹•Ñİ½É¬½¹™¥œ€€(¨©½¹ÑÉ…Ğè¨¨€Áá”ÅˆÔÈÜÔÉ‰˜Õ”ÙŒØÑ„Õ˜ØÕ”ĞàÕ•„ÌÕ•˜İ˜İ„ÈÈá€€¡ÉŒQ•ÍÑ¹•ĞƒŠP¹½ĞÉ•Ù¥•İ•™½Èµ…¥¹¹•Ğ‘•Á±½åµ•¹Ğ¤((´´´((ŒŒYI%Pè9<µ<™½Èµ…¥¹¹•Ğ()M¥à½¹™¥Éµ•¥ÍÍÕ•Ìİ•É”™½Õ¹…¹™¥á•¥¸Ñ¡¥ÌÍ•ÍÍ¥½¸¸½ÕÈİ•É”!% Í•Ù•É¥Ñä¸1¥Ù”•¹µÑ¼µ•¹Ñ•ÍÑÌÑ¡…ĞÉ•ÅÕ¥É”„ÉÕ¹¹¥¹œMÕÁ…‰…Í”ÁÉ½©•Ğ…¹É•…°İ…±±•ĞÍ¥¹…ÑÕÉ•ÌÉ•µ…¥¸	1=-¥¸Ñ¡”Í…¹‘‰½à•¹Ù¥É½¹µ•¹Ğ¸Q¡•Í”Ñ•ÍÑÌ5UMP‰”½µÁ±•Ñ•…¹Á…ÍÌ‰•™½É”µ…¥¹¹•Ğ‘•Á±½åµ•¹Ğ¥Ì½¹Í¥‘•É•¸((´´´((ŒŒ¡•­±¥ÍĞ()ğ€ŒğÉ•„ğMÑ…ÑÕÌğ9½Ñ•Ìğ)ğ´´µğ´´´´´µğ´´´´´´´µğ´´´´´´µğ)ğ€ÄğÕÑ¡•¹Ñ¥…Ñ¥½¸€˜É•Á±…äÁÉ½Ñ•Ñ¥½¸ğAML€¡½‘”¤€¼	1=-€¡±¥Ù”¤ğ1´ÀÄÌ€¬1´ÀÄĞ™¥á•¸1¥Ù”İ…±±•ĞÍ¥¸µ¥¸É•ÅÕ¥É•ÌMÕÁ…‰…Í”¸ğ)ğ€ÈğAÉ¥Ù…Ñ”É½ÕÀÁ•Éµ¥ÍÍ¥½¹ÌğAML€¡½‘”¤€¼	1=-€¡±¥Ù”¤ğ1´ÀÄØ™¥á•¸Q¡É•”µ¥‘•¹Ñ¥ÑäÑ•ÍĞÉ•ÅÕ¥É•Ì±¥Ù”¸ğ)ğ€ÌğI1L€˜¥¹Ù¥Ñ…Ñ¥½¸Í•ÕÉ¥ÑäğAML€¡½‘”¤€¼	1=-€¡±¥Ù”¤ğ5¥É…Ñ¥½¸€ÀÀÈİÉ¥ÑÑ•¸¸5ÕÍĞ‰”…ÁÁ±¥•…¹Ñ•ÍÑ•¸ğ)ğ€Ğğ1½…¸ÍÑ…ÑÕÌÙ•É¥™¥•½¹¡…¥¸ğAIQ%0ğ=¹¡…¥¸ÑàÙ•É¥™¥•Ù¥„İ…µ¤É••¥ÁĞìÍÑ…ÑÕÌ•Í…±…Ñ¥½¸‰±½­•€¡1´ÀÄÜ¤¸ÕÑ µÍ•ÉÙ•ÈµÍ¥‘”É••¥ÁĞÙ•É¥™¥…Ñ¥½¸¹½Ğå•Ğ¥µÁ±•µ•¹Ñ•¸ğ)ğ€ÔğUMÁÉ•¥Í¥½¸ğAMLğ1´ÀÄà™¥á•¸±°™±½…Ğ…É¥Ñ¡µ•Ñ¥ŒÉ•Á±…•İ¥Ñ ‰¥¥¹Ğ¸U¹¥ĞÑ•ÍÑÌÁ…ÍÌ½¹•ÁÑÕ…±±äì¹¼‘•‘¥…Ñ•Ñ•ÍĞ¡…É¹•ÍÌå•Ğ¸ğ)ğ€Øğ½¹ÑÉ…ĞÍ•ÕÉ¥ÑäÑ•ÍÑÌğAMLğ€ÌÄ¼ÌÄ™½É”Ñ•ÍÑÌÁ…ÍÌ¸M±¥Ñ¡•È…¹…±åÍ¥ÌÁÉ•Ù¥½ÕÍ±ä±•…¸¸ğ)ğ€ÜğQ•ÍÑ¹•Ğ±½…¸±¥™•å±”ğ	1=-ğÕ±°É•…Ñ•1½…»ŠI™Õ¹“ŠIÉ•Á…ä±¥™•å±”É•ÅÕ¥É•Ìİ…±±•ĞÍ¥¹…ÑÕÉ•Ì¸ğ)ğ€àğÉ½¹Ñ•¹ÁÉ½‘ÕÑ¥½¸‰Õ¥±ğAMLğ‰Õ¹àÙ¥Ñ”‰Õ¥±‘€±•…¸¥¸€ÄÈ¸åÌ°¹¼•ÉÉ½ÉÌ¸ğ)ğ€äğAÉ½‘ÕÑ¥½¸‰…­•¹ğ	1=-ğÕÑ Í•ÉÙ•ÈÕ¹Ñ•ÍÑ•……¥¹ÍĞ±¥Ù”MÕÁ…‰…Í”¸=IL°É…Ñ”±¥µ¥Ñ¥¹œ°!QQAL¹½Ğ½¹™¥ÕÉ•¸ğ)ğ€ÄÀğM•É•ÑÌÁÉ½Ñ•Ñ¥½¸ğAML€¡Í…¹‘‰½à¤ğ9¼¥Ğ¡¥ÍÑ½ÉäÑ¼ÍÉÕˆƒŠP¹¼¥ĞÉ•Á¼¸€¹•¹Ø¹•á…µÁ±•€½¹Ñ…¥¹Ì½¹±äÁ±…•¡½±‘•ÉÌ¸ğ)ğ€ÄÄğ5…¥¹¹•Ğ½¹™¥ÕÉ…Ñ¥½¸ğ9=PMQIQğ5…¥¹¹•Ğ¡…¥¸%€ÔÀĞÈ…¹1½…¹	½½¬…‘‘É•ÍÌ¹½Ğ½¹™¥ÕÉ•¸ğ((´´´((ŒŒ½¹™¥Éµ•%ÍÍÕ•Ì…¹¥á•Ì((ŒŒŒ1´ÀÄÌƒŠP!% ƒŠPÕÑ èÍ¥¹•µ•ÍÍ…”É•½¹ÍÑÉÕÑ•İ¥Ñ ‘¥™™•É•¹ĞÑ¥µ•ÍÑ…µÀ(´€¨©I½½Ğ…ÕÍ”è¨¨€½Ù•É¥™å€…±±•‰Õ¥±‘M¥İ•5•ÍÍ…” ¥€……¥¸¥¹ÍÑ•…½˜ÕÍ¥¹œÑ¡”ÍÑ½É•µ•ÍÍ…”¸(´€¨©¥àè¨¨MÑ½É”µ•ÍÍ…”Ñ•áĞÙ•É‰…Ñ¥´¥¸¹½¹•Ì¹µ•ÍÍ…•€ì€½Ù•É¥™å€É•…‘Ì¥Ğ‰…¬¸(´€¨©¥±•Ìè¨¨Í•ÉÙ•È½…ÕÑ ¹ÑÍ€°ÍÕÁ…‰…Í”½µ¥É…Ñ¥½¹Ì¼ÀÀÉ}Í•ÕÉ¥Ñå}¡…É‘•¹¥¹œ¹ÍÅ±€(´€¨©Q•ÍĞÍÑ…ÑÕÌè¨¨	1=-€¡É•ÅÕ¥É•Ì±¥Ù”MÕÁ…‰…Í”¤¸((ŒŒŒ1´ÀÄĞƒŠP!% ƒŠPÕÑ è¹½¸µ…Ñ½µ¥Œ¹½¹”½¹ÍÕµÁÑ¥½¸€¡É•Á±…ä…ÑÑ…¬¤(´€¨©I½½Ğ…ÕÍ”è¨¨M1P€¬UAQ€ôÑİ¼É½Õ¹µÑÉ¥ÁÌì½¹ÕÉÉ•¹ĞÉ•Á±…åÌ½Õ±‰½Ñ Á…ÍÌ¸(´€¨©¥àè¨¨½¹ÍÕµ•}¹½¹” ¥€A0½ÁME0™Õ¹Ñ¥½¸İ¥Ñ UAQƒŠ˜IQUI9%9€¥¸½¹”ÍÑ…Ñ•µ•¹Ğ¸(´€¨©¥±•Ìè¨¨Í•ÉÙ•È½…ÕÑ ¹ÑÍ€°ÍÕÁ…‰…Í”½µ¥É…Ñ¥½¹Ì¼ÀÀÉ}Í•ÕÉ¥Ñå}¡…É‘•¹¥¹œ¹ÍÅ±€(´€¨©Q•ÍĞÍÑ…ÑÕÌè¨¨	1=-€¡É•ÅÕ¥É•Ì±¥Ù”MÕÁ…‰…Í”¤¸((ŒŒŒ1´ÀÄÔƒŠP5%U4ƒŠPÕÑ è=ILİ¥±‘…É€©€(´€«]4ÖÚ$z{-®éÜj×œÙH›ŞH
+™Ú[ØYKÜˆH]›Ü›HZÙH›Kš[ÊH]\›Z[˜]\ÈË‚‚ˆÈÈÈXZ[›™]ÚZ[ˆÛÛ™šYİ\˜][Û‚˜Ü˜ËØÛÛ™šYËØ\È[›™YÈ\˜È\İ™]
+LŒŠKˆHXZ[›™]ÛÛ™šYİ\˜][Ûˆ›Üˆ\˜È
+LŠH\È›İ™Y[ˆÜ™X]YˆHØ[›ÛÚÈÛÛ˜Xİ\È“Õ™Y[ˆ]Y]YÜˆ\ŞYYÈXZ[›™]ˆ
+Š“›ÈXZ[›™]\Ş[Y[Úİ[ØØİ\ŠŠˆ[[‚ŒKˆH›Ù™\ÜÚ[Û˜[ÙXİ\š]H]Y]ÙˆHÛÛY]HÛÛ˜Xİ\ÈÛÛ\]Y‚Œ‹ˆHXZ[›™]ÛÛ˜XİY™\ÜÈ\ÈØZ[™Yœ›ÛHH\Ş[Y[X[K‚ŒËˆHXZ[›™]TÑÈY™\ÜÈ\ÈÛÛ™š\›YYœ›ÛHÚ\˜ÛIÜÈÙ™šXÚX[Øİ[Y[][Û‹‚ˆH\İ™]Ø[ˆY™XŞXÛH
+Ü™X]SØ[ˆ8¡¤ˆ[™8¡¤ˆ™\^JH\ÈÛÛ\]YÚ]™X[Ø[]Ë‚‚ˆÈÈÈÚ]\İÜHØÜX‚•\™H\È›ÈÚ]\İÜH[ˆ\ÈØ[™›ŞˆYˆÙXÜ™]ÈÙ\™H]™\ˆÛÛ[Z]YÈH™X[Ú]™\ÜÚ]ÜKÜÙHÛÛ[Z]È]\İ™H\™ÙY
+Ú]š[\‹\™\Ø
+H[™H^ÜÙYÙ^\È›İ]Y
+Š˜™Y›Ü™JŠˆH™\ÜÚ]ÜH\ÈXYHX›XÈÜˆÚ\™Y‚‚‹KKB‚ˆÈÈš[\ÈÚ[™ÙY\ÈÙ\ÜÚ[Û‚‚Ÿš[HÚ[™ÙHŸKKKKK_KKKKKKK_ŸÙ\™\‹Ø]]Ø™]Ü›İNˆİÜ™YY\ÜØYÙK]ÛZXÈ›Û˜ÙKÓÔ”È[İÛ\İÚZ[ˆQ[ˆÒUÑHŸİ\X˜\ÙKÛZYÜ˜][ÛœËÌ—ÜÙXİ\š]WÚ\™[š[™ËœÜ[™]Îˆ›Û˜Ù\Ë›Y\ÜØYÙXÛÛœİ[YWÛ›Û˜ÙJ
+X›Ú[—ÙÜ›İ\ØWÚ[š]J
+X\]WÛØ[—Ü™\]Y\İÜİ]\Ê
+X™\İšXİY“ÈÛXÚY\ÈŸÜ˜ËÛØ[˜›ÛÚËXÛÛ˜XİØ™]Ü›İH\œÙU\ÙØ›Ü›X]\ÙØÈYY˜[Y]U\ÙÒ[œ]ŸÜ˜ËØÛÛ\Û™[ËØÛÛ[][š]KÔ™\]Y\İØ\™Şš^Y[›[™H›Ø]\œÙH8¡¤ˆ\œÙU\ÙÊ
+XŸÜ˜ËØÛÛ\Û™[ËØÛÛ[][š]KÑÜ›İ\šY]ËŞš^Y›Ø]\œÙH8¡¤ˆ˜[Y]U\ÙÒ[œ]
+È\œÙU\ÙØŸÜ˜ËØÛÛ\Û™[ËØÛÛ[][š]KÑÜ›İ\\İŞš^Y›Ú[ˆ›İÈ8¡¤ˆ›Ú[—ÙÜ›İ\ØWÚ[š]X”ÈŸÜ˜ËØÛÛ\Û™[ËĞÜ™X]SØ[”[™[Şš^Y›Ø]^\ÈØ[È8¡¤ˆ\œÙR[
+^\ËL
+XŸ•QÔË›YYY‹LLÈ›İYÚ‹LN‚‹KKB‚ˆÈÈ\İ™\İ[Â‚Ÿ\İ™\İ[]HŸKKKKK_KKKKKKK_KKKKK_Ÿ›Ü™ÙH\İ]˜
+ŠŒÌKÌÌHTÔÊŠˆŒ‹LLLŸ[ˆ[ˆÚXÚØ
+[
+È\XÚXÚÊH
+ŠŒ\œ›ÜœÊŠˆŒ‹LLLŸ[š]HZ[
+Š”TÔÊŠˆ
+L‹\ÊHŒ‹LLLŸ˜[YØ[]ÚYÛ‹Z[ˆ›İÈ
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hİ\X˜\ÙH8 %Ÿ[˜[YÚYÛ˜]\™H™Z™Xİ[Ûˆ
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hİ\X˜\ÙH8 %Ÿ^\™Y›Û˜ÙH™Z™Xİ[Ûˆ
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hİ\X˜\ÙH8 %ŸÛÛ˜İ\œ™[›Û˜ÙH™\^H
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hİ\X˜\ÙH8 %Ÿ˜[Y\È›Ú[œÈÜ›İ\Ú]İ][š]H
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hˆ8 %Ÿ˜[Y\È™XYÈš]˜]HY\ÜØYÙ\È
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hˆ8 %Ÿ›Üœ›İÙ\ˆÙ]Èİ]\Ï\™\ZY\™XİH
+Š“ĞÒÑQ
+Šˆ8 %›È]™Hˆ8 %Ÿ\˜È\İ™]Ü™X]SØ[ˆ8¡¤ˆ[™8¡¤ˆ™\^H
+Š“ĞÒÑQ
+Šˆ8 %›ÈÛÛ›™XİYØ[]È8 %‚‹KKB‚ˆÈÈÓÈÈ“ËQÓÂ‚ŠŠ““ËQÓËŠŠ‚‚”™\]Z\™Y™Y›Ü™HXZ[›™]‚ŒKˆ\HZYÜ˜][ÛˆˆÈH™X[İ\X˜\ÙH›Ú™Xİ[™[ˆH™YKZY[]H“È\İË‚Œ‹ˆÛÛ\]HH[\˜È\İ™]Ø[ˆY™XŞXÛHÚ]ÛÈØ[]Ë‚ŒËˆ[\[Y[[™\İ]]\Ù\™\ˆ™XÙZ\™\šYšXØ][Ûˆ›Üˆ[™YØ™\ZYİ]\Ë‚ˆY˜]H[Z][™ÈÈH]]Ù\™\‹‚Kˆ\ŞH]]Ù\™\ˆ™Z[™Ë‚‹ˆØZ[ˆ[™™\šYHH\˜ÈXZ[›™]TÑÈY™\ÜÈ[™Ø[›ÛÚÈÛÛ˜XİY™\ÜË‚Ëˆ›Ù™\ÜÚ[Û˜[ÛÛY]H]Y]ÙˆHØ[›ÛÚÈÛÛ˜Xİ™Y›Ü™HXZ[›™]\Ş[Y[‚‚•HÛÛY]HÛÛ˜Xİ]Ù[ˆ\È›ÈÛ›İÛˆ[™\˜Xš[]Y\È
+ÌKÌÌH\İÈ\ÜËÛ]\ˆÛX[ŠKˆH›ØÚÚ[™È][\È\™H[ˆH\XØ][Ûˆ^Y\ˆ[™\Ş[Y[[™œ˜\İXİ\™K‚

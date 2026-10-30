@@ -10,8 +10,8 @@
  *  https://studio.arc.io
  */
 
-import './tracing'
-import './console-capture'
+// Studio tracing is disabled: auth payloads and private chats must not be captured.
+
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
