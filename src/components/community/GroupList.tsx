@@ -1,49 +1,263 @@
-YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Ô¼¨¨(€¨É½ÕÁ1¥ÍÐƒŠPÍ¡½ÝÌÑ¡”ÕÍ•ÈÌÉ½ÕÁÌ…¹±•ÑÌÑ¡•´É•…Ñ”½È©½¥¸½¹”¸(€¨¼)¥µÁ½ÉÐìÕÍ•MÑ…Ñ”°ÕÍ•™™•Ð°ÕÍ•…±±‰…¬ô™É½´€É•…Ðœ)¥µÁ½ÉÐìA±ÕÌ°1¥¹¬È°UÍ•ÉÌ°1½…‘•ÈÈ°1½%¸ô™É½´€±Õ¥‘”µÉ•…Ðœ)¥µÁ½ÉÐÑåÁ”ìMÕÁ…‰…Í•±¥•¹Ðô™É½´€ÍÕÁ…‰…Í”½ÍÕÁ…‰…Í”µ©Ìœ)¥µÁ½ÉÐìÕÉÉ•¹Ñ%¹Ù¥Ñ”°¥¹Ù¥Ñ•½‘”ô™É½´€œ¸¸¼¸¸½±¥ˆ½¥¹Ù¥Ñ•Ìœ)¥µÁ½ÉÐÑåÁ”ìÉ½ÕÀô™É½´€œ¸¸¼¸¸½±¥ˆ½ÍÕÁ…‰…Í”œ()¥¹Ñ•É™…”AÉ½ÁÌì(€Ý…±±•ÐèÍÑÉ¥¹œ(€±¥•¹ÐèMÕÁ…‰…Í•±¥•¹Ð(€Í•±•Ñ•‘É½ÕÁ%èÍÑÉ¥¹œð¹Õ±°(€½¹M•±•ÑÉ½ÕÀè€¡É½ÕÀèÉ½ÕÀ¤€ôøÙ½¥)ô()•áÁ½ÉÐ™Õ¹Ñ¥½¸É½ÕÁ1¥ÍÐ¡ìÝ…±±•Ð°±¥•¹Ð°Í•±•Ñ•‘É½ÕÁ%°½¹M•±•ÑÉ½ÕÀôèAÉ½ÁÌ¤ì(€½¹ÍÐmÉ½ÕÁÌ°Í•ÑÉ½ÕÁÍt€ôÕÍ•MÑ…Ñ”ñÉ½ÕÁmtø¡mt¤(€½¹ÍÐm±½…‘¥¹œ°Í•Ñ1½…‘¥¹t€ôÕÍ•MÑ…Ñ”¡ÑÉÕ”¤(€½¹ÍÐm•ÉÉ½È°Í•ÑÉÉ½Ét€ôÕÍ•MÑ…Ñ” œœ¤((€€¼¼É•…Ñ”É½ÕÀÍÑ…Ñ”(€½¹ÍÐmÍ¡½ÝÉ•…Ñ”°Í•ÑM¡½ÝÉ•…Ñ•t€ôÕÍ•MÑ…Ñ”¡™…±Í”¤(€½¹ÍÐm¹•Ý9…µ”°Í•Ñ9•Ý9…µ•t€ôÕÍ•MÑ…Ñ” œœ¤(€½¹ÍÐm¹•Ý•ÍŒ°Í•Ñ9•Ý•Ít€ôÕÍ•MÑ…Ñ” œœ¤(€½¹ÍÐmÉ•…Ñ¥¹œ°Í•ÑÉ•…Ñ¥¹t€ôÕÍ•MÑ…Ñ”¡™…±Í”¤((€€¼¼)½¥¸É½ÕÀÍÑ…Ñ”(€½¹ÍÐmÍ¡½Ý)½¥¸°Í•ÑM¡½Ý)½¥¹t€ôÕÍ•MÑ…Ñ”  ¤€ôø€„…ÕÉÉ•¹Ñ%¹Ù¥Ñ” ¤¤(€½¹ÍÐm¥¹Ù¥Ñ•%¹ÁÕÐ°Í•Ñ%¹Ù¥Ñ•%¹ÁÕÑt€ôÕÍ•MÑ…Ñ”¡ÕÉÉ•¹Ñ%¹Ù¥Ñ”¤(€½¹ÍÐm©½¥¹¥¹œ°Í•Ñ)½¥¹¥¹t€ôÕÍ•MÑ…Ñ”¡™…±Í”¤(€½¹ÍÐm©½¥¹ÉÉ½È°Í•Ñ)½¥¹ÉÉ½Ét€ôÕÍ•MÑ…Ñ” œœ¤((€½¹ÍÐmÉ•™É•Í¡½Õ¹Ð°Í•ÑI•™É•Í¡½Õ¹Ñt€ôÕÍ•MÑ…Ñ” À¤(€½¹ÍÐ±½…‘É½ÕÁÌ€ôÕÍ•…±±‰…¬  ¤€ôøÍ•ÑI•™É•Í¡½Õ¹Ð¡Œ€ôøŒ€¬€Ä¤°mt¤((€ÕÍ•™™•Ð  ¤€ôøì(€€€±•Ð…¹•±±•€ô™…±Í”(€€€Í•Ñ1½…‘¥¹œ¡ÑÉÕ”¤(€€€Í•ÑÉÉ½È œœ¤(€€€±¥•¹Ð(€€€€€€¹™É½´ É½ÕÁ}µ•µ‰•ÉÌœ¤(€€€€€€¹Í•±•Ð É½ÕÁÌ ¨¤œ¤(€€€€€€¹•Ä Ý…±±•Ðœ°Ý…±±•Ð¤(€€€€€€¹½É‘•È ©½¥¹•‘}…Ðœ°ì…Í•¹‘¥¹œè™…±Í”ô¤(€€€€€€¹Ñ¡•¸ ¡ì‘…Ñ„°•ÉÉ½Èè•ÉÈô¤€ôøì(€€€€€€€¥˜€¡…¹•±±•¤É•ÑÕÉ¸(€€€€€€€¥˜€¡•ÉÈ¤ìÍ•ÑÉÉ½È¡•ÉÈ¹µ•ÍÍ…”¤ìÍ•Ñ1½…‘¥¹œ¡™…±Í”¤ìÉ•ÑÕÉ¸ô(€€€€€€€½¹ÍÐÌ€ô€ ¡‘…Ñ„€üümt¤…ÌìÉ½ÕÁÌèÉ½ÕÀðÉ½ÕÁmtð¹Õ±°õmt¤(€€€€€€€€€€¹µ…À¡É½Ü€ôø€¡ÉÉ…ä¹¥ÍÉÉ…ä¡É½Ü¹É½ÕÁÌ¤€üÉ½Ü¹É½ÕÁÍlÁt€èÉ½Ü¹É½ÕÁÌ¤¤(€€€€€€€€€€¹™¥±Ñ•È ¡œ¤èœ¥ÌÉ½ÕÀ€ôøœ€„ôô¹Õ±°€˜˜œ€„ôôÕ¹‘•™¥¹•¤(€€€€€€€Í•ÑÉ½ÕÁÌ¡Ì¤(€€€€€€€Í•Ñ1½…‘¥¹œ¡™…±Í”¤(€€€€€ô¤(€€€É•ÑÕÉ¸€ ¤€ôøì…¹•±±•€ôÑÉÕ”ô(€€¼¼•Í±¥¹Ðµ‘¥Í…‰±”µ¹•áÐµ±¥¹”É•…Ðµ¡½½­Ì½•á¡…ÕÍÑ¥Ù”µ‘•ÁÌ(€ô°m±¥•¹Ð°Ý…±±•Ð°É•™É•Í¡½Õ¹Ñt¤((€…Íå¹Œ™Õ¹Ñ¥½¸¡…¹‘±•É•…Ñ” ¤ì(€€€¥˜€ …¹•Ý9…µ”¹ÑÉ¥´ ¤¤É•ÑÕÉ¸(€€€Í•ÑÉ•…Ñ¥¹œ¡ÑÉÕ”¤(€€€Í•ÑÉÉ½È œœ¤((€€€€¼¼1´ÀÈÌ%`èÕÍ”É•…Ñ•}É½ÕÀ ¤Í•ÕÉ¥Ñäµ‘•™¥¹•ÈIA¸(€€€€¼¼Q¡¥Ì…Ñ½µ¥…±±ä¥¹Í•ÉÑÌÑ¡”É½ÕÀÉ½Ü9Ñ¡”½Ý¹•Èµ•µ‰•ÉÍ¡¥ÀÉ½Ü¥¸„(€€€€¼¼Í¥¹±”ÑÉ…¹Í…Ñ¥½¸°•±¥µ¥¹…Ñ¥¹œÑ¡”¡¥­•¸µ…¹µ•œI1LÁÉ½‰±•´Ý¡•É”(€€€€¼¼É•…‘¥¹œÑ¡”¹•Ý±äÉ•…Ñ•É½ÕÀÝ½Õ±™…¥°‰•…ÕÍ”Ñ¡”µ•µ‰•ÉÍ¡¥ÀÉ½Ü(€€€€¼¼‘¥¹½Ð•á¥ÍÐå•Ð¸(€€€½¹ÍÐì‘…Ñ„èÉ½ÕÀ°•ÉÉ½ÈèÉÈô€ô…Ý…¥Ð±¥•¹Ð(€€€€€€¹ÉÁŒ É•…Ñ•}É½ÕÀœ°ì(€€€€€€€Á}¹…µ”è€€€€€€€¹•Ý9…µ”¹ÑÉ¥´ ¤°(€€€€€€€Á}‘•ÍÉ¥ÁÑ¥½¸è¹•Ý•ÍŒ¹ÑÉ¥´ ¤ñð¹Õ±°°(€€€€€ô¤…Ìì‘…Ñ„èÉ½ÕÀð¹Õ±°ì•ÉÉ½Èèìµ•ÍÍ…”èÍÑÉ¥¹œôð¹Õ±°ô((€€€¥˜€¡ÉÈñð€…É½ÕÀ¤ì(€€€€€Í•ÑÉÉ½È¡ÉÈü¹µ•ÍÍ…”€üü€…¥±•Ñ¼É•…Ñ”É½ÕÀœ¤(€€€€€Í•ÑÉ•…Ñ¥¹œ¡™…±Í”¤(€€€€€É•ÑÕÉ¸(€€€ô((€€€Í•ÑM¡½ÝÉ•…Ñ”¡™…±Í”¤(€€€Í•Ñ9•Ý9…µ” œœ¤(€€€Í•Ñ9•Ý•ÍŒ œœ¤(€€€Í•ÑÉ•…Ñ¥¹œ¡™…±Í”¤(ƒ]4ÖÚ$z{-®éÜj×H˜[YHˆX^[™Ý^ÎHXÙZÛ\HÚ\˜ÛH˜[YH‚ˆ˜[YO^Û™]Ó˜[Y_BˆÛÚ[™ÙO^ÙHOˆÙ]™]Ó˜[YJK\™Ù]˜[YJ_BˆÏ‚ˆ[œ]ˆÛ\ÜÓ˜[YOHËY[^^È›Ý[™Y[ÈLÈKLˆÝ][™K[›Û™H‚ˆÝ[O^ÞÈ˜XÚÙÜ›Ý[™ˆ	Ü™Ø˜JMKMKMKŒŠIË›Ü™\Žˆ	Ì\ÛÛY˜\ŠKXÛÛÜ‹X›Ü™\ŠIËÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹]^
-IÈ_Bˆ\šXK[X™[HÚ\˜ÛH\ØÜš\[ÛˆˆX^[™Ý^ÍLHXÙZÛ\H‘\ØÜš\[Ûˆ
-Ü[Û˜[
-H‚ˆ˜[YO^Û™]Ñ\ØßBˆÛÚ[™ÙO^ÙHOˆÙ]™]Ñ\ØÊK\™Ù]˜[YJ_BˆÏ‚ˆ]Û‚ˆÛÛXÚÏ^Ê
-HOˆÈ›ÚY[™PÜ™X]J
-H_Bˆ\ØX›Y^ØÜ™X][™È[™]Ó˜[YKš[J
-_BˆÛ\ÜÓ˜[YOHËY[^^ÈKLˆ›Ý[™Y[È›Û\Ù[ZX›Û\ØX›Y›ÜXÚ]KML›^][\ËXÙ[\ˆ\ÝYžKXÙ[\ˆØ\LH‚ˆÝ[O^ÞÈ˜XÚÙÜ›Ý[™ˆ	Ý˜\ŠKXÛÛÜ‹XXØÙ[
-IËÛÛÜŽˆ	ÈÙ™™‰È_Bˆ‚ˆØÜ™X][™ÈÈØY\ŒˆÚ^™O^ÌL_HÛ\ÜÓ˜[YOH˜[š[X]K\Ü[ˆˆÏÜ™X][™ø )Ïˆˆ	ÐÜ™X]HÜ›Ý\	ßBˆØ]Û‚ˆÙ]‚ˆ
-_B‚ˆËÊˆ›Ú[ˆ›Ü›H
-‹ßBˆÜÚÝÒ›Ú[ˆ	‰ˆ
-ˆ]ˆÛ\ÜÓ˜[YOHœLÈKLÈÜXÙK^KLˆ›Ü™\‹XˆˆÝ[O^ÞÈ˜XÚÙÜ›Ý[™ˆ	Ü™Ø˜J‹N‹ŒL‹Œ
-IË›Ü™\ÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹X›Ü™\ŠIÈ_O‚ˆ[œ]ˆÛ\ÜÓ˜[YOHËY[^^È›Ý[™Y[ÈLÈKLˆÝ][™K[›Û™H‚ˆÝ[O^ÞÈ˜XÚÙÜ›Ý[™ˆ	Ü™Ø˜JMKMKMKŒŠIË›Ü™\Žˆ	Ì\ÛÛY˜\ŠKXÛÛÜ‹X›Ü™\ŠIËÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹]^
-IÈ_Bˆ\šXK[X™[H’[š]HÛÙHÜˆ[šÈˆXÙZÛ\H’[š]HÛÙHÜˆ[šÈ‚ˆ˜[YO^Ú[š]R[œ]BˆÛÚ[™ÙO^ÙHOˆÙ][š]R[œ]
-K\™Ù]˜[YJ_BˆÏ‚ˆÚ›Ú[‘\œ›Üˆ	‰ˆÛ\ÜÓ˜[YOH^^ÈˆÝ[O^ÞÈÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹\™Y
-IÈ_OžÚ›Ú[‘\œ›ÜŸOÜŸBˆ]Û‚ˆÛÛXÚÏ^Ê
-HOˆÈ›ÚY[™R›Ú[Š
-H_Bˆ\ØX›Y^Ú›Ú[š[™ÈZ[š]R[œ]š[J
-_BˆÛ\ÜÓ˜[YOHËY[^^ÈKLˆ›Ý[™Y[È›Û\Ù[ZX›Û\ØX›Y›ÜXÚ]KML›^][\ËXÙ[\ˆ\ÝYžKXÙ[\ˆØ\LH‚ˆÝ[O^ÞÈ˜XÚÙÜ›Ý[™ˆ	Ý˜\ŠKXÛÛÜ‹XÞX[ŠIËÛÛÜŽˆ	ÈÙ™™‰È_Bˆ‚ˆÚ›Ú[š[™ÈÈØY\ŒˆÚ^™O^ÌL_HÛ\ÜÓ˜[YOH˜[š[X]K\Ü[ˆˆÏ’›Ú[š[™ø )Ïˆˆ	Ò›Ú[ˆÜ›Ý\	ßBˆØ]Û‚ˆÙ]‚ˆ
-_B‚ˆËÊˆ\œ›Üˆ
-‹ßBˆÙ\œ›Üˆ	‰ˆ
-ˆ]ˆÛ\ÜÓ˜[YOHœLÈKLˆ^^ÈˆÝ[O^ÞÈÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹\™Y
-IÈ_OžÙ\œ›ÜŸOÙ]‚ˆ
-_B‚ˆËÊˆÜ›Ý\\Ý
-‹ßBˆ]ˆÛ\ÜÓ˜[YOH™›^LHÝ™\™›ÝË^KX]]È‚ˆÛØY[™ÈÈ
-ˆ]ˆÛ\ÜÓ˜[YOH™›^][\ËXÙ[\ˆ\ÝYžKXÙ[\ˆKN‚ˆØY\ŒˆÚ^™O^ÌMŸHÛ\ÜÓ˜[YOH˜[š[X]K\Ü[ˆˆÝ[O^ÞÈÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹[]]Y
-IÈ_HÏ‚ˆÙ]‚ˆ
-HˆÜ›Ý\Ë›[™ÝOOHÈ
-ˆ]ˆÛ\ÜÓ˜[YOHœLÈKMˆ^XÙ[\ˆ^^ÈˆÝ[O^ÞÈÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹[]]Y
-IÈ_O‚ˆ›ÈÜ›Ý\ÈY]œˆÏÜ™X]HÛ™HÜˆ›Ú[ˆÚ][ˆ[š]HÛÙK‚ˆÙ]‚ˆ
-Hˆ
-ˆÜ›Ý\Ë›X\
-ÈOˆ
-ˆ]Û‚ˆÙ^O^ÙËšYBˆÛÛXÚÏ^Ê
-HOˆÛ”Ù[XÝÜ›Ý\
-Ê_BˆÛ\ÜÓ˜[YOHËY[^[YLÈKLÈ›^][\ËXÙ[\ˆØ\Lˆ˜[œÚ][Û‹XÛÛÜœÈ‚ˆÝ[O^ÞÂˆ˜XÚÙÜ›Ý[™ˆÙ[XÝYÜ›Ý\YOOHËšYÈ	Ü™Ø˜JNKLÌ‹ŒLŠIÈˆ	Ý˜[œÜ\™[	Ëˆ›Ü™\“YˆÙ[XÝYÜ›Ý\YOOHËšYÈ	ÌœÛÛY˜\ŠKXÛÛÜ‹XXØÙ[
-IÈˆ	ÌœÛÛY˜[œÜ\™[	Ëˆ_Bˆ‚ˆ]‚ˆÛ\ÜÓ˜[YOHËMÈMÈ›Ý[™Y^›^][\ËXÙ[\ˆ\ÝYžKXÙ[\ˆ^^È›ÛX›Û›^\Úš[šËL‚ˆÝ[O^ÞÈ˜XÚÙÜ›Ý[™ˆ	Ü™Ø˜JNKLÌ‹ŒŠIËÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹XXØÙ[[YÚ
-IÈ_Bˆ‚ˆÙË›˜[YKœÛXÙJJKÕ\\Ø\ÙJ
-_BˆÙ]‚ˆ]ˆÛ\ÜÓ˜[YOH›Z[‹]ËL‚ˆÛ\ÜÓ˜[YOH^^È›Û[YY][H[˜Ø]H^]Ú]HžÙË›˜[Y_OÜ‚ˆÙË™\ØÜš\[Ûˆ	‰ˆ
-ˆÛ\ÜÓ˜[YOH^^È[˜Ø]HˆÝ[O^ÞÈÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹[]]Y
-IÈ_OžÙË™\ØÜš\[ÛŸOÜ‚ˆ
-_BˆÙ]‚ˆ\Ù\œÈÚ^™O^ÌL_HÛ\ÜÓ˜[YOH›[X]]È›^\Úš[šËLˆÝ[O^ÞÈÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹[]]Y
-IÈ_HÏ‚ˆØ]Û‚ˆ
-JBˆ
-_BˆÙ]‚‚ˆËÊˆ[š]H[šÈ™[Z[™\ˆ
-‹ßBˆÙÜ›Ý\Ë›[™Ýˆ	‰ˆ
-ˆ]‚ˆÛ\ÜÓ˜[YOHœLÈKLˆ^^È›^][\ËXÙ[\ˆØ\LH›Ü™\‹]‚ˆÝ[O^ÞÈ›Ü™\ÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹X›Ü™\ŠIËÛÛÜŽˆ	Ý˜\ŠKXÛÛÜ‹[]]Y
-IÈ_Bˆ‚ˆ[šÌˆÚ^™O^ÌLHÏ‚ˆÚ\™H[š]HÛÙHœ›ÛHÜ›Ý\Ù][™ÜÈÈYY[X™\œË‚ˆÙ]‚ˆ
-_BˆÙ]‚ˆ
-BŸB
+/**
+ * GroupList â€” shows the user's groups and lets them create or join one.
+ */
+import { useState, useEffect, useCallback } from 'react'
+import { Plus, Link2, Users, Loader2, LogIn } from 'lucide-react'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { currentInvite, inviteCode } from '../../lib/invites'
+import type { Group } from '../../lib/supabase'
+
+interface Props {
+  wallet: string
+  client: SupabaseClient
+  selectedGroupId: string | null
+  onSelectGroup: (group: Group) => void
+}
+
+export function GroupList({ wallet, client, selectedGroupId, onSelectGroup }: Props) {
+  const [groups, setGroups] = useState<Group[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  // Create group state
+  const [showCreate, setShowCreate] = useState(false)
+  const [newName, setNewName] = useState('')
+  const [newDesc, setNewDesc] = useState('')
+  const [creating, setCreating] = useState(false)
+
+  // Join group state
+  const [showJoin, setShowJoin] = useState(() => !!currentInvite())
+  const [inviteInput, setInviteInput] = useState(currentInvite)
+  const [joining, setJoining] = useState(false)
+  const [joinError, setJoinError] = useState('')
+
+  const [refreshCount, setRefreshCount] = useState(0)
+  const loadGroups = useCallback(() => setRefreshCount(c => c + 1), [])
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    setError('')
+    client
+      .from('group_members')
+      .select('groups(*)')
+      .eq('wallet', wallet)
+      .order('joined_at', { ascending: false })
+      .then(({ data, error: err }) => {
+        if (cancelled) return
+        if (err) { setError(err.message); setLoading(false); return }
+        const gs = ((data ?? []) as { groups: Group | Group[] | null }[])
+          .map(row => (Array.isArray(row.groups) ? row.groups[0] : row.groups))
+          .filter((g): g is Group => g !== null && g !== undefined)
+        setGroups(gs)
+        setLoading(false)
+      })
+    return () => { cancelled = true }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client, wallet, refreshCount])
+
+  async function handleCreate() {
+    if (!newName.trim()) return
+    setCreating(true)
+    setError('')
+
+    // LB-023 FIX: use create_group() security-definer RPC.
+    // This atomically inserts the group row AND the owner membership row in a
+    // single transaction, eliminating the chicken-and-egg RLS problem where
+    // reading the newly created group would fail because the membership row
+    // did not exist yet.
+    const { data: group, error: gErr } = await client
+      .rpc('create_group', {
+        p_name:        newName.trim(),
+        p_description: newDesc.trim() || null,
+      }) as { data: Group | null; error: { message: string } | null }
+
+    if (gErr || !group) {
+      setError(gErr?.message ?? 'Failed to create group')
+      setCreating(false)
+      return
+    }
+
+    setShowCreate(false)
+    setNewName('')
+    setNewDesc('')
+    setCreating(false)
+    loadGroups()
+    onSelectGroup(group)
+  }
+
+  async function handleJoin() {
+    const code = inviteCode(inviteInput)
+    if (!code) return
+    setJoining(true)
+    setJoinError('')
+
+    // Migration 003: join_group_by_invite no longer takes p_wallet.
+    // The DB function reads the caller's wallet from the Supabase session JWT
+    // via get_my_wallet() â€” the wallet cannot be spoofed by the browser.
+    const { data: groupId, error: rpcErr } = await client
+      .rpc('join_group_by_invite', { p_invite_code: code }) as {
+        data: string | null
+        error: { message: string } | null
+      }
+
+    if (rpcErr || !groupId) {
+      const hint = rpcErr?.message ?? ''
+      if (hint.includes('not_found')) {
+        setJoinError('Invite code not found.')
+      } else if (hint.includes('forbidden')) {
+        setJoinError('Session mismatch â€” please sign out and sign in again.')
+      } else {
+        setJoinError(hint || 'Failed to join group.')
+      }
+      setJoining(false)
+      return
+    }
+
+    // Fetch the group details so we can pass them to onSelectGroup
+    const groupResult = await client.from('groups').select('*').eq('id', groupId).single()
+    const group = groupResult.data as Group | null
+
+    window.history.replaceState(null, '', window.location.pathname)
+    setShowJoin(false)
+    setInviteInput('')
+    setJoining(false)
+    loadGroups()
+    if (group) onSelectGroup(group)
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-3 border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-muted)' }}>
+          Your Groups
+        </span>
+        <div className="flex gap-1">
+          <button
+            onClick={() => { setShowJoin(v => !v); setShowCreate(false) }}
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ background: showJoin ? 'rgba(59,130,246,0.15)' : 'transparent', color: 'var(--color-muted)' }}
+            title="Join group"
+          >
+            <LogIn size={14} />
+          </button>
+          <button
+            onClick={() => { setShowCreate(v => !v); setShowJoin(false) }}
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ background: showCreate ? 'rgba(59,130,246,0.15)' : 'transparent', color: 'var(--color-muted)' }}
+            title="New group"
+          >
+            <Plus size={14} />
+          </button>
+        </div>
+      </div>
+
+      {/* Create form */}
+      {showCreate && (
+        <div className="px-3 py-3 space-y-2 border-b" style={{ background: 'rgba(59,130,246,0.05)', borderColor: 'var(--color-border)' }}>
+          <input
+            className="w-full text-xs rounded-lg px-3 py-2 outline-none"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+            aria-label="Circle name" maxLength={80} placeholder="Circle name"
+            value={newName}
+            onChange={e => setNewName(e.target.value)}
+          />
+          <input
+            className="w-full text-xs rounded-lg px-3 py-2 outline-none"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+            aria-label="Circle description" maxLength={500} placeholder="Description (optional)"
+            value={newDesc}
+            onChange={e => setNewDesc(e.target.value)}
+          />
+          <button
+            onClick={() => { void handleCreate() }}
+            disabled={creating || !newName.trim()}
+            className="w-full text-xs py-2 rounded-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-1"
+            style={{ background: 'var(--color-accent)', color: '#fff' }}
+          >
+            {creating ? <><Loader2 size={11} className="animate-spin" />Creatingâ€¦</> : 'Create Group'}
+          </button>
+        </div>
+      )}
+
+      {/* Join form */}
+      {showJoin && (
+        <div className="px-3 py-3 space-y-2 border-b" style={{ background: 'rgba(6,182,212,0.04)', borderColor: 'var(--color-border)' }}>
+          <input
+            className="w-full text-xs rounded-lg px-3 py-2 outline-none"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+            aria-label="Invite code or link" placeholder="Invite code or link"
+            value={inviteInput}
+            onChange={e => setInviteInput(e.target.value)}
+          />
+          {joinError && <p className="text-xs" style={{ color: 'var(--color-red)' }}>{joinError}</p>}
+          <button
+            onClick={() => { void handleJoin() }}
+            disabled={joining || !inviteInput.trim()}
+            className="w-full text-xs py-2 rounded-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-1"
+            style={{ background: 'var(--color-cyan)', color: '#fff' }}
+          >
+            {joining ? <><Loader2 size={11} className="animate-spin" />Joiningâ€¦</> : 'Join Group'}
+          </button>
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <div className="px-3 py-2 text-xs" style={{ color: 'var(--color-red)' }}>{error}</div>
+      )}
+
+      {/* Group list */}
+      <div className="flex-1 overflow-y-auto">
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 size={16} className="animate-spin" style={{ color: 'var(--color-muted)' }} />
+          </div>
+        ) : groups.length === 0 ? (
+          <div className="px-3 py-6 text-center text-xs" style={{ color: 'var(--color-muted)' }}>
+            No groups yet.<br />Create one or join with an invite code.
+          </div>
+        ) : (
+          groups.map(g => (
+            <button
+              key={g.id}
+              onClick={() => onSelectGroup(g)}
+              className="w-full text-left px-3 py-3 flex items-center gap-2 transition-colors"
+              style={{
+                background: selectedGroupId === g.id ? 'rgba(59,130,246,0.12)' : 'transparent',
+                borderLeft: selectedGroupId === g.id ? '2px solid var(--color-accent)' : '2px solid transparent',
+              }}
+            >
+              <div
+                className="w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold flex-shrink-0"
+                style={{ background: 'rgba(59,130,246,0.2)', color: 'var(--color-accent-light)' }}
+              >
+                {g.name.slice(0, 1).toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-medium truncate text-white">{g.name}</p>
+                {g.description && (
+                  <p className="text-xs truncate" style={{ color: 'var(--color-muted)' }}>{g.description}</p>
+                )}
+              </div>
+              <Users size={11} className="ml-auto flex-shrink-0" style={{ color: 'var(--color-muted)' }} />
+            </button>
+          ))
+        )}
+      </div>
+
+      {/* Invite link reminder */}
+      {groups.length > 0 && (
+        <div
+          className="px-3 py-2 text-xs flex items-center gap-1 border-t"
+          style={{ borderColor: 'var(--color-border)', color: 'var(--color-muted)' }}
+        >
+          <Link2 size={10} />
+          Share invite code from group settings to add members.
+        </div>
+      )}
+    </div>
+  )
+}
+
