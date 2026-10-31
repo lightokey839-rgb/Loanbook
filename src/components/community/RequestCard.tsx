@@ -1,30 +1,111 @@
-YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíßM5N‹Z–‹­¦ëeŠw¬Õ¥µÁ½ÉĞìÕÍ•MÑ…Ñ”°ÕÍ•™™•Ğ°ÕÍ•…±±‰…¬ô™É½´€É•…Ğœ)¥µÁ½ÉĞìÕÍ•½Õ¹Ğ°ÕÍ•AÕ‰±¥±¥•¹Ğ°ÕÍ•]É¥Ñ•½¹ÑÉ…Ğô™É½´€İ…µ¤œ)¥µÁ½ÉĞÑåÁ”ìMÕÁ…‰…Í•±¥•¹Ğô™É½´€ÍÕÁ…‰…Í”½ÍÕÁ…‰…Í”µ©Ìœ)¥µÁ½ÉĞÑåÁ”ì1½…¹I•ÅÕ•ÍĞ°1½…¹%¹Ñ•É•ÍĞô™É½´€œ¸¸¼¸¸½±¥ˆ½ÍÕÁ…‰…Í”œ)¥µÁ½ÉĞì1=9	==-}IML°1=9	==-}	$°Á…ÉÍ•UÍ‘Œô™É½´€œ¸¸¼¸¸½±½…¹‰½½¬µ½¹ÑÉ…Ğœ)¥µÁ½ÉĞì…Ñ¥Ù•¡…¥¸°‘•Á±½åµ•¹ÑI•…‘äô™É½´€œ¸¸¼¸¸½¹•Ñİ½É¬œ)¥µÁ½ÉĞìÁ…ÉÍ•=¹¡…¥¹ÉÉ½Èô™É½´€œ¸¸¼¸¸½½¹¡…¥¸µ•ÉÉ½Èœ)¥µÁ½ÉĞìQáI••¥ÁĞô™É½´€œ¸¸½QáI••¥ÁĞœ()¥¹Ñ•É™…”AÉ½ÁÌìÉ•ÅÕ•ÍĞè1½…¹I•ÅÕ•ÍĞìİ…±±•ĞèÍÑÉ¥¹œì±¥•¹ĞèMÕÁ…‰…Í•±¥•¹Ğì½¹1½…¹É•…Ñ•è€¡¥è‰¥¥¹Ğ¤€ôøÙ½¥ô)•áÁ½ÉĞ™Õ¹Ñ¥½¸I•ÅÕ•ÍÑ…É¡ìÉ•ÅÕ•ÍĞèÈ°İ…±±•Ğ°±¥•¹Ğ°½¹1½…¹É•…Ñ•ôèAÉ½ÁÌ¤ì(€½¹ÍĞì…‘‘É•ÍÌ°¡…¥¹%ô€ôÕÍ•½Õ¹Ğ ¤(€½¹ÍĞÁÕ‰±¥±¥•¹Ğ€ôÕÍ•AÕ‰±¥±¥•¹Ğ¡ì¡…¥¹%è…Ñ¥Ù•¡…¥¸¹¥ô¤(€½¹ÍĞìİÉ¥Ñ•½¹ÑÉ…ÑÍå¹Œô€ôÕÍ•]É¥Ñ•½¹ÑÉ…Ğ ¤(€½¹ÍĞm¥¹Ñ•É•ÍÑÌ°Í•Ñ%¹Ñ•É•ÍÑÍt€ôÕÍ•MÑ…Ñ”ñ1½…¹%¹Ñ•É•ÍÑmtø¡mt¤(€½¹ÍĞm•ÉÉ½È°Í•ÑÉÉ½Ét€ôÕÍ•MÑ…Ñ” œœ¤(€½¹ÍĞm‰ÕÍä°Í•Ñ	ÕÍåt€ôÕÍ•MÑ…Ñ” œœ¤(€½¹ÍĞmÉ•½Ù•Éå!…Í °Í•ÑI•½Ù•Éå!…Í¡t€ôÕÍ•MÑ…Ñ” œœ¤(€½¹ÍĞmÑà°Í•ÑQát€ôÕÍ•MÑ…Ñ”ñ€Áà‘íÍÑÉ¥¹õ€ğ¹Õ±°ø¡¹Õ±°¤(€½¹ÍĞmÑ¥¬°Í•ÑQ¥­t€ôÕÍ•MÑ…Ñ” À¤(€½¹ÍĞm¹½Ü°Í•Ñ9½İt€ôÕÍ•MÑ…Ñ”  ¤€ôø…Ñ”¹¹½Ü ¤¤(€ÕÍ•™™•Ğ  ¤€ôøì½¹ÍĞÑ¥µ•È€ôÍ•Ñ%¹Ñ•ÉÙ…°  ¤€ôøÍ•Ñ9½Ü¡…Ñ”¹¹½Ü ¤¤°€ÌÀÀÀÀ¤ìÉ•ÑÕÉ¸€ ¤€ôø±•…É%¹Ñ•ÉÙ…°¡Ñ¥µ•È¤ô°mt¤(€½¹ÍĞÉ•™É•Í €ôÕÍ•…±±‰…¬  ¤€ôøÍ•ÑQ¥¬¡Ø€ôøØ€¬€Ä¤°mt¤(€½¹ÍĞµ¥¹”€ôİ…±±•Ğ€ôôôÈ¹‰½ÉÉ½İ•È(€½¹ÍĞ¥¹Ñ•É•ÍĞ€ô¥¹Ñ•É•ÍÑÌ¹™¥¹¡¤€ôø¤¹±•¹‘•È€ôôôİ…±±•Ğ¤(€ÕÍ•™™•Ğ  ¤€ôøì(€€€±•Ğ±¥Ù”€ôÑÉÕ”(€€€Ù½¥±¥•¹Ğ¹™É½´ ±½…¹}¥¹Ñ•É•ÍÑÌœ¤¹Í•±•Ğ œ¨œ¤¹•Ä É•ÅÕ•ÍÑ}¥œ°È¹¥¤¹½É‘•È É•…Ñ•‘}…Ğœ¤¹Ñ¡•¸ ¡ì‘…Ñ„°•ÉÉ½Èè•ÉÈô¤€ôøì(€€€€€¥˜€ …±¥Ù”¤É•ÑÕÉ¸(€€€€€¥˜€¡•ÉÈ¤Í•ÑÉÉ½È¡•ÉÈ¹µ•ÍÍ…”¤ì•±Í”Í•Ñ%¹Ñ•É•ÍÑÌ ¡‘…Ñ„€üümt¤…Ì1½…¹%¹Ñ•É•ÍÑmt¤(€€€ô¤(€€€½¹ÍĞ¡…¹¹•°€ô±¥•¹Ğ¹¡…¹¹•° ¥¹Ñ•É•ÍĞèœ€¬È¹¥¤¹½¸ Á½ÍÑÉ•Í}¡…¹•Ìœ°(€€€€€ì•Ù•¹Ğè€œ¨œ°Í¡•µ„è€ÁÕ‰±¥Œœ°Ñ…‰±”è€±½…¹}¥¹Ñ•É•ÍÑÌœ°™¥±Ñ•Èè€É•ÅÕ•ÍÑ}¥õ•Ä¸œ€¬È¹¥ô°É•™É•Í ¤¹ÍÕ‰ÍÉ¥‰” ¤(€€€½¹ÍĞÑ¥µ•È€ôÍ•Ñ%¹Ñ•ÉÙ…°¡É•™É•Í °€ÄÔÀÀÀ¤(€€€É•ÑÕÉ¸€ ¤€ôøì±¥Ù”€ô™…±Í”ì±•…É%¹Ñ•ÉÙ…°¡Ñ¥µ•È¤ìÙ½¥±¥•¹Ğ¹É•µ½Ù•¡…¹¹•°¡¡…¹¹•°¤ô(€ô°m±¥•¹Ğ°È¹¥°Ñ¥¬°É•™É•Í¡t¤(€½¹ÍĞÍå¹Œ€ôÕÍ•…±±‰…¬¡…Íå¹Œ€¡É•…Ñ¥½¹QàüèÍÑÉ¥¹œ¤€ôøì(€€€½¹ÍĞì‘…Ñ„°•ÉÉ½Èè™…¥±ÕÉ”ô€ô…İ…¥Ğ±¥•¹Ğ¹™Õ¹Ñ¥½¹Ì¹¥¹Ù½­” Ù•É¥™äµ±½…¸œ°ì‰½‘äèìÉ•ÅÕ•ÍÑ%èÈ¹¥°É•…Ñ¥½¹Qàôô¤…Ìì‘…Ñ„èì•ÉÉ½ÈüèÍÑÉ¥¹œôğ¹Õ±°ì•ÉÉ½ÈèÕ¹­¹½İ¸ô(€€€¥˜€¡™…¥±ÕÉ”ñğ‘…Ñ„ü¹•ÉÉ½È¤Ñ¡É½Ü¹•ÜÉÉ½È ½Õ±¹½ĞÙ•É¥™äÑ¡¥Ì±½…¸å•Ğ¸-••ÀÑ¡”É•…Ñ¥½¸¡…Í …¹É•ÑÉä¸Q¡”Ù•É¥™¥…Ñ¥½¸Í•ÉÙ¥”µÕÍĞ‰”‘•Á±½å•¸œ¤(€€€É•™É•Í  ¤(€ô°m±¥•¹Ğ°È¹¥°É•™É•Í¡t¤(€ÕÍ•™™•Ğ  ¤€ôøì(€€€¥˜€ …È¹É•…Ñ¥½¹}ÑàñğÈ¹ÍÑ…ÑÕÌ€ôôô€É•Á…¥œñğÈ¹ÍÑ…ÑÕÌ€ôôô€…¹•±±•œ¤É•ÑÕÉ¸(€€€½¹ÍĞÑ¥µ•È€ôÍ•Ñ%¹Ñ•ÉÙ…°  ¤€ôøìÙ½¥Íå¹Œ ¤¹…Ñ   ¤€ôøÍ•ÑÉÉ½È MÑ…ÑÕÌÍå¹ŒÕ¹…Ù…¥±…‰±”¸1…ÍĞÙ•É¥™¥•ÍÑ…ÑÕÌ¥ÌÍ¡½İ¸ìÉ•ÑÉä‰•±½Ü¸œ¤¤ô°€ÈÀÀÀÀ¤(€€€É•ÑÕÉ¸€ ¤€ôø±•…É%¹Ñ•ÉÙ…°¡Ñ¥µ•È¤(€ô°mÈ¹É•…Ñ¥½¹}Ñà°È¹ÍÑ…ÑÕÌ°Íå¹t¤(€…Íå¹Œ™Õ¹Ñ¥½¸…Ñ¥½¸¡±…‰•°èÍÑÉ¥¹œ°İ½É¬è€ ¤€ôøAÉ½µ¥Í”ñÙ½¥ø¤ì(€€€¥›]4ÖÚ$z{-®éÜj×OH™›^›^]Ü˜\][\ËXÙ[\ˆØ\Lˆ^^È‚ˆÜ[ˆÛ\ÜÓ˜[YOH›[Û›Èœ™XZËX[ÚK›[™\ŸOÜÜ[‚ˆÛZ[™H	‰ˆ]ÛˆÛ\ÜÓ˜[YOH˜‹\ÙXÛÛ™\Hˆ\ØX›Y^ÈHX\Ş_HÛÛXÚÏ^Ê
-HOˆÈ›ÚYXİ[ÛŠ	ÔÙ[Xİ[™ø )‰Ë
+import { useState, useEffect, useCallback } from 'react'
+import { useAccount, usePublicClient, useWriteContract } from 'wagmi'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { LoanRequest, LoanInterest } from '../../lib/supabase'
+import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseUsdc } from '../../loanbook-contract'
+import { activeChain, deploymentReady } from '../../network'
+import { parseOnchainError } from '../../onchain-error'
+import { TxReceipt } from '../TxReceipt'
 
-HOˆœÊ	İ\]WÛØ[—Ü™\]Y\İØWØ›Üœ›İÙ\‰ËÜÜ™\]Y\İÚYœ‹šYÜÙ[XİYÛ[™\—ÚYšK›[™\—ÚYJJH_O”Ù[Xİ[™\Ø]ÛŸBˆÙ]Š_BˆÏŸBˆÜ‹œÙ[XİYÛ[™\ˆ	‰ˆÛ\ÜÓ˜[YOH^^Èœ™XZËX[İ›Û™Ï”Ù[XİY[™\Üİ›Û™Ïœ‹ÏÜ‹œÙ[XİYÛ[™\ŸOÜŸBˆÛZ[™H	‰ˆ‹œİ]\ÈOOH	Û[™\—ÜÙ[XİY	È	‰ˆ\‹›Û˜ÚZ[—ÛØ[—ÚY	‰ˆ]ˆÛ\ÜÓ˜[YOHœÜXÙK^KLˆ‚ˆÛ\ÜÓ˜[YOH^^Èˆİ[O^ŞØÛÛÜ‰İ˜\ŠK[]]Y
-Iß_OÛÛ™š\›HH[[™\ˆY™\ÜÈX›İ™KˆÜ™X]HHYÜ™Y[Y[ÛˆØXİ]™PÚZ[‹›˜[Y_NÈH[™\ˆ[™ÈÙ\\˜][Kˆ\ÈÛÜİÈTÑÈØ\ËÜ‚ˆÜ‹˜š[™[™×Üİ\YØ]	‰ˆÛ\ÜÓ˜[YOH^^È•\›\È\™HØÚÙYˆYˆ[İH[™XYHÚYÛ™YHÜ™X][Ûˆ˜[œØXİ[Û‹™XÛİ™\ˆ]™[İÈ™Y›Ü™HÜ™X][™È[›İ\‹ÜŸBˆ]ÛˆÛ\ÜÓ˜[YOH˜‹\š[X\Hˆ\ØX›Y^ÈHX\ŞHY\Ş[Y[™XY_HÛÛXÚÏ^Ê
-HOˆÈ›ÚYXİ[ÛŠ	ĞÚXÚÈØ[]8 )‰ËÜ™X]PYÜ™Y[Y[
-H_OİÈ	Ô™]H™\šYšXØ][Û‰Èˆ	ĞÜ™X]HÛ˜ÚZ[ˆYÜ™Y[Y[	ßOØ]Û‚ˆX™[Û\ÜÓ˜[YOH˜›ØÚÈ^^È”™XÛİ™\ˆHÛÛ™š\›YYÜ™X][Ûˆ˜[œØXİ[Û‚ˆ[œ]Û\ÜÓ˜[YOHš[œ]]LHËY[ˆXÙZÛ\HŒ8 )ˆ˜[œØXİ[Ûˆ\Úˆ˜[YO^Ü™XÛİ™\R\ÚHÛÚ[™ÙO^ÙHOˆÙ]™XÛİ™\R\Ú
-K\™Ù]˜[YJ_HÏ‚ˆÛX™[‚ˆ]ÛˆÛ\ÜÓ˜[YOH˜‹\ÙXÛÛ™\Hˆ\ØX›Y^ÈHX\ŞHK×ŒÌNXKY—^ÍIÚK\İ
-™XÛİ™\R\Ú
-_HÛÛXÚÏ^Ê
-HOˆÈ›ÚYXİ[ÛŠ	Õ™\šYZ[™ø )‰Ë
+interface Props { request: LoanRequest; wallet: string; client: SupabaseClient; onLoanCreated: (id: bigint) => void }
+export function RequestCard({ request: r, wallet, client, onLoanCreated }: Props) {
+  const { address, chainId } = useAccount()
+  const publicClient = usePublicClient({ chainId: activeChain.id })
+  const { writeContractAsync } = useWriteContract()
+  const [interests, setInterests] = useState<LoanInterest[]>([])
+  const [error, setError] = useState('')
+  const [busy, setBusy] = useState('')
+  const [recoveryHash, setRecoveryHash] = useState('')
+  const [tx, setTx] = useState<`0x${string}` | null>(null)
+  const [tick, setTick] = useState(0)
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => { const timer = setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(timer) }, [])
+  const refresh = useCallback(() => setTick(v => v + 1), [])
+  const mine = wallet === r.borrower
+  const interest = interests.find(i => i.lender === wallet)
+  useEffect(() => {
+    let live = true
+    void client.from('loan_interests').select('*').eq('request_id', r.id).order('created_at').then(({ data, error: err }) => {
+      if (!live) return
+      if (err) setError(err.message); else setInterests((data ?? []) as LoanInterest[])
+    })
+    const channel = client.channel('interest:' + r.id).on('postgres_changes',
+      { event: '*', schema: 'public', table: 'loan_interests', filter: 'request_id=eq.' + r.id }, refresh).subscribe()
+    const timer = setInterval(refresh, 15000)
+    return () => { live = false; clearInterval(timer); void client.removeChannel(channel) }
+  }, [client, r.id, tick, refresh])
+  const sync = useCallback(async (creationTx?: string) => {
+    const { data, error: failure } = await client.functions.invoke('verify-loan', { body: { requestId: r.id, creationTx } }) as { data: { error?: string } | null; error: unknown }
+    if (failure || data?.error) throw new Error('Could not verify this loan yet. Keep the creation hash and retry. The verification service must be deployed.')
+    refresh()
+  }, [client, r.id, refresh])
+  useEffect(() => {
+    if (!r.creation_tx || r.status === 'repaid' || r.status === 'cancelled') return
+    const timer = setInterval(() => { void sync().catch(() => setError('Status sync unavailable. Last verified status is shown; retry below.')) }, 20000)
+    return () => clearInterval(timer)
+  }, [r.creation_tx, r.status, sync])
+  async function action(label: string, work: () => Promise<void>) {
+    if (busy) return
+    setBusy(label); setError('')
+    try { await work() } catch (e) { setError(e instanceof Error ? parseOnchainError(e) : 'Action failed. Please retry.') }
+    finally { setBusy('') }
+  }
+  async function rpc(name: string, params: Record<string, unknown>) {
+    const { error: failure } = await client.rpc(name, params)
+    if (failure) throw new Error(failure.message)
+    refresh()
+  }
+  async function createAgreement() {
+    if (!address || address.toLowerCase() !== r.borrower || chainId !== activeChain.id || !deploymentReady || !publicClient) throw new Error('Connect the borrower wallet on the configured Arc network.')
+    const { data: bound, error: failure } = await client.rpc('prepare_loan_binding', { p_request_id: r.id, p_chain_id: activeChain.id }) as { data: LoanRequest | null; error: { message: string } | null }
+    if (failure || !bound || !bound.selected_lender) throw new Error(failure?.message ?? 'Invalid agreement response')
+    if (bound.contract_address !== LOANBOOK_ADDRESS.toLowerCase()) throw new Error('Deployment configuration mismatch.')
+    if (bound.onchain_loan_id) { onLoanCreated(BigInt(bound.onchain_loan_id)); return }
+    if (tx) { await sync(tx); return }
+    const hash = await writeContractAsync({ account: address, address: LOANBOOK_ADDRESS, abi: LOANBOOK_ABI,
+      functionName: 'createLoan', args: [bound.selected_lender as `0x${string}`, parseUsdc(String(r.amount_usdc)), BigInt(r.duration_days) * 86400n], chainId: activeChain.id })
+    setTx(hash); setRecoveryHash(hash); setBusy('Confirming agreementâ€¦')
+    const receipt = await publicClient.waitForTransactionReceipt({ hash })
+    if (receipt.status !== 'success') throw new Error('Agreement transaction reverted.')
+    setBusy('Verifying agreementâ€¦')
+    await sync(hash)
+  }
+  const overdue = r.status === 'funded' && r.due_at && Date.parse(r.due_at) < now
+  const status = overdue ? 'Overdue' : r.status === 'lender_selected' && r.onchain_loan_id ? 'Awaiting funding' : r.status.replace('_',' ')
+  return <article className="card p-4 space-y-3" aria-label="Community loan request">
+    <div className="flex flex-wrap justify-between gap-2"><strong>{String(r.amount_usdc)} USDC</strong><span className={'status-' + (overdue ? 'overdue' : r.status) + ' text-xs px-2 py-1 rounded-full'}>{status}</span></div>
+    <p className="text-xs break-all" style={{color:'var(--muted)'}}>Borrower {r.borrower} Â· {r.duration_days} days Â· 0% interest</p>
+    {r.note && <p className="text-sm whitespace-pre-wrap break-words">{r.note}</p>}
+    {r.status === 'open' && <>
+      <p className="text-xs">{interests.length} interested lender{interests.length === 1 ? '' : 's'}</p>
+      {!mine && <button className="btn-secondary" disabled={!!busy} onClick={() => { void action('Savingâ€¦', () => rpc(interest ? 'withdraw_interest' : 'express_interest', { p_request_id:r.id })) }}>{interest ? 'Withdraw interest' : 'Offer to lend'}</button>}
+      {interests.map(i => <div key={i.id} className="flex flex-wrap items-center gap-2 text-xs">
+        <span className="mono break-all">{i.lender}</span>
+        {mine && <button className="btn-secondary" disabled={!!busy} onClick={() => { void action('Selectingâ€¦', () => rpc('update_loan_request_by_borrower', {p_request_id:r.id,p_selected_lender_id:i.lender_id})) }}>Select lender</button>}
+      </div>)}
+    </>}
+    {r.selected_lender && <p className="text-xs break-all"><strong>Selected lender</strong><br/>{r.selected_lender}</p>}
+    {mine && r.status === 'lender_selected' && !r.onchain_loan_id && <div className="space-y-2">
+      <p className="text-xs" style={{color:'var(--muted)'}}>Confirm the full lender address above. Create the agreement on {activeChain.name}; the lender funds separately. This costs USDC gas.</p>
+      {r.binding_started_at && <p className="text-xs">Terms are locked. If you already signed a creation transaction, recover it below before creating another.</p>}
+      <button className="btn-primary" disabled={!!busy || !deploymentReady} onClick={() => { void action('Check walletâ€¦', createAgreement) }}>{tx ? 'Retry verification' : 'Create onchain agreement'}</button>
+      <label className="block text-xs">Recover a confirmed creation transaction
+        <input className="input mt-1 w-full" placeholder="0xâ€¦ transaction hash" value={recoveryHash} onChange={e => setRecoveryHash(e.target.value)} />
+      </label>
+      <button className="btn-secondary" disabled={!!busy || !/^0x[0-9a-f]{64}$/i.test(recoveryHash)} onClick={() => { void action('Verifyingâ€¦', () => sync(recoveryHash)) }}>Verify saved transaction</button>
+    </div>}
+    {r.onchain_loan_id && <div className="flex flex-wrap gap-2">
+      <button className="btn-primary" onClick={() => onLoanCreated(BigInt(r.onchain_loan_id!))} disabled={r.chain_id !== activeChain.id}>Manage loan #{r.onchain_loan_id}</button>
+      <button className="btn-secondary" disabled={!!busy} onClick={() => { void action('Checking chainâ€¦', () => sync()) }}>Refresh verified status</button>
+    </div>}
+    {r.chain_id && r.chain_id !== activeChain.id && <p className="text-xs">This loan is on chain {r.chain_id}. Open that network's deployment to manage it.</p>}
+    {mine && !r.binding_started_at && ['open','lender_selected'].includes(r.status) && <button className="text-xs underline" disabled={!!busy} onClick={() => { void action('Cancellingâ€¦', () => rpc('update_loan_request_by_borrower',{p_request_id:r.id,p_cancel:true})) }}>Cancel request</button>}
+    {r.due_at && <p className="text-xs">Repayment due {new Date(r.due_at).toLocaleString()}</p>}
+    {tx && <TxReceipt hash={tx} label="Creation submitted" chainId={activeChain.id}/>}
+    {(['creation_tx','funding_tx','repayment_tx','cancellation_tx'] as const).map(key => r[key] && <TxReceipt key={key} hash={r[key] as `0x${string}`} label={key.replace('_tx','') + ' verified'} chainId={r.chain_id!}/>)}
+    {busy && <p role="status" className="text-xs">{busy}</p>}
+    {error && <p role="alert" className="text-xs text-red-300">{error}</p>}
+    {r.verified_block && <p className="text-xs" style={{color:'var(--muted)'}}>Verified through block {r.verified_block}. Blockchain terms are public.</p>}
+  </article>
+}
 
-HOˆŞ[˜Ê™XÛİ™\R\Ú
-JH_O•™\šYHØ]™Y˜[œØXİ[ÛØ]Û‚ˆÙ]ŸBˆÜ‹›Û˜ÚZ[—ÛØ[—ÚY	‰ˆ]ˆÛ\ÜÓ˜[YOH™›^›^]Ü˜\Ø\Lˆ‚ˆ]ÛˆÛ\ÜÓ˜[YOH˜‹\š[X\HˆÛÛXÚÏ^Ê
-HOˆÛ“Ø[Ü™X]Y
-šYÒ[
-‹›Û˜ÚZ[—ÛØ[—ÚYJJ_H\ØX›Y^Ü‹˜ÚZ[—ÚYOOHXİ]™PÚZ[‹šYO“X[˜YÙHØ[ˆŞÜ‹›Û˜ÚZ[—ÛØ[—ÚYOØ]Û‚ˆ]ÛˆÛ\ÜÓ˜[YOH˜‹\ÙXÛÛ™\Hˆ\ØX›Y^ÈHX\Ş_HÛÛXÚÏ^Ê
-HOˆÈ›ÚYXİ[ÛŠ	ĞÚXÚÚ[™ÈÚZ[¸ )‰Ë
-
-HOˆŞ[˜Ê
-JH_O”™Yœ™\Ú™\šYšYYİ]\ÏØ]Û‚ˆÙ]ŸBˆÜ‹˜ÚZ[—ÚY	‰ˆ‹˜ÚZ[—ÚYOOHXİ]™PÚZ[‹šY	‰ˆÛ\ÜÓ˜[YOH^^È•\ÈØ[ˆ\ÈÛˆÚZ[ˆÜ‹˜ÚZ[—ÚYKˆÜ[ˆ]™]ÛÜšÉÜÈ\Ş[Y[ÈX[˜YÙH]ÜŸBˆÛZ[™H	‰ˆ\‹˜š[™[™×Üİ\YØ]	‰ˆÉÛÜ[‰Ë	Û[™\—ÜÙ[XİY	×Kš[˜ÛY\Ê‹œİ]\ÊH	‰ˆ]ÛˆÛ\ÜÓ˜[YOH^^È[™\›[™Hˆ\ØX›Y^ÈHX\Ş_HÛÛXÚÏ^Ê
-HOˆÈ›ÚYXİ[ÛŠ	ĞØ[˜Ù[[™ø )‰Ë
-
-HOˆœÊ	İ\]WÛØ[—Ü™\]Y\İØWØ›Üœ›İÙ\‰ËÜÜ™\]Y\İÚYœ‹šYØØ[˜Ù[Y_JJH_OØ[˜Ù[™\]Y\İØ]ÛŸBˆÜ‹™YWØ]	‰ˆÛ\ÜÓ˜[YOH^^È”™\^[Y[YHÛ™]È]J‹™YWØ]
-KÓØØ[Tİš[™Ê
-_OÜŸBˆİ	‰ˆ™XÙZ\\Ú^İHX™[HÜ™X][ÛˆİX›Z]YˆÚZ[’Y^ØXİ]™PÚZ[‹šYKÏŸBˆÊÉØÜ™X][Û—İ	Ë	Ù[™[™×İ	Ë	Ü™\^[Y[İ	Ë	ØØ[˜Ù[][Û—İ	×H\ÈÛÛœİ
-K›X\
-Ù^HOˆ–ÚÙ^WH	‰ˆ™XÙZ\Ù^O^ÚÙ^_H\Ú^Ü–ÚÙ^WH\È	Üİš[™ßXHX™[^ÚÙ^Kœ™\XÙJ	×İ	Ë	ÉÊH
-È	È™\šYšYY	ßHÚZ[’Y^Ü‹˜ÚZ[—ÚY_KÏŠ_BˆØ\ŞH	‰ˆ›ÛOHœİ]\ÈˆÛ\ÜÓ˜[YOH^^ÈØ\Ş_OÜŸBˆÙ\œ›Üˆ	‰ˆ›ÛOH˜[\ˆÛ\ÜÓ˜[YOH^^È^\™YLÌÙ\œ›ÜŸOÜŸBˆÜ‹™\šYšYYØ›ØÚÈ	‰ˆÛ\ÜÓ˜[YOH^^Èˆİ[O^ŞØÛÛÜ‰İ˜\ŠK[]]Y
-Iß_O•™\šYšYY›İYÚ›ØÚÈÜ‹™\šYšYYØ›ØÚßKˆ›ØÚØÚZ[ˆ\›\È\™HX›XËÜŸBˆØ\XÛO‚ŸB
