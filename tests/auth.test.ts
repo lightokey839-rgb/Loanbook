@@ -74,7 +74,7 @@ describe('SIWE authentication',()=>{
  it('explains a Supabase redirect allowlist rejection',async()=>{
   const {client,walletClient,auth}=setup()
   auth.signInWithWeb3.mockResolvedValue({data:{session:null,user:null},error:{message:'Signed Ethereum message is using URI which is not allowed on this server, message was signed for another app'}} as never)
-  await expect(authenticateWallet(client,alice.address,walletClient,'https://loanbook.example')).rejects.toThrow('http://localhost:5173/**')
+  await expect(authenticateWallet(client,alice.address,walletClient,'https://loanbook.example/app/')).rejects.toThrow('https://loanbook.example/app/')
  })
  it('rejects missing or mismatched verified identities',async()=>{
   const {client,walletClient,auth}=setup()
