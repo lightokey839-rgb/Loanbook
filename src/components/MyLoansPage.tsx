@@ -1,58 +1,256 @@
-Y™Áäx-ÆÈ‹j◊ù¢Îi∫⁄+äßj[hëÈ‹¢ÈÌﬂM5NãZñã≠¶Îeäw¨‘º®®(Ä®Å5Â1ΩÖπÕAÖùîÉäPÅ—ÖââïêÅ±ΩÖ∏ÅµÖπÖùïµïπ–Å›•—†Å—•µï±•πîÅ¡…Ωù…ïÕÃ∏(Ä®Å=π±‰ÅÕ°Ω›ÃÅ…ïÖ∞ÅΩπç°Ö•∏ÅëÖ—ÑÏÅπºÅôÖâ…•çÖ—ïêÅÕ—Ö—î∏(Ä®º)•µ¡Ω…–ÅÏÅ’ÕïM—Ö—îÅÙÅô…Ω¥Äù…ïÖç–ú)•µ¡Ω…–ÅÏÅ’ÕïççΩ’π–∞Å’ÕïIïÖëΩπ—…Öç–∞Å’ÕïIïÖëΩπ—…Öç—ÃÅÙÅô…Ω¥Äù›Öùµ§ú)•µ¡Ω…–ÅÏÅÖç—•Ÿï°Ö•∏ÅÖÃÅÖ…çQïÕ—πï–ÅÙÅô…Ω¥Äú∏∏Ωπï—›Ω…¨ú)•µ¡Ω…–ÅÏ(ÄÅ	ΩΩ≠=¡ï∏∞Å……Ω›Ω›π1ïô–∞Å……Ω›U¡I•ù°–∞(ÄÅa•…ç±î∞Å±ï…—Q…•Öπù±î∞ÅMïÖ…ç†∞(ÄÅIïô…ïÕ°‹∞)ÙÅô…Ω¥Äù±’ç•ëîµ…ïÖç–ú)•µ¡Ω…–ÅÏÅΩππïç—-•—	’——Ω∏ÅÙÅô…Ω¥ÄùçΩππïç—≠•–ú)•µ¡Ω…–ÅÏ(ÄÅ1=9	==-}IML∞Å1=9	==-}	$∞Å¡Ö…Õï1ΩÖ∏∞ÅôΩ…µÖ—UÕëå∞(ÄÅÕ°Ω…—ëë»∞ÅôΩ…µÖ—QÃ∞Å1ΩÖπM—Ö—î∞)ÙÅô…Ω¥Äú∏∏Ω±ΩÖπâΩΩ¨µçΩπ—…Öç–ú)•µ¡Ω…–ÅÏÅâ’•±ëëë…ïÕÕ·¡±Ω…ï…U…∞ÅÙÅô…Ω¥Äú∏∏ΩΩπç°Ö•∏µôÖç—Ãú)•µ¡Ω…–ÅÏÅ1ΩΩ≠’¡AÖπï∞ÅÙÅô…Ω¥Äú∏Ω1ΩΩ≠’¡AÖπï∞ú)•µ¡Ω…–Å—Â¡îÅÏÅAÖùîÅÙÅô…Ω¥Äú∏Ω¡¡M°ï±∞ú()—Â¡îÅQÖàÄÙÄùÖ±∞úÅÄùâΩ……Ω›ïêúÅÄù±ïπ–úÅÄù¡ïπë•πúúÅÄù…ï¡Ö•êú()•π—ï…ôÖçîÅA…Ω¡ÃÅÏ(ÄÅΩπ9ÖŸ•ùÖ—îËÄ°¿ËÅAÖùî§ÄÙ¯ÅŸΩ•ê)Ù((º®®ÅY•Õ’Ö∞Å—•µï±•πîÅôΩ»ÅÑÅ±ΩÖ∏ùÃÅ±•ôïçÂç±îÄ®º)ô’πç—•Ω∏Å1ΩÖπQ•µï±•πî°ÏÅÕ—Ö—îÅÙËÅÏÅÕ—Ö—îËÅπ’µâï»ÅÙ§ÅÏ(ÄÅçΩπÕ–ÅÕ—ï¡ÃÄÙÅl(ÄÄÄÅÏÅ±Öâï∞ËÄù…ïÖ—ïêú∞ÅëΩπîËÅ—…’îÅÙ∞(ÄÄÄÅÏÅ±Öâï∞ËÄù’πëïêú∞ÅëΩπîËÅÕ—Ö—îÄ¯ÙÄ°1ΩÖπM—Ö—îπ’πëïêÅÖÃÅπ’µâï»§ÅÙ∞(ÄÄÄÅÏÅ±Öâï∞ËÄùIï¡Ö•êú∞ÅëΩπîËÅÕ—Ö—îÄÙÙÙÄ°1ΩÖπM—Ö—îπIï¡Ö•êÅÖÃÅπ’µâï»§ÅÙ∞(ÄÅt(ÄÅ•òÄ°Õ—Ö—îÄÙÙÙÄ°1ΩÖπM—Ö—îπÖπçï±±ïêÅÖÃÅπ’µâï»§§ÅÏ(ÄÄÄÅ…ï—’…∏Ä†(ÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâô±ï‡Å•—ïµÃµçïπ—ï»ÅùÖ¿¥ƒ∏‘Å—ï·–µ·ÃàÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µµ’—ïê§úÅıÙ¯(ÄÄÄÄÄÄÄÄÒa•…ç±îÅÕ•ÈîıÏƒ…ÙÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µ…ïê§úÅıÙÄº¯(ÄÄÄÄÄÄÄÅÖπçï±±ïê(ÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄ§(ÄÅÙ(ÄÅ…ï—’…∏Ä†(ÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâô±ï‡Å•—ïµÃµçïπ—ï»ÅùÖ¿¥¿à¯(ÄÄÄÄÄÅÌÕ—ï¡ÃπµÖ¿†°Ã∞Å§§ÄÙ¯Ä†(ÄÄÄÄÄÄÄÄÒë•ÿÅ≠ï‰ıÌÃπ±Öâï±ÙÅç±ÖÕÕ9ÖµîÙâô±ï‡Å•—ïµÃµçïπ—ï»à¯(ÄÄÄÄÄÄÄÄÄÅÌ§Ä¯Ä¿ÄòòÄ†(ÄÄÄÄÄÄÄÄÄÄÄÄÒë•ÿ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅç±ÖÕÕ9ÖµîÙâ†µ¡‡Å‹¥‡à(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅÕ—Â±îıÌÏÅâÖç≠ù…Ω’πêËÅÃπëΩπîÄ¸ÄùŸÖ»†¥µÖççïπ–§úÄËÄùŸÖ»†¥µâΩ…ëï»µÕ—…Ωπú§úÅıÙ(ÄÄÄÄÄÄÄÄÄÄÄÄº¯(ÄÄÄÄÄÄÄÄÄÄ•Ù(ÄÄÄÄÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâô±ï‡Åô±ï‡µçΩ∞Å•—ïµÃµçïπ—ï»ÅùÖ¿¥¿∏‘à¯(ÄÄÄÄÄÄÄÄÄÄÄÄÒë•ÿ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅç±ÖÕÕ9ÖµîÙâ‹¥Ã∏‘Å†¥Ã∏‘Å…Ω’πëïêµô’±∞ÅâΩ…ëï»¥»Åô±ï‡Å•—ïµÃµçïπ—ï»Å©’Õ—•ô‰µçïπ—ï»à(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅÕ—Â±îıÌÏ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅâΩ…ëï…Ω±Ω»ËÅÃπëΩπîÄ¸ÄùŸÖ»†¥µÖççïπ–§úÄËÄùŸÖ»†¥µâΩ…ëï»µÕ—…Ωπú§ú∞(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅâÖç≠ù…Ω’πêËÅÃπëΩπîÄ¸ÄùŸÖ»†¥µÖççïπ–§úÄËÄù—…ÖπÕ¡Ö…ïπ–ú∞(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅıÙ(ÄÄÄÄÄÄÄÄÄÄÄÄ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅÌÃπëΩπîÄòòÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâ‹¥ƒÅ†¥ƒÅ…Ω’πëïêµô’±∞Åâúµ›°•—îàÄº˘Ù(ÄÄÄÄÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÒÕ¡Ö∏Åç±ÖÕÕ9ÖµîÙâ—ï·–µ·ÃàÅÕ—Â±îıÌÏÅçΩ±Ω»ËÅÃπëΩπîÄ¸ÄùŸÖ»†¥µ•π¨¥»§úÄËÄùŸÖ»†¥µÕ’â—±î§ú∞ÅôΩπ—M•ÈîËÄúƒ¡¡‡úÅıÙ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅÌÃπ±Öâï±Ù(ÄÄÄÄÄÄÄÄÄÄÄÄΩÕ¡Ö∏¯(ÄÄÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄ§•Ù(ÄÄÄÄΩë•ÿ¯(ÄÄ§)Ù()•π—ï…ôÖçîÅ1ΩÖππ—…‰ÅÏ(ÄÅ•êËÅâ•ù•π–(ÄÅ±ΩÖ∏ËÅIï—’…πQÂ¡îÒ—Â¡ïΩòÅ¡Ö…Õï1ΩÖ∏¯(ÄÅΩŸï…ë’îËÅâΩΩ±ïÖ∏)Ù()ô’πç—•Ω∏Å1ΩÖππ—…ÂÖ…ê°ÏÅïπ—…‰∞ÅÖëë…ïÕÃ∞ÅΩπ5ÖπÖùîÅÙËÅÏ(ÄÅïπ—…‰ËÅ1ΩÖππ—…‰(ÄÅÖëë…ïÕÃËÅÕ—…•πú(ÄÅΩπ5ÖπÖùîËÄ°•êËÅâ•ù•π–§ÄÙ¯ÅŸΩ•ê)Ù§ÅÏ(ÄÅçΩπÕ–ÅÏÅ•ê∞Å±ΩÖ∏∞ÅΩŸï…ë’îÅÙÄÙÅïπ—…‰(ÄÅçΩπÕ–Å•Õ	Ω……Ω›ï»ÄÙÅ±ΩÖ∏πâΩ……Ω›ï»π—Ω1Ω›ï…ÖÕî†§ÄÙÙÙÅÖëë…ïÕÃπ—Ω1Ω›ï…ÖÕî†§(ÄÅçΩπÕ–ÅçΩ’π—ï…¡Ö…—‰ÄÙÅ•Õ	Ω……Ω›ï»Ä¸Å±ΩÖ∏π±ïπëï»ÄËÅ±ΩÖ∏πâΩ……Ω›ï»((ÄÅçΩπÕ–ÅÕ—Ö—ï±ÖÕÃÄÙÅΩŸï…ë’îÄòòÅ±ΩÖ∏πÕ—Ö—îÄÙÙÙÄ°1ΩÖπM—Ö—îπ’πëïêÅÖÃÅπ’µâï»§(ÄÄÄÄ¸ÄùÕ—Ö—’ÃµΩŸï…ë’îú(ÄÄÄÄËÅlùÕ—Ö—’ÃµΩ¡ï∏ú∞ÄùÕ—Ö—’Ãµô’πëïêú∞ÄùÕ—Ö—’Ãµ…ï¡Ö•êú∞ÄùÕ—Ö—’ÃµçÖπçï±≥]4÷⁄$z{-ÆÈ‹j◊ùéà›ô\ôYH»	›ò\äK\ôY
-I»à	⁄[ö\ö]	»_OÇà€›ô\ôYH»[\ùöX[ô€H⁄^ôO^ÃL_H€\‹”ò[YOHö[õ[ôH\ãLçHàœààù[BàYHŸõ‹õX] ÿ[ãôYQ]J_Bà‹‹[èÇà
-_BàŸ]èÇàŸ]èÇÇàÀ à[Y[[ôH
-ãﬂBà]à€\‹”ò[YOHõ]L»èÇàÿ[ï[Y[[ôH›]O^€ÿ[ãú›]_HœÇàŸ]èÇàŸ]èÇÇàÀ àX›[€àù]€à
-ãﬂBàÿÿ[êX›	âà
-àù]€Çà€ê€X⁄œ^ 
-HOà€ìX[òYŸJY
-_Bà€\‹”ò[YOHú⁄ö[öÀLL»KLKçHõ›[ôY[»^^»õ€ù\Ÿ[ZXõ€ò[ú⁄][€ãX[ùã\ö[X\ûHÇàÇàX[òYŸBàÿù]€èÇà
-_BàŸ]èÇàŸ]èÇà
-BüBÇô^‹ùù[ò›[€à^Sÿ[ú‘YŸJ»€ìò]öYÿ]Nà€€ìò]öYÿ]HNàõ‹ H¬à€€ú›»Yô\‹À\–€€õôX›YHH\ŸPXÿ€›[ù
+/**
+ * MyLoansPage ‚Äî tabbed loan management with timeline progress.
+ * Only shows real onchain data; no fabricated state.
+ */
+import { useState } from 'react'
+import { useAccount, useReadContract, useReadContracts } from 'wagmi'
+import { activeChain as arcTestnet } from '../network'
+import {
+  BookOpen, ArrowDownLeft, ArrowUpRight,
+  XCircle, AlertTriangle, Search,
+  RefreshCw,
+} from 'lucide-react'
+import { ConnectKitButton } from 'connectkit'
+import {
+  LOANBOOK_ADDRESS, LOANBOOK_ABI, parseLoan, formatUsdc,
+  shortAddr, formatTs, LoanState,
+} from '../loanbook-contract'
+import { buildAddressExplorerUrl } from '../onchain-facts'
+import { LookupPanel } from './LookupPanel'
+import type { Page } from './AppShell'
 
-Bà€€ú›‹ÿÿ[ì[Z]Ÿ]ÿÿ[ì[Z]HH\ŸT›]JÃ
-Bà€€ú›ÿX›]ôUXãŸ]X›]ôUXóHH\ŸT›]OXèä	ÿ[	 Bà€€ú›€X[òYŸSÿ[íYŸ]X[òYŸSÿ[íYHH\ŸT›]OöY⁄[ùù[äù[
-Bà€€ú›‹ôYúô\⁄Ÿ^KŸ]ôYúô\⁄Ÿ^WHH\ŸT›]J
-BÇà€€ú›»]Nàÿ[ê€›[ùôYô]⁄àôYô]⁄€›[ùHH\ŸTôXY€€ùòX›
-¬àYô\‹Œà–Sêì”“◊–QëT‘ÀàXöNà–Sêì”“◊–PíKàù[ò›[€ìò[YNà	€ÿ[ê€›[ù	Àà⁄Z[íYà\ò’\›ô]öYà]Y\ûNà»ôYô]⁄[ù\ùò[àLåKàJBÇà€€ú›ôXŸ[ùYŒàöY⁄[ù◊HHÿ[ê€›[ùà»\úò^Kôúõ€J»[ô›àX]õZ[äù[Xô\äÿ[ê€›[ù
-Kÿÿ[ì[Z]
-HK
-ÀJHOàÿ[ê€›[ùHöY“[ù
-JJBàà◊BÇà€€ú›»]Nàÿ[ú‘ò]ÀôYô]⁄àôYô]⁄ÿ[ú»HH\ŸTôXY€€ùòX› ¬à€€ùòX›ŒàôXŸ[ùYÀõX\
-YOà
-¬àYô\‹Œà–Sêì”“◊–QëT‘ÀàXöNà–Sêì”“◊–PíKàù[ò›[€ìò[YNà	ŸŸ]ÿ[â»\»€€ú›à\ô‹Œà⁄YH\»ÿöY⁄[ùKà⁄Z[íYà\ò’\›ô]öYàJJKà]Y\ûNà»[òXõYàôXŸ[ùYÀõ[ô›à	âà\–€€õôX›Y	âàHXYô\‹»KàJBÇà€€ú›»]Nà›ô\ôYTò]»HH\ŸTôXY€€ùòX› ¬à€€ùòX›ŒàôXŸ[ùYÀõX\
-YOà
-¬àYô\‹Œà–Sêì”“◊–QëT‘ÀàXöNà–Sêì”“◊–PíKàù[ò›[€ìò[YNà	⁄\”›ô\ôYI»\»€€ú›à\ô‹Œà⁄YH\»ÿöY⁄[ùKà⁄Z[íYà\ò’\›ô]öYàJJKà]Y\ûNà»[òXõYàôXŸ[ùYÀõ[ô›à	âà\–€€õôX›Y	âàHXYô\‹»KàJBÇàù[ò›[€à[ôTôYúô\⁄
+type Tab = 'all' | 'borrowed' | 'lent' | 'pending' | 'repaid'
 
-H¬àŸ]ôYúô\⁄Ÿ^J»Oà»
-»JBàôYô]⁄€›[ù
+interface Props {
+  onNavigate: (p: Page) => void
+}
 
-Kòÿ]⁄
+/** Visual timeline for a loan's lifecycle */
+function LoanTimeline({ state }: { state: number }) {
+  const steps = [
+    { label: 'Created', done: true },
+    { label: 'Funded', done: state >= (LoanState.Funded as number) },
+    { label: 'Repaid', done: state === (LoanState.Repaid as number) },
+  ]
+  if (state === (LoanState.Cancelled as number)) {
+    return (
+      <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--muted)' }}>
+        <XCircle size={12} style={{ color: 'var(--red)' }} />
+        Cancelled
+      </div>
+    )
+  }
+  return (
+    <div className="flex items-center gap-0">
+      {steps.map((s, i) => (
+        <div key={s.label} className="flex items-center">
+          {i > 0 && (
+            <div
+              className="h-px w-8"
+              style={{ background: s.done ? 'var(--accent)' : 'var(--border-strong)' }}
+            />
+          )}
+          <div className="flex flex-col items-center gap-0.5">
+            <div
+              className="w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center"
+              style={{
+                borderColor: s.done ? 'var(--accent)' : 'var(--border-strong)',
+                background: s.done ? 'var(--accent)' : 'transparent',
+              }}
+            >
+              {s.done && <div className="w-1 h-1 rounded-full bg-white" />}
+            </div>
+            <span className="text-xs" style={{ color: s.done ? 'var(--ink-2)' : 'var(--subtle)', fontSize: '10px' }}>
+              {s.label}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
+interface LoanEntry {
+  id: bigint
+  loan: ReturnType<typeof parseLoan>
+  overdue: boolean
+}
 
-HOàﬂJBàôYô]⁄ÿ[ú 
-Kòÿ]⁄
+function LoanEntryCard({ entry, address, onManage }: {
+  entry: LoanEntry
+  address: string
+  onManage: (id: bigint) => void
+}) {
+  const { id, loan, overdue } = entry
+  const isBorrower = loan.borrower.toLowerCase() === address.toLowerCase()
+  const counterparty = isBorrower ? loan.lender : loan.borrower
 
+  const stateClass = overdue && loan.state === (LoanState.Funded as number)
+    ? 'status-overdue'
+    : ['status-open', 'status-funded', 'status-repaid', 'status-cancelled'][loan.state] ?? ''
+  const stateLabel = overdue && loan.state === (LoanState.Funded as number)
+    ? 'Overdue'
+    : ['Open', 'Funded', 'Repaid', 'Cancelled'][loan.state] ?? 'Unknown'
 
-HOàﬂJBàBÇà€€ú›[^Sÿ[úŒàÿ[ë[ùûV◊HH
-ÿ[ú‘ò]»œ»◊JBàõX\
+  const canAct = (isBorrower && loan.state === (LoanState.Funded as number)) ||
+    (!isBorrower && loan.state === (LoanState.Open as number)) ||
+    (isBorrower && loan.state === (LoanState.Open as number))
 
-ãJHOà¬àYà
-ãú›]\»OOH	‹›XÿŸ\‹…»\ãúô\›[
-Hô]\õàù[à€€ú›ÿ[àH\úŸSÿ[äãúô\›[
-Bà€€ú›YHôXŸ[ùY÷⁄WBàYà
-XYô\‹ Hô]\õàù[à€€ú›\”Z[ôHBàÿ[ãòõ‹úõ›Ÿ\ãù”›Ÿ\êÿ\ŸJ
-HOOHYô\‹Àù”›Ÿ\êÿ\ŸJ
-Hàÿ[ãõ[ô\ãù”›Ÿ\êÿ\ŸJ
-HOOHYô\‹Àù”›Ÿ\êÿ\ŸJ
-BàYà
-Z\”Z[ôJHô]\õàù[à€€ú››ô\ôYHH›ô\ôYTò]œÀñ⁄WOÀú›]\»OOH	‹›XÿŸ\‹…¬à»õ€€X[ä›ô\ôYTò]÷⁄WKúô\›[
-Bààò[ŸBàô]\õà»Yÿ[ã›ô\ôYHBàJBàôö[\ä
-
-Nà\»ÿ[ë[ùûHOàOOHù[
-BÇàù[ò›[€àö[\ôY
-XéàXäNàÿ[ë[ùûV◊H¬àYà
-XYô\‹ Hô]\õà◊Bà›⁄]⁄
-XäH¬àÿ\ŸH	ÿõ‹úõ›ŸY	Œàô]\õà[^Vjπ‚ûk∫wµÁh∫⁄n∂ä‚Ç)⁄ñ⁄$zw(∫{v◊ﬁì¢÷•¢Îi∫ŸbùÎ5Loans.filter(x => x.loan.borrower.toLowerCase() === address.toLowerCase())
+  return (
+    <div className="card p-4 fade-up hover:border-white/10 transition-colors">
+      <div className="flex items-start gap-3">
+        {/* Role icon */}
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: isBorrower ? 'var(--amber-dim)' : 'var(--cyan-dim)' }}
+        >
+          {isBorrower
+            ? <ArrowDownLeft size={16} style={{ color: 'var(--amber)' }} />
+            : <ArrowUpRight size={16} style={{ color: 'var(--cyan)' }} />
+          }
+        </div>
+
+        {/* Main info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk' }}>
+              Loan #{id.toString()}
+            </span>
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${stateClass}`}>
+              {stateLabel}
+            </span>
+            <span
+              className="text-xs px-1.5 py-0.5 rounded-md font-medium"
+              style={{
+                background: isBorrower ? 'var(--amber-dim)' : 'var(--cyan-dim)',
+                color: isBorrower ? 'var(--amber)' : 'var(--cyan)',
+              }}
+            >
+              {isBorrower ? 'Borrower' : 'Lender'}
+            </span>
+          </div>
+
+          <div className="mt-2 flex items-center gap-4 flex-wrap">
+            <div
+              className="text-xl font-bold tabular-nums"
+              style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.02em' }}
+            >
+              {formatUsdc(loan.amount)}{' '}
+              <span className="text-sm font-semibold" style={{ color: 'var(--accent-light)' }}>USDC</span>
+            </div>
+          </div>
+
+          <div className="mt-2 text-xs space-y-1">
+            <div className="flex items-center gap-1.5" style={{ color: 'var(--muted)' }}>
+              {isBorrower ? 'Lender' : 'Borrower'}:{' '}
+              <a
+                href={buildAddressExplorerUrl(arcTestnet.id, counterparty)}
+                target="_blank" rel="noopener noreferrer"
+                className="mono hover:underline"
+                style={{ color: 'var(--ink-2)' }}
+              >
+                {shortAddr(counterparty)}
+              </a>
+            </div>
+            <div className="flex items-center gap-3 flex-wrap" style={{ color: 'var(--muted)' }}>
+              <span>Created {formatTs(loan.createdAt)}</span>
+              {loan.state >= (LoanState.Funded as number) && loan.dueDate > 0n && (
+                <span style={{ color: overdue ? 'var(--red)' : 'inherit' }}>
+                  {overdue ? <AlertTriangle size={11} className="inline mr-0.5" /> : null}
+                  Due {formatTs(loan.dueDate)}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Timeline */}
+          <div className="mt-3">
+            <LoanTimeline state={loan.state} />
+          </div>
+        </div>
+
+        {/* Action button */}
+        {canAct && (
+          <button
+            onClick={() => onManage(id)}
+            className="shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all btn-primary"
+          >
+            Manage
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
+  const { address, isConnected } = useAccount()
+  const [scanLimit, setScanLimit] = useState(30)
+  const [activeTab, setActiveTab] = useState<Tab>('all')
+  const [manageLoanId, setManageLoanId] = useState<bigint | null>(null)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  const { data: loanCount, refetch: refetchCount } = useReadContract({
+    address: LOANBOOK_ADDRESS,
+    abi: LOANBOOK_ABI,
+    functionName: 'loanCount',
+    chainId: arcTestnet.id,
+    query: { refetchInterval: 12000 },
+  })
+
+  const recentIds: bigint[] = loanCount
+    ? Array.from({ length: Math.min(Number(loanCount), scanLimit) }, (_, i) => loanCount - BigInt(i))
+    : []
+
+  const { data: loansRaw, refetch: refetchLoans } = useReadContracts({
+    contracts: recentIds.map(id => ({
+      address: LOANBOOK_ADDRESS,
+      abi: LOANBOOK_ABI,
+      functionName: 'getLoan' as const,
+      args: [id] as [bigint],
+      chainId: arcTestnet.id,
+    })),
+    query: { enabled: recentIds.length > 0 && isConnected && !!address },
+  })
+
+  const { data: overdueRaw } = useReadContracts({
+    contracts: recentIds.map(id => ({
+      address: LOANBOOK_ADDRESS,
+      abi: LOANBOOK_ABI,
+      functionName: 'isOverdue' as const,
+      args: [id] as [bigint],
+      chainId: arcTestnet.id,
+    })),
+    query: { enabled: recentIds.length > 0 && isConnected && !!address },
+  })
+
+  function handleRefresh() {
+    setRefreshKey(k => k + 1)
+    refetchCount().catch(() => {})
+    refetchLoans().catch(() => {})
+  }
+
+  const allMyLoans: LoanEntry[] = (loansRaw ?? [])
+    .map((r, i) => {
+      if (r.status !== 'success' || !r.result) return null
+      const loan = parseLoan(r.result)
+      const id = recentIds[i]
+      if (!address) return null
+      const isMine =
+        loan.borrower.toLowerCase() === address.toLowerCase() ||
+        loan.lender.toLowerCase() === address.toLowerCase()
+      if (!isMine) return null
+      const overdue = overdueRaw?.[i]?.status === 'success'
+        ? Boolean(overdueRaw[i].result)
+        : false
+      return { id, loan, overdue }
+    })
+    .filter((x): x is LoanEntry => x !== null)
+
+  function filtered(tab: Tab): LoanEntry[] {
+    if (!address) return []
+    switch (tab) {
+      case 'borrowed': return allMyLoans.filter(x => x.loan.borrower.toLowerCase() === address.toLowerCase())
       case 'lent':     return allMyLoans.filter(x => x.loan.lender.toLowerCase() === address.toLowerCase())
       case 'pending':  return allMyLoans.filter(x => x.loan.state === (LoanState.Open as number))
       case 'repaid':   return allMyLoans.filter(x => x.loan.state === (LoanState.Repaid as number))
@@ -114,4 +312,101 @@ BÇàù[ò›[€àö[\ôY
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medi◊ﬁ≠¢Gß≤⁄Óù∆≠y’ù°–§úÄËÄùŸÖ»†¥µµ’—ïê§ú∞(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅıÙ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÌ–πçΩ’π—Ù(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄΩÕ¡Ö∏¯(ÄÄÄÄÄÄÄÄÄÄÄÄ•Ù(ÄÄÄÄÄÄÄÄÄÄΩâ’——Ω∏¯(ÄÄÄÄÄÄÄÄ§•Ù(ÄÄÄÄÄÄΩë•ÿ¯((ÄÄÄÄÄÅÏº®Å1ΩÖ∏Å±•Õ–Ä®ΩÙ(ÄÄÄÄÄÅÌë•Õ¡±ÖÂ1•Õ–π±ïπù—†ÄÙÙÙÄ¿Ä¸Ä†(ÄÄÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâçÖ…êÅ¿¥ƒ¿Å—ï·–µçïπ—ï»ÅÕ¡Öçîµ‰¥Ãà¯(ÄÄÄÄÄÄÄÄÄÄÒ	ΩΩ≠=¡ï∏ÅÕ•ÈîıÏ»·ÙÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µµ’—ïê§úÅıÙÅç±ÖÕÕ9ÖµîÙâµ‡µÖ’—ºàÄº¯(ÄÄÄÄÄÄÄÄÄÄÒ¿Åç±ÖÕÕ9ÖµîÙâ—ï·–µÕ¥àÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µµ’—ïê§úÅıÙ¯(ÄÄÄÄÄÄÄÄÄÄÄÅÌÖç—•ŸïQÖàÄÙÙÙÄùÖ±∞ú(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¸Äù9ºÅ±ΩÖπÃÅôΩ’πêÅ•∏ÅÂΩ’»Å…ïçïπ–ÅΩπç°Ö•∏Å°•Õ—Ω…‰∏ú(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄËÅÅ9ºÄëÌÖç—•ŸïQÖâÙÅ±ΩÖπÃÅôΩ’πêπÅÙ(ÄÄÄÄÄÄÄÄÄÄΩ¿¯(ÄÄÄÄÄÄÄÄÄÅÌÖç—•ŸïQÖàÄÙÙÙÄùÖ±∞úÄòòÄ†(ÄÄÄÄÄÄÄÄÄÄÄÄÒ¿Åç±ÖÕÕ9ÖµîÙâ—ï·–µ·ÃÅ—ï·–µ¡…ï——‰ÅµÖ‡µ‹µ·ÃÅµ‡µÖ’—ºàÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µÕ’â—±î§úÅıÙ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅUÕîÅΩµµ’π•—•ïÃÅ—ºÅ¡ΩÕ–ÅÑÅ…ï≈’ïÕ–ÅΩ»Å’ÕîÅ•…ïç–Å1ΩÖ∏Å—ºÅç…ïÖ—îÅΩπîÅ›•—†ÅÑÅ≠πΩ›∏Å±ïπëï»ÅÖëë…ïÕÃ∏(ÄÄÄÄÄÄÄÄÄÄÄÄΩ¿¯(ÄÄÄÄÄÄÄÄÄÄ•Ù(ÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄ§ÄËÄ†(ÄÄÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâÕ¡Öçîµ‰¥Ãà¯(ÄÄÄÄÄÄÄÄÄÅÌë•Õ¡±ÖÂ1•Õ–πµÖ¿°ïπ—…‰ÄÙ¯Ä†(ÄÄÄÄÄÄÄÄÄÄÄÄÒ1ΩÖππ—…ÂÖ…ê(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅ≠ï‰ıÌïπ—…‰π•êπ—ΩM—…•πú†•Ù(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅïπ—…‰ıÌïπ—…ÂÙ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅÖëë…ïÕÃıÌÖëë…ïÕÃÖÙ(ÄÄÄÄÄÄÄÄÄÄÄÄÄÅΩπ5ÖπÖùîıÌ•êÄÙ¯ÅÕï—5ÖπÖùï1ΩÖπ%ê°•ê•Ù(ÄÄÄÄÄÄÄÄÄÄÄÄº¯(ÄÄÄÄÄÄÄÄÄÄ§•Ù(ÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄ•Ù((ÄÄÄÄÄÅÏº®Å5ÖπÖùîÅ±ΩÖ∏ÅµΩëÖ∞Å¡Öπï∞Ä®ΩÙ(ÄÄÄÄÄÅÌµÖπÖùï1ΩÖπ%êÄÑÙÙÅπ’±∞ÄòòÄ†(ÄÄÄÄÄÄÄÄÒë•ÿ(ÄÄÄÄÄÄÄÄÄÅç±ÖÕÕ9ÖµîÙâô•·ïêÅ•πÕï–¥¿ÅË¥‘¿Åô±ï‡Å•—ïµÃµïπêÅµêÈ•—ïµÃµçïπ—ï»Å©’Õ—•ô‰µçïπ—ï»Å¿¥–à(ÄÄÄÄÄÄÄÄÄÅÕ—Â±îıÌÏÅâÖç≠ù…Ω’πêËÄù…ùâÑ†‡∞ƒÃ∞»‹∞¿∏‡‘§ú∞ÅâÖç≠ë…Ω¡•±—ï»ËÄùâ±’»†·¡‡§úÅıÙ(ÄÄÄÄÄÄÄÄÄÅΩπ±•ç¨ıÌîÄÙ¯ÅÏÅ•òÄ°îπ—Ö…ùï–ÄÙÙÙÅîπç’……ïπ—QÖ…ùï–§ÅÕï—5ÖπÖùï1ΩÖπ%ê°π’±∞§ÅıÙ(ÄÄÄÄÄÄÄÄ¯(ÄÄÄÄÄÄÄÄÄÄÒë•ÿ(ÄÄÄÄÄÄÄÄÄÄÄÅç±ÖÕÕ9ÖµîÙâçÖ…êÅ‹µô’±∞ÅµÖ‡µ‹µ±úÅµÖ‡µ†µl‡’ëŸ°tÅΩŸï…ô±Ω‹µ‰µÖ’—ºà(ÄÄÄÄÄÄÄÄÄÄÄÅÕ—Â±îıÌÏÅâÖç≠ù…Ω’πêËÄùŸÖ»†¥µâúµçÖ…ê§úÅıÙ(ÄÄÄÄÄÄÄÄÄÄ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâô±ï‡Å•—ïµÃµçïπ—ï»Å©’Õ—•ô‰µâï—›ïï∏Å¿¥–ÅâΩ…ëï»µààÅÕ—Â±îıÌÏÅâΩ…ëï…Ω±Ω»ËÄùŸÖ»†¥µâΩ…ëï»§úÅıÙ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÒ†ÃÅç±ÖÕÕ9ÖµîÙâôΩπ–µÕïµ•âΩ±êÅ—ï·–µÕ¥àÅÕ—Â±îıÌÏÅôΩπ—Öµ•±‰ËÄùM¡ÖçîÅ…Ω—ïÕ¨úÅıÙ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅ5ÖπÖùîÅ1ΩÖ∏ÄçÌµÖπÖùï1ΩÖπ%êπ—ΩM—…•πú†•Ù(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄΩ†Ã¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÒâ’——Ω∏(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅΩπ±•ç¨ıÏ†§ÄÙ¯ÅÕï—5ÖπÖùï1ΩÖπ%ê°π’±∞•Ù(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅç±ÖÕÕ9ÖµîÙâ¿¥ƒ∏‘Å…Ω’πëïêµ±úÅâ—∏µù°ΩÕ–Å—ï·–µ·Ãà(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅ±ΩÕî(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄΩâ’——Ω∏¯(ÄÄÄÄÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâ¿¥–à¯(ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÒ1ΩΩ≠’¡AÖπï∞ÅëïôÖ’±—1ΩÖπ%êıÌµÖπÖùï1ΩÖπ%ëÙÄº¯(ÄÄÄÄÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄ•Ù((ÄÄÄÄÄÅÏº®ÅëŸÖπçïêÄºÅ•…ïç–ÅÕïç—•Ω∏Ä®ΩÙ(ÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâçÖ…êÅ¿¥–à¯(ÄÄÄÄÄÄÄÄÒë•ÿÅç±ÖÕÕ9ÖµîÙâô±ï‡Å•—ïµÃµçïπ—ï»ÅùÖ¿¥»Åµà¥Ãà¯(ÄÄÄÄÄÄÄÄÄÄÒMïÖ…ç†ÅÕ•ÈîıÏƒ—ÙÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µµ’—ïê§úÅıÙÄº¯(ÄÄÄÄÄÄÄÄÄÄÒ†ÃÅç±ÖÕÕ9ÖµîÙâ—ï·–µÕ¥ÅôΩπ–µÕïµ•âΩ±êàÅÕ—Â±îıÌÏÅôΩπ—Öµ•±‰ËÄùM¡ÖçîÅ…Ω—ïÕ¨úÅıÙ¯(ÄÄÄÄÄÄÄÄÄÄÄÅ1ΩΩ¨Å’¿ÅÖπ‰Å±ΩÖ∏Åâ‰Å%(ÄÄÄÄÄÄÄÄÄÄΩ†Ã¯(ÄÄÄÄÄÄÄÄΩë•ÿ¯(ÄÄÄÄÄÄÄÄÒ1ΩΩ≠’¡AÖπï∞Äº¯(ÄÄÄÄÄÄΩë•ÿ¯((ÄÄÄÄÄÅÏº®Å•Õç±Ö•µï»Ä®ΩÙ(ÄÄÄÄÄÄÒ¿Åç±ÖÕÕ9ÖµîÙâ—ï·–µ·ÃÅ—ï·–µçïπ—ï»àÅÕ—Â±îıÌÏÅçΩ±Ω»ËÄùŸÖ»†¥µÕ’â—±î§úÅıÙ¯(ÄÄÄÄÄÄÄÅ1ΩÖ∏Å…ïçΩ…ëÃÅÖ…îÅ¡’â±•åÅΩπç°Ö•∏∏ÅIï¡ÖÂµïπ–Å•ÃÅπΩ–Åù’Ö…Öπ—ïïê∏Å=π±‰Å±ïπêÅ—ºÅ¡ïΩ¡±îÅÂΩ‘Å—…’Õ–∏(ÄÄÄÄÄÄΩ¿¯(ÄÄÄÄΩë•ÿ¯(ÄÄ§)Ù
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap"
+            style={{
+              background: activeTab === t.id ? 'rgba(59,130,246,0.15)' : 'transparent',
+              color: activeTab === t.id ? 'var(--accent-light)' : 'var(--muted)',
+            }}
+          >
+            {t.label}
+            {(t.count ?? 0) > 0 && (
+              <span
+                className="text-xs px-1.5 py-0.5 rounded-full"
+                style={{
+                  background: activeTab === t.id ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.07)',
+                  color: activeTab === t.id ? 'var(--accent-light)' : 'var(--muted)',
+                }}
+              >
+                {t.count}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Loan list */}
+      {displayList.length === 0 ? (
+        <div className="card p-10 text-center space-y-3">
+          <BookOpen size={28} style={{ color: 'var(--muted)' }} className="mx-auto" />
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>
+            {activeTab === 'all'
+              ? 'No loans found in your recent onchain history.'
+              : `No ${activeTab} loans found.`}
+          </p>
+          {activeTab === 'all' && (
+            <p className="text-xs text-pretty max-w-xs mx-auto" style={{ color: 'var(--subtle)' }}>
+              Use Communities to post a request or use Direct Loan to create one with a known lender address.
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {displayList.map(entry => (
+            <LoanEntryCard
+              key={entry.id.toString()}
+              entry={entry}
+              address={address!}
+              onManage={id => setManageLoanId(id)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Manage loan modal panel */}
+      {manageLoanId !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4"
+          style={{ background: 'rgba(8,13,27,0.85)', backdropFilter: 'blur(8px)' }}
+          onClick={e => { if (e.target === e.currentTarget) setManageLoanId(null) }}
+        >
+          <div
+            className="card w-full max-w-lg max-h-[85dvh] overflow-y-auto"
+            style={{ background: 'var(--bg-card)' }}
+          >
+            <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border)' }}>
+              <h3 className="font-semibold text-sm" style={{ fontFamily: 'Space Grotesk' }}>
+                Manage Loan #{manageLoanId.toString()}
+              </h3>
+              <button
+                onClick={() => setManageLoanId(null)}
+                className="p-1.5 rounded-lg btn-ghost text-xs"
+              >
+                Close
+              </button>
+            </div>
+            <div className="p-4">
+              <LookupPanel defaultLoanId={manageLoanId} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Advanced / Direct section */}
+      <div className="card p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Search size={14} style={{ color: 'var(--muted)' }} />
+          <h3 className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk' }}>
+            Look up any loan by ID
+          </h3>
+        </div>
+        <LookupPanel />
+      </div>
+
+      {/* Disclaimer */}
+      <p className="text-xs text-center" style={{ color: 'var(--subtle)' }}>
+        Loan records are public onchain. Repayment is not guaranteed. Only lend to people you trust.
+      </p>
+    </div>
+  )
+}
+
