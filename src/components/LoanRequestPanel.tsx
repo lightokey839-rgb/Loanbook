@@ -11,7 +11,7 @@
  */
 import { useState, useCallback } from 'react'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import { Users, HandHeart, CheckCircle2, ChevronRight, RefreshCw, AlertTriangle } from 'lucide-react'
 import {
   createRequest,
@@ -27,6 +27,7 @@ import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseUsdc, formatUsdc, shortAddr } from
 import { parseOnchainError } from '../onchain-error'
 import { TxButton, type TxState } from './TxButton'
 import { TxReceipt } from './TxReceipt'
+import { TransactionSummary } from './TransactionSummary'
 
 type Stage = 'draft' | 'interest' | 'select' | 'confirm'
 
@@ -528,7 +529,7 @@ function ConfirmStage({
       abi: LOANBOOK_ABI,
       functionName: 'createLoan',
       args: [lender as `0x${string}`, rawAmount, durationSecs],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
     })
   }
 
@@ -572,6 +573,8 @@ function ConfirmStage({
         </div>
       </div>
 
+      <TransactionSummary action="Create community loan onchain" amount={formatUsdc(rawAmount)} counterparty={lender} />
+
       {/* Gas fee notice */}
       <div
         className="flex gap-2 rounded-xl p-3 text-xs"
@@ -579,7 +582,7 @@ function ConfirmStage({
       >
         <AlertTriangle size={14} className="shrink-0 mt-0.5" />
         <span>
-          This transaction will cost a small USDC gas fee on Arc Testnet.
+          This transaction will cost a small USDC gas fee on Arc Mainnet.
           Gas is paid from your wallet's USDC balance — no separate ETH needed.
         </span>
       </div>
@@ -616,7 +619,7 @@ function ConfirmStage({
         </div>
       </div>
 
-      {hash && <TxReceipt hash={hash} label="Create tx" chainId={arcTestnet.id} />}
+      {hash && <TxReceipt hash={hash} label="Create tx" chainId={activeChain.id} />}
 
       {isSuccess && createdLoanId !== null && (
         <div
@@ -760,4 +763,3 @@ export function LoanRequestPanel({ onCreated }: Props) {
     </div>
   )
 }
-

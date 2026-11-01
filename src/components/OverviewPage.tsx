@@ -4,7 +4,7 @@
  */
 import { useAccount, useReadContract, useReadContracts } from 'wagmi'
 import { erc20Abi } from 'viem'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import {
   ArrowUpRight, ArrowDownLeft, Banknote, Clock, Users,
   BookOpen, TrendingUp, AlertTriangle, CheckCircle2,
@@ -16,7 +16,7 @@ import { LoanState } from '../loanbook-contract'
 import { getUsdc, buildAddressExplorerUrl } from '../onchain-facts'
 import type { Page } from './AppShell'
 
-const USDC = getUsdc(arcTestnet.id)!
+const USDC = getUsdc(activeChain.id)!
 
 interface Props {
   onNavigate: (p: Page) => void
@@ -115,7 +115,7 @@ export function OverviewPage({ onNavigate, onRequestLoan }: Props) {
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? '0x0000000000000000000000000000000000000000'],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: isConnected && !!address, refetchInterval: 8000 },
   })
 
@@ -124,7 +124,7 @@ export function OverviewPage({ onNavigate, onRequestLoan }: Props) {
     address: LOANBOOK_ADDRESS,
     abi: LOANBOOK_ABI,
     functionName: 'loanCount',
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { refetchInterval: 12000 },
   })
 
@@ -140,7 +140,7 @@ export function OverviewPage({ onNavigate, onRequestLoan }: Props) {
       abi: LOANBOOK_ABI,
       functionName: 'getLoan' as const,
       args: [id] as [bigint],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
     })),
     query: { enabled: recentIds.length > 0 && isConnected && !!address },
   })
@@ -395,16 +395,15 @@ function LandingView({ onRequestLoan }: { onRequestLoan: () => void }) {
         <p>
           Contract:{' '}
           <a
-            href={buildAddressExplorerUrl(arcTestnet.id, LOANBOOK_ADDRESS)}
+            href={buildAddressExplorerUrl(activeChain.id, LOANBOOK_ADDRESS)}
             target="_blank" rel="noopener noreferrer"
             className="mono hover:text-white transition-colors"
           >
             {shortAddr(LOANBOOK_ADDRESS)} <ExternalLink size={9} className="inline" />
           </a>
-          {' · '}Chain ID: <span className="mono">{arcTestnet.id}</span>
+          {' · '}Chain ID: <span className="mono">{activeChain.id}</span>
         </p>
       </div>
     </div>
   )
 }
-

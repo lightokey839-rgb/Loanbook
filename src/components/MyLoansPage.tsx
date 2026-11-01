@@ -4,7 +4,7 @@
  */
 import { useState } from 'react'
 import { useAccount, useReadContract, useReadContracts } from 'wagmi'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import {
   BookOpen, ArrowDownLeft, ArrowUpRight,
   XCircle, AlertTriangle, Search,
@@ -144,7 +144,7 @@ function LoanEntryCard({ entry, address, onManage }: {
             <div className="flex items-center gap-1.5" style={{ color: 'var(--muted)' }}>
               {isBorrower ? 'Lender' : 'Borrower'}:{' '}
               <a
-                href={buildAddressExplorerUrl(arcTestnet.id, counterparty)}
+                href={buildAddressExplorerUrl(activeChain.id, counterparty)}
                 target="_blank" rel="noopener noreferrer"
                 className="mono hover:underline"
                 style={{ color: 'var(--ink-2)' }}
@@ -194,7 +194,7 @@ export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
     address: LOANBOOK_ADDRESS,
     abi: LOANBOOK_ABI,
     functionName: 'loanCount',
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { refetchInterval: 12000 },
   })
 
@@ -208,7 +208,7 @@ export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
       abi: LOANBOOK_ABI,
       functionName: 'getLoan' as const,
       args: [id] as [bigint],
-      chainId: arcTestnet.id,
+    chainId: activeChain.id,
     })),
     query: { enabled: recentIds.length > 0 && isConnected && !!address },
   })
@@ -219,7 +219,7 @@ export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
       abi: LOANBOOK_ABI,
       functionName: 'isOverdue' as const,
       args: [id] as [bigint],
-      chainId: arcTestnet.id,
+    chainId: activeChain.id,
     })),
     query: { enabled: recentIds.length > 0 && isConnected && !!address },
   })
@@ -409,4 +409,3 @@ export function MyLoansPage({ onNavigate: _onNavigate }: Props) {
     </div>
   )
 }
-

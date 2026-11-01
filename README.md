@@ -4,9 +4,17 @@ Private lending circles with persistent chat and zero-interest, unsecured USDC l
 
 Originally built in [Arc Studio](https://studio.arc.io/app/02e165d9-bda4-4b41-ab19-757f5511337e). Existing repository: https://github.com/lightokey839-rgb/Loanbook. Builder: https://x.com/LIGHTDESIGN2022.
 
-## Current release status — 29 October 2026
+## Current release status — 1 November 2026
 
-This is a locally implemented, tested release candidate with its additive Supabase upgrade and receipt verifier now deployed to the existing Loanbook project. A review branch named `codex/loanbook-release-candidate` was created from the current GitHub `main` head; source changes have not yet been pushed into it. No public frontend has been deployed. Mainnet contract and demonstration transactions remain outstanding. GitHub reported the existing repository as private during inspection.
+The review branch is configured for the deployed Arc Mainnet contract. The public frontend deployment remains subject to the GitHub Pages workflow and Supabase public build secrets. The contract is immutable and has not been independently audited.
+
+## Mainnet deployment
+
+- **Network:** Arc Mainnet (Chain ID: 5042)
+- **LoanBook:** `0x08435c5d74a00591c4eaa25ad433eeccb5c0980e`
+- **Deployment transaction:** `0x4fd3f4efd814d48fca5d33508ec2b51163dd174aaeb670e62f50d8c1cadb15e1`
+- **Explorer:** https://explorer.arc.io/address/0x08435c5d74a00591c4eaa25ad433eeccb5c0980e
+- **USDC:** `0x3600000000000000000000000000000000000000` (6 decimals)
 
 ## Local use
 
@@ -20,4 +28,8 @@ Connect wallet → sign the SIWE login message → create/join a circle → chat
 
 RLS protects private conversations. Onchain terms, amounts and wallet addresses are public. Loans are unsecured; repayment cannot be forced. Use only trusted counterparties.
 
-Read DEPLOYMENT.md, TEST_RESULTS.md, SECURITY_REVIEW.md and NEXT_STEPS.md before release. Older documents under docs/ and Studio deployment scripts are retained for provenance, not current production instructions.
+Read DEPLOYMENT.md, TEST_RESULTS.md and SECURITY_REVIEW.md before release. Loans are unsecured, there is no onchain enforcement of repayment, and the contract has not received an independent third-party audit.
+
+## How this was built
+
+LoanBook was generated and iterated in Arc Studio, then reviewed in the existing GitHub repository. **TODO:** confirm the exact Arc Studio prompts and generated-versus-manual changes. **TODO:** add the final hosting workflow URL and release commit after GitHub Actions succeeds. **TODO:** record the exact test wallets and transaction links used for any public demonstration.

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi'
 import { erc20Abi } from 'viem'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import { LOANBOOK_ADDRESS, LOANBOOK_ABI, LoanData, formatUsdc } from '../loanbook-contract'
 import { getUsdc } from '../onchain-facts'
 import { parseOnchainError } from '../onchain-error'
 import { TxButton, type TxState } from './TxButton'
 import { TxReceipt } from './TxReceipt'
+import { TransactionSummary } from './TransactionSummary'
 
 interface Props {
   loanId: bigint
@@ -14,7 +15,7 @@ interface Props {
   onFunded: () => void
 }
 
-const USDC = getUsdc(arcTestnet.id)!
+const USDC = getUsdc(activeChain.id)!
 
 export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
   const { address } = useAccount()
@@ -27,7 +28,7 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? '0x0000000000000000000000000000000000000000'],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: !!address, refetchInterval: 6000 },
   })
 
@@ -37,7 +38,7 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address ?? '0x0000000000000000000000000000000000000000', LOANBOOK_ADDRESS],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: !!address, refetchInterval: 6000 },
   })
 
@@ -117,7 +118,7 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
       abi: erc20Abi,
       functionName: 'approve',
       args: [LOANBOOK_ADDRESS, loan.amount],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
       account: address,
     })
   }
@@ -130,7 +131,7 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
       abi: LOANBOOK_ABI,
       functionName: 'fundLoan',
       args: [loanId],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
       account: address,
     })
   }
@@ -184,6 +185,8 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
           </span>
         </div>
       </div>
+
+      <TransactionSummary action="Approve and fund loan" amount={formatUsdc(loan.amount)} counterparty={loan.borrower} />
 
       {/* Insufficient balance warning */}
       {lenderBalance !== undefined && !balanceOk && (
@@ -255,7 +258,7 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
           </div>
         )}
 
-        {approveHash && <TxReceipt hash={approveHash} label="Approve tx" chainId={arcTestnet.id} />}
+        {approveHash && <TxReceipt hash={approveHash} label="Approve tx" chainId={activeChain.id} />}
       </div>
 
       {/* Step 2: Fund */}
@@ -300,9 +303,8 @@ export function ApproveAndFundPanel({ loanId, loan, onFunded }: Props) {
           Fund Loan
         </TxButton>
 
-        {fundHash && <TxReceipt hash={fundHash} label="Fund tx" chainId={arcTestnet.id} />}
+        {fundHash && <TxReceipt hash={fundHash} label="Fund tx" chainId={activeChain.id} />}
       </div>
     </div>
   )
 }
-

@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import { Search } from 'lucide-react'
-import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseLoan } from '../loanbook-contract'
+import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseLoan, formatUsdc } from '../loanbook-contract'
 import { LoanCard } from './LoanCard'
 import { ApproveAndFundPanel } from './ApproveAndFundPanel'
 import { ApproveAndRepayPanel } from './ApproveAndRepayPanel'
 import { TxButton, type TxState } from './TxButton'
 import { TxReceipt } from './TxReceipt'
 import { parseOnchainError } from '../onchain-error'
+import { TransactionSummary } from './TransactionSummary'
 
 interface Props { defaultLoanId?: bigint }
 
@@ -23,7 +24,7 @@ export function LookupPanel({ defaultLoanId }: Props) {
     abi: LOANBOOK_ABI,
     functionName: 'getLoan',
     args: [activeLoanId ?? 1n],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: activeLoanId !== null, refetchInterval: 5000 },
   })
 
@@ -32,7 +33,7 @@ export function LookupPanel({ defaultLoanId }: Props) {
     abi: LOANBOOK_ABI,
     functionName: 'isOverdue',
     args: [activeLoanId ?? 1n],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: activeLoanId !== null, refetchInterval: 5000 },
   })
 
@@ -63,7 +64,7 @@ export function LookupPanel({ defaultLoanId }: Props) {
       abi: LOANBOOK_ABI,
       functionName: 'cancelLoan',
       args: [activeLoanId],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
     })
   }
 
@@ -143,10 +144,11 @@ export function LookupPanel({ defaultLoanId }: Props) {
                   {parseOnchainError(cancelErr)}
                 </p>
               )}
+              {loan && <TransactionSummary action="Cancel loan" amount={formatUsdc(loan.amount)} counterparty={loan.lender} />}
               <TxButton state={cancelState} onClick={handleCancel} variant="danger" className="w-full">
                 Cancel Loan
               </TxButton>
-              {cancelHash && <TxReceipt hash={cancelHash} label="Cancel tx" chainId={arcTestnet.id} />}
+              {cancelHash && <TxReceipt hash={cancelHash} label="Cancel tx" chainId={activeChain.id} />}
             </div>
           )}
         </>

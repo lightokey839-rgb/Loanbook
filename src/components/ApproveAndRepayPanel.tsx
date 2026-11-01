@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi'
 import { erc20Abi } from 'viem'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import { LOANBOOK_ADDRESS, LOANBOOK_ABI, LoanData, formatUsdc } from '../loanbook-contract'
 import { getUsdc } from '../onchain-facts'
 import { parseOnchainError } from '../onchain-error'
 import { TxButton, type TxState } from './TxButton'
 import { TxReceipt } from './TxReceipt'
+import { TransactionSummary } from './TransactionSummary'
 
 interface Props {
   loanId: bigint
@@ -15,7 +16,7 @@ interface Props {
   onRepaid: () => void
 }
 
-const USDC = getUsdc(arcTestnet.id)!
+const USDC = getUsdc(activeChain.id)!
 
 export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Props) {
   const { address } = useAccount()
@@ -26,7 +27,7 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? '0x0000000000000000000000000000000000000000'],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: !!address, refetchInterval: 6000 },
   })
 
@@ -36,7 +37,7 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address ?? '0x0000000000000000000000000000000000000000', LOANBOOK_ADDRESS],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: !!address, refetchInterval: 6000 },
   })
 
@@ -115,7 +116,7 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
       abi: erc20Abi,
       functionName: 'approve',
       args: [LOANBOOK_ADDRESS, loan.amount],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
       account: address,
     })
   }
@@ -127,7 +128,7 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
       abi: LOANBOOK_ABI,
       functionName: 'repayLoan',
       args: [loanId],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
       account: address,
     })
   }
@@ -177,6 +178,8 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
           </span>
         </div>
       </div>
+
+      <TransactionSummary action="Approve and repay loan" amount={formatUsdc(loan.amount)} counterparty={loan.lender} />
 
       {/* Insufficient balance warning */}
       {borrowerBalance !== undefined && !hasEnoughBalance && (
@@ -242,7 +245,7 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
           </div>
         )}
 
-        {approveHash && <TxReceipt hash={approveHash} label="Approve tx" chainId={arcTestnet.id} />}
+        {approveHash && <TxReceipt hash={approveHash} label="Approve tx" chainId={activeChain.id} />}
       </div>
 
       {/* Step 2: Repay */}
@@ -284,9 +287,8 @@ export function ApproveAndRepayPanel({ loanId, loan, isOverdue, onRepaid }: Prop
           Repay {formatUsdc(loan.amount)} USDC
         </TxButton>
 
-        {repayHash && <TxReceipt hash={repayHash} label="Repay tx" chainId={arcTestnet.id} />}
+        {repayHash && <TxReceipt hash={repayHash} label="Repay tx" chainId={activeChain.id} />}
       </div>
     </div>
   )
 }
-

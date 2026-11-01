@@ -1,5 +1,5 @@
 /**
- * LoanBook contract wiring — deployed on Arc Testnet.
+ * LoanBook contract wiring — configured for Arc Mainnet or Arc Testnet.
  * Address and ABI sourced directly from the Foundry artifact.
  */
 
@@ -270,4 +270,3 @@ export function formatTs(ts: bigint): string {
 export function shortAddr(addr: string): string {
   return addr ? `${addr.slice(0, 6)}…${addr.slice(-4)}` : ''
 }
-

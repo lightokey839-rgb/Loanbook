@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { useAccount, useReadContract, useBalance } from 'wagmi'
 import { ConnectKitButton } from 'connectkit'
 import { erc20Abi } from 'viem'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain, networkLabel } from '../network'
 import { getUsdc } from '../onchain-facts'
 import { shortAddr } from '../loanbook-contract'
 
-const USDC = getUsdc(arcTestnet.id)!
+const USDC = getUsdc(activeChain.id)!
 
 export function WalletBar() {
   const { address, isConnected, chainId } = useAccount()
@@ -20,7 +20,7 @@ export function WalletBar() {
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? '0x0000000000000000000000000000000000000000'],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: {
       enabled: isConnected && !!address,
       refetchInterval: 8000,
@@ -33,7 +33,7 @@ export function WalletBar() {
   // We only use this for diagnostic display; never for money logic.
   const { data: nativeBalance, refetch: refetchNative } = useBalance({
     address: address,
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: {
       enabled: isConnected && !!address,
       refetchInterval: 8000,
@@ -48,7 +48,8 @@ export function WalletBar() {
     refetchNative().catch(() => {})
   }, [address, refetchErc20, refetchNative])
 
-  const onCorrectChain = chainId === arcTestnet.id
+  const onCorrectChain = chainId === activeChain.id
+  const chainLabel = networkLabel(chainId)
 
   // ERC-20 USDC: 6 decimals — the balance the user spends on loans
   const formattedErc20 = erc20Balance !== undefined
@@ -72,7 +73,7 @@ export function WalletBar() {
           className="text-xs px-2 py-0.5 rounded-full font-medium"
           style={{ background: 'rgba(6,182,212,0.12)', color: 'var(--color-cyan)' }}
         >
-          Arc Testnet
+          {chainLabel}
         </span>
       </div>
 

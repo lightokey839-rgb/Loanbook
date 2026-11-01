@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import { isAddress } from 'viem'
 import { LOANBOOK_ADDRESS, LOANBOOK_ABI, parseUsdc, validateUsdcInput } from '../loanbook-contract'
 import { parseOnchainError } from '../onchain-error'
 import { TxButton, type TxState } from './TxButton'
 import { TxReceipt } from './TxReceipt'
+import { TransactionSummary } from './TransactionSummary'
 
 interface Props { onCreated: (loanId: bigint) => void }
 
@@ -68,7 +69,7 @@ export function CreateLoanPanel({ onCreated }: Props) {
       abi: LOANBOOK_ABI,
       functionName: 'createLoan',
       args: [lenderAddr, rawAmount, BigInt(durationSecs)],
-      chainId: arcTestnet.id,
+      chainId: activeChain.id,
     })
   }
 
@@ -178,11 +179,13 @@ export function CreateLoanPanel({ onCreated }: Props) {
         </p>
       )}
 
+      <TransactionSummary action="Create loan request" amount={amount} counterparty={lenderAddr || undefined} />
+
       <TxButton state={txState} onClick={handleCreate} className="w-full">
         Create Loan Request
       </TxButton>
 
-      {hash && <TxReceipt hash={hash} label="Create tx" chainId={arcTestnet.id} />}
+      {hash && <TxReceipt hash={hash} label="Create tx" chainId={activeChain.id} />}
 
       {isSuccess && createdLoanId !== null && (
         <div
@@ -195,4 +198,3 @@ export function CreateLoanPanel({ onCreated }: Props) {
     </div>
   )
 }
-

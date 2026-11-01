@@ -1,5 +1,5 @@
 import { useReadContract } from 'wagmi'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain } from '../network'
 import { LOANBOOK_ADDRESS, LOANBOOK_ABI, LoanData, formatUsdc, formatTs, shortAddr, parseLoan } from '../loanbook-contract'
 import { LoanStatusBadge } from './LoanStatusBadge'
 import { buildAddressExplorerUrl } from '../onchain-facts'
@@ -17,7 +17,7 @@ export function LoanCard({ loanId, highlightAddress }: Props) {
     abi: LOANBOOK_ABI,
     functionName: 'getLoan',
     args: [loanId],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
   })
 
   const { data: overdue } = useReadContract({
@@ -25,7 +25,7 @@ export function LoanCard({ loanId, highlightAddress }: Props) {
     abi: LOANBOOK_ABI,
     functionName: 'isOverdue',
     args: [loanId],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
   })
 
   if (isLoading) {
@@ -69,7 +69,12 @@ export function LoanCard({ loanId, highlightAddress }: Props) {
             </span>
           )}
         </div>
-        <LoanStatusBadge loan={loan} isOverdue={overdue ?? false} />
+        <div className="flex items-center gap-2">
+          <a href={buildAddressExplorerUrl(activeChain.id, LOANBOOK_ADDRESS)} target="_blank" rel="noopener noreferrer" className="text-xs hover:underline" style={{ color: 'var(--color-accent-light)' }}>
+            Contract
+          </a>
+          <LoanStatusBadge loan={loan} isOverdue={overdue ?? false} />
+        </div>
       </div>
 
       {/* Amount */}
@@ -82,7 +87,7 @@ export function LoanCard({ loanId, highlightAddress }: Props) {
         <div className="flex justify-between gap-4">
           <span style={{ color: 'var(--color-muted)' }}>Borrower</span>
           <a
-            href={buildAddressExplorerUrl(arcTestnet.id, loan.borrower)}
+            href={buildAddressExplorerUrl(activeChain.id, loan.borrower)}
             target="_blank"
             rel="noopener noreferrer"
             className="mono hover:underline"
@@ -94,7 +99,7 @@ export function LoanCard({ loanId, highlightAddress }: Props) {
         <div className="flex justify-between gap-4">
           <span style={{ color: 'var(--color-muted)' }}>Lender</span>
           <a
-            href={buildAddressExplorerUrl(arcTestnet.id, loan.lender)}
+            href={buildAddressExplorerUrl(activeChain.id, loan.lender)}
             target="_blank"
             rel="noopener noreferrer"
             className="mono hover:underline"

@@ -12,12 +12,12 @@ import {
 } from 'lucide-react'
 import { useReadContract, useBalance, useReadContract as useReadContractAlias } from 'wagmi'
 import { erc20Abi } from 'viem'
-import { activeChain as arcTestnet } from '../network'
+import { activeChain, networkLabel } from '../network'
 import { getUsdc, buildAddressExplorerUrl } from '../onchain-facts'
 import { shortAddr, LOANBOOK_ADDRESS, LOANBOOK_ABI } from '../loanbook-contract'
 import { useAuth } from '../lib/useAuth'
 
-const USDC = getUsdc(arcTestnet.id)!
+const USDC = getUsdc(activeChain.id)!
 
 export type Page = 'overview' | 'communities' | 'my-loans' | 'activity' | 'direct' | 'lookup' | 'settings'
 
@@ -76,7 +76,7 @@ function SidebarContent({
           <div className="font-bold text-sm leading-none" style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.01em' }}>
             LoanBook
           </div>
-          <div className="text-xs mt-0.5" style={{ color: 'var(--cyan)' }}>{arcTestnet.name}</div>
+          <div className="text-xs mt-0.5" style={{ color: 'var(--cyan)' }}>{activeChain.name}</div>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ function SidebarContent({
                 <div className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>Connected</div>
               </div>
               <a
-                href={buildAddressExplorerUrl(arcTestnet.id, address)}
+                href={buildAddressExplorerUrl(activeChain.id, address)}
                 target="_blank" rel="noopener noreferrer"
                 className="p-1 rounded-lg hover:bg-white/5"
                 style={{ color: 'var(--muted)' }}
@@ -165,7 +165,7 @@ function SidebarContent({
         )}
         <div className="flex items-center justify-between text-xs px-1" style={{ color: 'var(--subtle)' }}>
           <a
-            href={buildAddressExplorerUrl(arcTestnet.id, LOANBOOK_ADDRESS)}
+            href={buildAddressExplorerUrl(activeChain.id, LOANBOOK_ADDRESS)}
             target="_blank" rel="noopener noreferrer"
             className="mono hover:text-white transition-colors flex items-center gap-1"
           >
@@ -188,7 +188,8 @@ interface Props {
 }
 
 export function AppShell({ page, onNavigate, onRequestLoan, children, pageTitle }: Props) {
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, chainId } = useAccount()
+  const walletNetworkLabel = networkLabel(chainId)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // ERC-20 USDC balance (6 dec)
@@ -197,14 +198,14 @@ export function AppShell({ page, onNavigate, onRequestLoan, children, pageTitle 
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? '0x0000000000000000000000000000000000000000'],
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: isConnected && !!address, refetchInterval: 8000 },
   })
 
   // Native balance (18 dec) — same pool, diagnostic only
   const { data: nativeBalance } = useBalance({
     address,
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { enabled: isConnected && !!address, refetchInterval: 8000 },
   })
 
@@ -213,7 +214,7 @@ export function AppShell({ page, onNavigate, onRequestLoan, children, pageTitle 
     address: LOANBOOK_ADDRESS,
     abi: LOANBOOK_ABI,
     functionName: 'loanCount',
-    chainId: arcTestnet.id,
+    chainId: activeChain.id,
     query: { refetchInterval: 12000 },
   })
 
@@ -304,7 +305,7 @@ export function AppShell({ page, onNavigate, onRequestLoan, children, pageTitle 
             style={{ background: 'var(--cyan-dim)', color: 'var(--cyan)' }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-            Arc Testnet
+            {walletNetworkLabel}
           </div>
 
           {/* USDC balance */}
@@ -385,4 +386,3 @@ export function SignOutButton({ onSignOut }: { onSignOut: () => void }) {
     </button>
   )
 }
-
