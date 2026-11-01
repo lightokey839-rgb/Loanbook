@@ -21,8 +21,8 @@ jobs:
     env:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      VITE_NETWORK: testnet
-      VITE_TESTNET_LOANBOOK_ADDRESS: 0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228
+      VITE_NETWORK: mainnet
+      VITE_MAINNET_LOANBOOK_ADDRESS: "0x08435c5d74a00591c4eaa25ad433eeccb5c0980e"
       VITE_BASE_PATH: /Loanbook/
     steps:
       - name: Check out release candidate
@@ -30,12 +30,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22
+      - name: Validate public build configuration
+        shell: bash
+        run: |
+          test -n "$VITE_SUPABASE_URL" || { echo "::error::Missing VITE_SUPABASE_URL Actions secret"; exit 1; }
+          test -n "$VITE_SUPABASE_ANON_KEY" || { echo "::error::Missing VITE_SUPABASE_ANON_KEY Actions secret"; exit 1; }
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Build frontend
-        run: npm run build
+        run: npm run build -- --configLoader runner
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

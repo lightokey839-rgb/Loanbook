@@ -29,8 +29,9 @@ export function buildSignInMessage(address: string, chainId: number, origin: str
     throw new AuthError('Wallet sign-in requires HTTPS.')
   }
   const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('')
+  const pathname = url.pathname.endsWith('/') ? url.pathname : `${url.pathname}/`
   return createSiweMessage({
-    address: getAddress(address), chainId, domain: url.host, uri: url.origin + '/',
+    address: getAddress(address), chainId, domain: url.host, uri: url.origin + pathname,
     version: '1', nonce, issuedAt: now, expirationTime: new Date(now.getTime() + 5 * 60_000),
     statement: 'Sign in to LoanBook private lending circles. This does not authorize a transfer.',
   })
@@ -67,7 +68,9 @@ export async function authenticateWallet(client: SupabaseClient, connectedAddres
     if (error || !data.session || !data.user) {
       const serverMessage = error?.message ?? ''
       if (/URI which is not allowed|signed for another app/i.test(serverMessage)) {
-        throw new AuthError('Supabase has not allowlisted this app URL. Add http://localhost:5173/** under Authentication → URL Configuration → Redirect URLs, then retry.')
+        const appUrl = new URL(origin)
+        const signedUrl = `${appUrl.origin}${appUrl.pathname.endsWith('/') ? appUrl.pathname : `${appUrl.pathname}/`}`
+        throw new AuthError(`Supabase has not allowlisted this app URL. Add ${signedUrl} (or a matching wildcard) under Authentication → URL Configuration → Redirect URLs, then retry.`)
       }
       throw new AuthError(serverMessage || 'Sign-in verification failed.')
     }
@@ -87,7 +90,7 @@ export async function authenticateWallet(client: SupabaseClient, connectedAddres
 export async function signIn(address: string, wallet: WalletClient, stillCurrent?: () => boolean) {
   const client = getSupabaseClient()
   if (!client) throw new AuthError('Communities are not configured yet.')
-  return authenticateWallet(client, address, wallet, window.location.origin, stillCurrent)
+  return authenticateWallet(client, address, wallet, window.location.origin + window.location.pathname, stillCurrent)
 }
 export async function signOut(): Promise<void> {
   await getSupabaseClient()?.auth.signOut({ scope: 'local' })

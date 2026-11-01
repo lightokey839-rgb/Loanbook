@@ -1,1 +1,263 @@
-YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíÛ}»N‹Z–‹­¦ëeŠw¬Ô¼¨¨(€¨½¹Í½±”€˜ÉÉ½È…ÁÑÕÉ”%¹ÍÑÉÕµ•¹Ñ…Ñ¥½¸(€¨(€¨A…Ñ¡•Ì½¹Í½±”¹í±½œ±¥¹™¼±Ý…É¸±•ÉÉ½È±‘•‰Õô…¹±¥ÍÑ•¹Ì™½ÈÝ¥¹‘½Ü€•ÉÉ½Èœ(€¨…¹€Õ¹¡…¹‘±•‘É•©•Ñ¥½¸œ•Ù•¹ÑÌ°™½ÉÝ…É‘¥¹œ•… Ñ¼Ñ¡”Á…É•¹Ð™É…µ”Ù¥„(€¨Á½ÍÑ5•ÍÍ…”€¡ìÑåÁ”è€ÍÑÕ‘¥¼µ½¹Í½±”µ±½œœô¤¸Q¡”Á…É•¹ÐÁ•ÉÍ¥ÍÑÌÑ¡•Í”Ñ¼(€¨½¹Í½±”¹©Í½¹±€¥¹Í¥‘”Ñ¡”Í…¹‘‰½àÍ¼Ñ¡”ÉŒMÑÕ‘¥¼…•¹Ð…¸É•…ÉÕ¹Ñ¥µ”(€¨½ÕÑÁÕÐÝ¡•¸‘¥…¹½Í¥¹œ„‰É½­•¸ÁÉ•Ù¥•Ü¸(€¨(€¨M•±˜µÑ¡É½ÑÑ±¥¹œè½¹Í•ÕÑ¥Ù”‘ÕÁ±¥…Ñ”±¥¹•Ì…É”½±±…ÁÍ•…¹„Á•ÈµÍ•½¹(€¨É…Ñ”±¥µ¥Ð…ÁÌÑ¡”Á½ÍÑ5•ÍÍ…”Ù½±Õµ”Í¼„É•¹‘•Èµ±½½À±½œÍÑ½É´…¹¹½Ð(€¨™±½½Ñ¡”Á…É•¹Ð¸(€¨(€¨%µÁ½ÉÑ•…Ì„Í¥‘”µ•™™•Ð‰•™½É”…¹ä…ÁÀ½‘”ÉÕ¹Ì¸Q¡”½É¥¥¹…°½¹Í½±”(€¨‰•¡…Ù¥½ÕÈ¥Ì…±Ý…åÌÁÉ•Í•ÉÙ•¸(€¨	Õ¥±ÐÝ¥Ñ ÉŒMÑÕ‘¥¼ƒŠP¡ÑÑÁÌè¼½ÍÑÕ‘¥¼¹…ÉŒ¹¥¼(€¨¼()ÑåÁ”½¹Í½±•1•Ù•°€ô€±½œœð€¥¹™¼œð€Ý…É¸œð€•ÉÉ½Èœð€‘•‰Õœœì()¥¹Ñ•É™…”½¹Í½±•1½¹ÑÉäì(€±•Ù•°è½¹Í½±•1•Ù•°ì(€µ•ÍÍ…”èÍÑÉ¥¹œì(€Ñ¥µ•ÍÑ…µÀè¹Õµ‰•Èì(€Í½ÕÉ”üèÍÑÉ¥¹œì(€ÍÑ…¬üèÍÑÉ¥¹œì)ô()½¹ÍÐ5MM}QeA€ô€ÍÑÕ‘¥¼µ½¹Í½±”µ±½œœì)½¹ÍÐ5a}5MM}!IL€ô€Ñ|ÀÀÀì)½¹ÍÐ5a}MQ-}!IL€ô€Ñ|ÀÀÀì)½¹ÍÐIQ}1%5%Q}]%9=]}5L€ô€Å|ÀÀÀì)½¹ÍÐ5a}AI}]%9=\€ô€ÄÀÀì)½¹ÍÐ5a}IAQ}	=I}1UM €ô€ÔÀÀì((¼¼1¥¹•Ì•µ¥ÑÑ•‰ä½ÕÈ½Ý¸ÑÉ…¥¹œ¥¹ÍÑÉÕµ•¹Ñ…Ñ¥½¸…É”¹½¥Í”™½ÈÑ¡”…•¹Ð¸)½¹ÍÐ9=%M}AI%aL€ôlmÍÑÕ‘¥¼µÑÉ…•ttì()½¹ÍÐ1Y1Lè½¹Í½±•1•Ù•±mt€ôl±½œœ°€¥¹™¼œ°€Ý…É¸œ°€•ÉÉ½Èœ°€‘•‰Õœtì((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼A…É•¹Ð½É¥¥¸É•Í½±ÕÑ¥½¸€¡µ¥ÉÉ½ÉÌÑÉ…¥¹œ¹ÑÌ¤(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´()½¹ÍÐ}Á…É•¹Ñ=É¥¥¸èÍÑÉ¥¹œ€ô€  ¤€ôøì(€ÑÉäì(€€€¥˜€¡Ý¥¹‘½Ü¹±½…Ñ¥½¸¹…¹•ÍÑ½É=É¥¥¹Ìü¹±•¹Ñ ¤ì(€€€€€É•ÑÕÉ¸Ý¥¹‘½Ü¹±½…Ñ¥½¸¹…¹•ÍÑ½É=É¥¥¹ÍlÁtì(€€€ô(€ô…Ñ ì(€€€€¼¨Í…¹‘‰½á•¥™É…µ”µ…äÑ¡É½Ü€¨¼(€ô((€ÑÉäì(€€€¥˜€¡‘½Õµ•¹Ð¹É•™•ÉÉ•È¤ì(€€€€€É•ÑÕÉ¸¹•ÜUI0¡‘½Õµ•¹Ð¹É•™•ÉÉ•È¤¹½É¥¥¸ì(€€€ô(€ô…Ñ ì(€€€€¼¨µ…±™½Éµ•É•™•ÉÉ•È€¨¼(€ô((€É•ÑÕÉ¸€œ¨œì)ô¤ ¤ì((¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´(¼¼½Éµ…ÑÑ¥¹œ(¼¼€´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´´()™Õ¹Ñ¥½¸Í…™•MÑÉ¥¹¥™ä¡Ù…±Õ”èÕ¹­¹½Ý¸¤èÍÑÉ¥¹œì(€½¹ÍÐÍ••¸€ô¹•Ü]•…­M•Ðñ½‰©•Ðø ¤ì((€ÑÉäì(€€€½¹ÍÐ©Í½¸€ô)M=8¹ÍÑÉ¥¹¥™ä¡Ù…±Õ”°€¡}­•äèÍÑÉ¥¹œ°Ù…°èÕ¹­¹½Ý¸¤èÕ¹­¹½Ý¸€ôøì(€€€€€¥˜€¡ÑåÁ•½˜Ù…°€ôôô€‰¥¥¹Ðœ¤ì(€€€€€€€É•ÑÕÉ¸€‘íÙ…°¹Ñ½MÑÉ¥¹œ ¥õ¹€ì(€€€€€ô((€€€€€¥˜€¡ÑåÁ•½˜Ù…°€ôôô€½‰©•Ðœ€˜˜Ù…°€„ôô¹Õ±°¤ì(€€€€€€€¥˜€¡Í••¸¹¡…Ì¡Ù…°¤¤ì(€€€€€€€€€É•ÑÕÉ¸€m¥ÉÕ±…Étœì(€€€€€€€ô((€€€€€€€Í••¸¹…‘¡Ù…°¤ì(€€€€€ô((€€€€€É•ÑÕÉ¸Ù…°ì(€€€ô¤ì((€€€É•ÑÕÉ¸©Í½¸€üüMÑÉ¥¹œ¡Ù…±Õ”¤ì(€ô…Ñ ì(€€€É•ÑÕÉ¸MÑÉ¥¹œ¡Ù…±Õ”¤ì(€ô)ô()™Õ¹Ñ¥½¸™½Éµ…ÑÉœ¡…ÉœèÕ¹­¹½Ý¸¤èÍÑÉ¥¹œì(€¥˜€¡ÑåÁ•½˜…Éœ€ôôô€ÍÑÉ¥¹œœ¤ì(€€€É•ÑÕÉ¸…Éœì(€ô((€¥˜€¡…Éœ¥¹ÍÑ…¹•½˜ÉÉ½È¤ì(€€€É•ÑÕÉ¸…Éœ¹ÍÑ…¬€üü€‘í…Éœ¹¹…µ•ôè€‘í…Éœ¹µ•ÍÍ…•õ€ì(€ô((€¥˜€¡…Éœ€ôôôÕ¹‘•™¥¹•¤ì(€€€É•ÑÕÉ¸€Õ¹‘•™¥¹•œì(€ô((€É•ÑÕÉ¸Í…™•MÑÉ¥¹¥™ä¡…Éœ¤ì)ô()™Õ¹Ñ¥½¸ÑÉÕ¹…Ñ”¡ÌèÍÑÉ¥¹œ°µ…á¡…ÉÌè¹Õµ‰•È€ô5a}5MM}!IL¤èÍÑÉ¥¹œì(€É•ÑÕÉ¸Ì¹±•¹Ñ €øµ…á}»¶‰žËkºwµçD”Ô•Eõt”äDõuôÕ2’°¢–b…öG&÷VBâ’°¢6öç7BG&÷VBÒöG&÷VC°¢öG&÷VBÒ°¢6VæB‡²ÆWfVÃ¢wv&ârÂÖW76vS¢·7GVF–òÖ6öç6öÆUÒ&FRÆ–Ö—C¢G&÷VBG¶G&÷VGÒÖW76vR‡2–ÂF–ÖW7F×¢æ÷rÒ“°¢Ð ¢÷v–æF÷u7F'BÒæ÷s°¢÷v–æF÷t6÷VçBÒ°¢Ð ¢–b…÷v–æF÷t6÷VçBãÒÔ…õU%õt”äDõr’°¢öG&÷VB²³°¢&WGW&ã°¢Ð ¢÷v–æF÷t6÷VçB²³°¢6VæB†VçG'’“°§Ð ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÐ¢òò6öç6V7WF—fRÖGWÆ–6FR6öÆÆ6–æp¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÐ ¦ÆWBöÆ7D¶W’Òrs°¦ÆWBöÆ7DÆWfVÃ¢6öç6öÆTÆWfVÂÒvÆörs°¦ÆWB÷&WVBÒ° ¦gVæ7F–öâfÇW6…&WVB‚“¢fö–B°¢–b…÷&WVBâ’°¢6öç7B&WVBÒ÷&WVC°¢÷&WVBÒ°¢÷7B‡²ÆWfVÃ¢öÆ7DÆWfVÂÂÖW76vS¢‡&Wf–÷W2Æ–æR&WVFVBG·&WVGÜ9rÖ÷&R–ÂF–ÖW7F×¢FFRææ÷r‚’Ò“°¢Ð§Ð ¦gVæ7F–öâVÖ—B†VçG'“¢6öç6öÆTÆötVçG'’“¢fö–B°¢6öç7B¶W’ÒG¶VçG'’æÆWfVÇÕÇSG¶VçG'’æÖW76vWÖ° ¢–b†¶W’ÓÓÒöÆ7D¶W’’°¢÷&WVB²³° ¢–b…÷&WVBãÒÔ…õ$UTEô$Tdõ$UôdÅU4‚’°¢fÇW6…&WVB‚“°¢Ð ¢&WGW&ã°¢Ð ¢fÇW6…&WVB‚“°¢öÆ7D¶W’Ò¶W“°¢öÆ7DÆWfVÂÒVçG'’æÆWfVÃ°¢÷7B†VçG'’“°§Ð ¦gVæ7F–öâ—4æö—6R†ÖW76vS¢7G&–ær“¢&ööÆVâ°¢&WGW&âäô•4Uõ$Td•„U2ç6öÖR‚‡’ÓâÖW76vRç7F'G5v—F‚‡’“°§Ð ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÐ¢òò6öç6öÆRâ¢F6†–æp¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÐ ¦f÷"†6öç7BÆWfVÂöbÄUdTÅ2’°¢6öç7B÷&–v–æÂÒ6öç6öÆU¶ÆWfVÅÒæ&–æB†6öç6öÆR“° ¢6öç6öÆU¶ÆWfVÅÒÒ‚ââæ&w3¢Væ¶æ÷våµÒ“¢fö–BÓâ°¢÷&–v–æÂ‚ââæ&w2“° ¢G'’°¢6öç7BÖW76vRÒG'Væ6FR†&w2æÖ†f÷&ÖD&r’æ¦ö–â‚rr’“° ¢–b†ÖW76vRbb—4æö—6R†ÖW76vR’’°¢VÖ—B‡²ÆWfVÂÂÖW76vRÂF–ÖW7F×¢FFRææ÷r‚’Â7F6³¢f—'7DW'&÷%7F6²†&w2’Ò“°¢Ð¢Ò6F6‚°¢ò¢æWfW"ÆWB6GW&R'&V²F†Rw2Æövv–ær¢ð¢Ð¢Ó°§Ð ¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÐ¢òòVæ6Vv‡BW'&÷'2bVæ†æFÆVB&V¦V7F–öç2(	BF†R6–væÇ2&Ææ²&Wf–Wr†–FW0¢òòÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÐ §v–æF÷ræFDWfVçDÆ—7FVæW"‚vW'&÷"rÂ†S¢W'&÷$WfVçB’Óâ°¢G'’°¢fÇW6…&WVB‚“°¢6öç7B6÷W&6RÒRæf–ÆVæÖRòG¶Ræf–ÆVæÖWÓ¢G¶RæÆ–æVæòóòÓ¢G¶Ræ6öÆæòóòÖ¢VæFVf–æVC°¢÷7B‡°¢ÆWfVÃ¢vW'&÷"rÀ¢ÖW76vS¢G'Væ6FR†RæÖW76vRÇÂuVæ6Vv‡BW'&÷"r’À¢F–ÖW7F×¢FFRææ÷r‚’À¢6÷W&6RÀ¢7F6³¢RæW'&÷"–ç7Fæ6VöbW'&÷"òG'Væ6FU7F6²†RæW'&÷"ç7F6²’¢VæFVf–æVBÀ¢Ò“°¢Ò6F6‚°¢ò¢–væ÷&R¢ð¢Ð§Ò“° §v–æF÷ræFDWfVçDÆ—7FVæW"‚wVæ†æFÆVG&V¦V7F–öârÂ†S¢&öÖ—6U&V¦V7F–öäWfVçB’Óâ°¢G'’°¢fÇW6…&WVB‚“°¢6öç7B&V6öã¢Væ¶æ÷vâÒRç&V6öã°¢÷7B‡°¢ÆWfVÃ¢vW'&÷"rÀ¢ÖW76vS¢G'Væ6FR†Væ†æFÆVB&öÖ—6R&V¦V7F–öã¢G¶f÷&ÖD&r‡&V6öâ—Ö’À¢F–ÖW7F×¢FFRææ÷r‚’À¢7F6³¢&V6öâ–ç7Fæ6VöbW'&÷"òG'Væ6FU7F6²‡&V6öâç7F6²’¢VæFVf–æVBÀ¢Ò“°¢Ò6F6‚°¢ò¢–væ÷&R¢ð¢Ð§Ò“° 
+/**
+ * Console & Error Capture Instrumentation
+ *
+ * Patches console.{log,info,warn,error,debug} and listens for window 'error'
+ * and 'unhandledrejection' events, forwarding each to the parent frame via
+ * postMessage ({ type: 'studio-console-log' }). The parent persists these to
+ * `console.jsonl` inside the sandbox so the Arc Studio agent can read runtime
+ * output when diagnosing a broken preview.
+ *
+ * Self-throttling: consecutive duplicate lines are collapsed and a per-second
+ * rate limit caps the postMessage volume so a render-loop log storm cannot
+ * flood the parent.
+ *
+ * Imported as a side-effect before any app code runs. The original console
+ * behaviour is always preserved.
+ * Built with Arc Studio â€” https://studio.arc.io
+ */
+
+type ConsoleLevel = 'log' | 'info' | 'warn' | 'error' | 'debug';
+
+interface ConsoleLogEntry {
+  level: ConsoleLevel;
+  message: string;
+  timestamp: number;
+  source?: string;
+  stack?: string;
+}
+
+const MESSAGE_TYPE = 'studio-console-log';
+const MAX_MESSAGE_CHARS = 4_000;
+const MAX_STACK_CHARS = 4_000;
+const RATE_LIMIT_WINDOW_MS = 1_000;
+const MAX_PER_WINDOW = 100;
+const MAX_REPEAT_BEFORE_FLUSH = 500;
+
+// Lines emitted by our own tracing instrumentation are noise for the agent.
+const NOISE_PREFIXES = ['[studio-trace]'];
+
+const LEVELS: ConsoleLevel[] = ['log', 'info', 'warn', 'error', 'debug'];
+
+// ---------------------------------------------------------------------------
+// Parent origin resolution (mirrors tracing.ts)
+// ---------------------------------------------------------------------------
+
+const _parentOrigin: string = (() => {
+  try {
+    if (window.location.ancestorOrigins?.length) {
+      return window.location.ancestorOrigins[0];
+    }
+  } catch {
+    /* sandboxed iframe may throw */
+  }
+
+  try {
+    if (document.referrer) {
+      return new URL(document.referrer).origin;
+    }
+  } catch {
+    /* malformed referrer */
+  }
+
+  return '*';
+})();
+
+// ---------------------------------------------------------------------------
+// Formatting
+// ---------------------------------------------------------------------------
+
+function safeStringify(value: unknown): string {
+  const seen = new WeakSet<object>();
+
+  try {
+    const json = JSON.stringify(value, (_key: string, val: unknown): unknown => {
+      if (typeof val === 'bigint') {
+        return `${val.toString()}n`;
+      }
+
+      if (typeof val === 'object' && val !== null) {
+        if (seen.has(val)) {
+          return '[Circular]';
+        }
+
+        seen.add(val);
+      }
+
+      return val;
+    });
+
+    return json ?? String(value);
+  } catch {
+    return String(value);
+  }
+}
+
+function formatArg(arg: unknown): string {
+  if (typeof arg === 'string') {
+    return arg;
+  }
+
+  if (arg instanceof Error) {
+    return arg.stack ?? `${arg.name}: ${arg.message}`;
+  }
+
+  if (arg === undefined) {
+    return 'undefined';
+  }
+
+  return safeStringify(arg);
+}
+
+function truncate(s: string, maxChars: number = MAX_MESSAGE_CHARS): string {
+  return s.length > maxChars ? `${s.slice(0, maxChars)}â€¦ [truncated]` : s;
+}
+
+function truncateStack(stack: string | undefined): string | undefined {
+  return stack ? truncate(stack, MAX_STACK_CHARS) : undefined;
+}
+
+function firstErrorStack(args: unknown[]): string | undefined {
+  for (const arg of args) {
+    if (arg instanceof Error && arg.stack) {
+      return truncateStack(arg.stack);
+    }
+  }
+
+  return undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Rate limiting
+// ---------------------------------------------------------------------------
+
+let _windowStart = Date.now();
+let _windowCount = 0;
+let _dropped = 0;
+
+function send(entry: ConsoleLogEntry): void {
+  try {
+    window.parent.postMessage({ type: MESSAGE_TYPE, entry }, _parentOrigin);
+  } catch {
+    /* ignore â€” postMessage can throw on cross-origin edge cases */
+  }
+}
+
+function post(entry: ConsoleLogEntry): void {
+  const now = Date.now();
+
+  if (now - _windowStart >= RATE_LIMIT_WINDOW_MS) {
+    if (_dropped > 0) {
+      const dropped = _dropped;
+      _dropped = 0;
+      send({ level: 'warn', message: `[studio-console] rate limit: dropped ${dropped} message(s)`, timestamp: now });
+    }
+
+    _windowStart = now;
+    _windowCount = 0;
+  }
+
+  if (_windowCount >= MAX_PER_WINDOW) {
+    _dropped++;
+    return;
+  }
+
+  _windowCount++;
+  send(entry);
+}
+
+// ---------------------------------------------------------------------------
+// Consecutive-duplicate collapsing
+// ---------------------------------------------------------------------------
+
+let _lastKey = '';
+let _lastLevel: ConsoleLevel = 'log';
+let _repeat = 0;
+
+function flushRepeat(): void {
+  if (_repeat > 0) {
+    const repeat = _repeat;
+    _repeat = 0;
+    post({ level: _lastLevel, message: `(previous line repeated ${repeat}Ã— more)`, timestamp: Date.now() });
+  }
+}
+
+function emit(entry: ConsoleLogEntry): void {
+  const key = `${entry.level}\u0000${entry.message}`;
+
+  if (key === _lastKey) {
+    _repeat++;
+
+    if (_repeat >= MAX_REPEAT_BEFORE_FLUSH) {
+      flushRepeat();
+    }
+
+    return;
+  }
+
+  flushRepeat();
+  _lastKey = key;
+  _lastLevel = entry.level;
+  post(entry);
+}
+
+function isNoise(message: string): boolean {
+  return NOISE_PREFIXES.some((p) => message.startsWith(p));
+}
+
+// ---------------------------------------------------------------------------
+// console.* patching
+// ---------------------------------------------------------------------------
+
+for (const level of LEVELS) {
+  const original = console[level].bind(console);
+
+  console[level] = (...args: unknown[]): void => {
+    original(...args);
+
+    try {
+      const message = truncate(args.map(formatArg).join(' '));
+
+      if (message && !isNoise(message)) {
+        emit({ level, message, timestamp: Date.now(), stack: firstErrorStack(args) });
+      }
+    } catch {
+      /* never let capture break the app's logging */
+    }
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Uncaught errors & unhandled rejections â€” the signals a blank preview hides
+// ---------------------------------------------------------------------------
+
+window.addEventListener('error', (e: ErrorEvent) => {
+  try {
+    flushRepeat();
+    const source = e.filename ? `${e.filename}:${e.lineno ?? 0}:${e.colno ?? 0}` : undefined;
+    post({
+      level: 'error',
+      message: truncate(e.message || 'Uncaught error'),
+      timestamp: Date.now(),
+      source,
+      stack: e.error instanceof Error ? truncateStack(e.error.stack) : undefined,
+    });
+  } catch {
+    /* ignore */
+  }
+});
+
+window.addEventListener('unhandledrejection', (e: PromiseRejectionEvent) => {
+  try {
+    flushRepeat();
+    const reason: unknown = e.reason;
+    post({
+      level: 'error',
+      message: truncate(`Unhandled promise rejection: ${formatArg(reason)}`),
+      timestamp: Date.now(),
+      stack: reason instanceof Error ? truncateStack(reason.stack) : undefined,
+    });
+  } catch {
+    /* ignore */
+  }
+});
+
