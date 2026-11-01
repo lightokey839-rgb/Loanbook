@@ -21,7 +21,7 @@ jobs:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       VITE_NETWORK: mainnet
-      VITE_MAINNET_LOANBOOK_ADDRESS: 0x08435c5d74a00591c4eaa25ad433eeccb5c0980e
+      VITE_MAINNET_LOANBOOK_ADDRESS: "0x08435c5d74a00591c4eaa25ad433eeccb5c0980e"
       VITE_BASE_PATH: /Loanbook/
     steps:
       - uses: actions/checkout@v4
