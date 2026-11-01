@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">LoanBook logo</title>
+  <desc id="desc">An open book with a blue and cyan Arc coin</desc>
+  <defs>
+    <linearGradient id="bg" x1="16" y1="12" x2="112" y2="116" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="page" x1="26" y1="34" x2="94" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DFF8FF"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="#0B1220"/>
+  <rect x="10" y="10" width="108" height="108" rx="26" fill="url(#bg)" opacity=".18"/>
+  <path d="M22 34c14-8 28-8 42 2v66c-14-10-28-10-42-2V34Z" fill="url(#page)"/>
+  <path d="M106 34c-14-8-28-8-42 2v66c14-10 28-10 42-2V34Z" fill="#B9F3FF"/>
+  <path d="M64 36v66" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M31 52c9-4 18-4 27 1M31 66c9-4 18-4 27 1M70 53c9-5 18-5 27-1M70 67c9-5 18-5 27-1" fill="none" stroke="#72B7FF" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="92" cy="32" r="20" fill="#0B1220" stroke="#67E8F9" stroke-width="4"/>
+  <path d="M92 19c7 0 12 4 14 9H88c-2 0-4 2-4 4s2 4 4 4h8c6 0 10 4 10 9s-4 9-10 9H82" fill="none" stroke="#67E8F9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M92 16v35" stroke="#67E8F9" stroke-width="3" stroke-linecap="round"/>
+</svg>

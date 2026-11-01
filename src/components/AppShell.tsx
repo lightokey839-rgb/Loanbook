@@ -61,17 +61,11 @@ function SidebarContent({
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-5 border-b" style={{ borderColor: 'var(--border)' }}>
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold shrink-0"
-          style={{
-            background: 'linear-gradient(135deg, #3B82F6 0%, #22D3EE 100%)',
-            fontFamily: 'Space Grotesk',
-            color: '#fff',
-            boxShadow: '0 4px 14px rgba(59,130,246,0.4)',
-          }}
-        >
-          L
-        </div>
+        <img
+          src={`${import.meta.env.BASE_URL}loanbook-logo.svg`}
+          alt="LoanBook"
+          className="w-9 h-9 rounded-xl shrink-0"
+        />
         <div>
           <div className="font-bold text-sm leading-none" style={{ fontFamily: 'Space Grotesk', letterSpacing: '-0.01em' }}>
             LoanBook
