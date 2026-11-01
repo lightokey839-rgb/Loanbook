@@ -34,7 +34,7 @@ jobs:
         run: |
           test -n "$VITE_SUPABASE_URL" || { echo "::error::Missing VITE_SUPABASE_URL Actions secret"; exit 1; }
           test -n "$VITE_SUPABASE_ANON_KEY" || { echo "::error::Missing VITE_SUPABASE_ANON_KEY Actions secret"; exit 1; }
-      - run: npm ci --no-audit --no-fund
+      - run: npm install --no-audit --no-fund
       - run: npm run check
       - run: npm test -- --run
       - run: npm run build
