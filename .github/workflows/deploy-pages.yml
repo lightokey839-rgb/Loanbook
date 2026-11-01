@@ -21,8 +21,8 @@ jobs:
     env:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      VITE_NETWORK: testnet
-      VITE_TESTNET_LOANBOOK_ADDRESS: "0xe1b52752bf5e6cc64a5f65e485ea35ef7cf7a228"
+      VITE_NETWORK: mainnet
+      VITE_MAINNET_LOANBOOK_ADDRESS: "0x08435c5d74a00591c4eaa25ad433eeccb5c0980e"
       VITE_BASE_PATH: /Loanbook/
     steps:
       - name: Check out release candidate
